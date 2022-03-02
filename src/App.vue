@@ -10,8 +10,6 @@
 @import "@/assets/styles/index.scss";
 
 #app {
-  margin: 0 auto;
-  padding: 2rem;
   font-weight: normal;
 }
 </style>
