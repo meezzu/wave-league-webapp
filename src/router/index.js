@@ -59,7 +59,7 @@ router.beforeEach((to) => {
   }
 });
 
-function checkUserSignedIn(next) {
+function checkUserSignedIn(to, from, next) {
   const authStore = useAuthStore();
   if (authStore.userSignedIn) return next({ name: "home" });
 }
