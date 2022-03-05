@@ -1,7 +1,7 @@
 <template>
   <main class="auth">
     <AuthNavbarSection class="nav" />
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </main>
 </template>
 
@@ -37,7 +37,8 @@ export default {
   );
 
   .nav {
-    position: fixed;
+    width: 100%;
+    position: absolute;
     top: 0;
     right: 0;
     left: 0;
