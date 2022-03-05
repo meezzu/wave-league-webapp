@@ -48,7 +48,7 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const authStore = useAuthStore();
   if (to.meta.requiresAuth && !authStore.userSignedIn) {
     return {
@@ -59,7 +59,7 @@ router.beforeEach((to, from) => {
   }
 });
 
-function checkUserSignedIn(to, from, next) {
+function checkUserSignedIn(next) {
   const authStore = useAuthStore();
   if (authStore.userSignedIn) return next({ name: "home" });
 }
