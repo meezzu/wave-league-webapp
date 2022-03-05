@@ -18,7 +18,6 @@ const router = createRouter({
     {
       path: "/auth",
       component: () => import("@/views/authentication/AuthenticationView.vue"),
-      beforeEnter: [checkUserSignedIn],
       meta: { requiresAuth: false },
       children: [
         {
@@ -37,31 +36,18 @@ const router = createRouter({
         },
       ],
     },
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import("../views/AboutView.vue"),
-    // },
   ],
 });
 
 router.beforeEach((to) => {
   const authStore = useAuthStore();
-  if (to.meta.requiresAuth && !authStore.userSignedIn) {
+  if (!authStore.userSignedIn && to.meta.requiresAuth) {
     return {
       path: "/auth/sign-in",
-      // save the location we were at to come back later
-      // query: { redirect: to.fullPath },
     };
+  } else if (authStore.userSignedIn && !to.meta.requiresAuth) {
+    return { path: to.path };
   }
 });
-
-function checkUserSignedIn(to, from, next) {
-  const authStore = useAuthStore();
-  if (authStore.userSignedIn) return next({ name: "home" });
-}
 
 export default router;
