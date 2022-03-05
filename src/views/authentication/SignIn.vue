@@ -1,7 +1,7 @@
 <template>
   <section class="sign-in flex justify-center items-center p-2">
     <div
-      class="card flex flex-col justify-center text-center items-center bg-grey5 p-8 text-black rounded-lg w-full lg:w-7/12"
+      class="card flex flex-col justify-center text-center items-center bg-grey5 p-8 text-black rounded-lg w-full sm:w-10/12 md:w-9/12 lg:w-7/12"
     >
       <div class="card__logo mt-12">
         <img
@@ -21,7 +21,10 @@
         </div>
 
         <div class="card__btn mt-12">
-          <button class="flex items-center space-x-4 bg-white text-primary shadow rounded-lg py-3 px-16">
+          <button
+            class="flex items-center space-x-4 bg-white text-primary shadow rounded-lg py-3 px-16"
+            @click="authenticateUser"
+          >
             <img
               src="@/assets/icons/google-icon.svg"
               alt="sign in with google"
@@ -39,6 +42,35 @@
     </div>
   </section>
 </template>
+
+<script>
+import { useAuthStore } from "@/stores/auth.js";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import useAuthentication from "@/composition/useAuthentication.js";
+
+export default {
+  setup() {
+    const store = useAuthStore();
+    const { userGoogleProfile, userSignedIn } = storeToRefs(store);
+    const router = useRouter();
+    const { googleAuthentication, googleProfile, isSignedIn, loading } =
+      useAuthentication();
+
+    async function authenticateUser() {
+      await googleAuthentication();
+
+      if (loading.value === "done") {
+        userSignedIn.value = isSignedIn;
+        userGoogleProfile.value = googleProfile;
+        router.push({ name: "home" });
+      }
+    }
+
+    return { authenticateUser };
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .sign-in {
