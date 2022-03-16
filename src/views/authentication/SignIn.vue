@@ -60,11 +60,18 @@ export default {
     async function authenticateUser() {
       await googleAuthentication();
 
-      if (loading.value === "done") {
+      if (loading.value === "done" && googleProfile) {
         userSignedIn.value = isSignedIn;
         userGoogleProfile.value = googleProfile;
+        storeAccessToken(googleProfile);
         router.push({ name: "home" });
       }
+    }
+
+    function storeAccessToken(profile) {
+      console.log(profile.value);
+      const { access_token } = profile.value.wc;
+      sessionStorage.setItem("token", access_token);
     }
 
     return { authenticateUser };
