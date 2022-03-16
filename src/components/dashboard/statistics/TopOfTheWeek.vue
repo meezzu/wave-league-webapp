@@ -183,7 +183,7 @@ export default {
           margin-top: -80px;
           display: flex;
           flex-direction: column;
-          justify-content: end;
+          justify-content: flex-end;
           align-items: center;
           border-radius: 57px;
           padding-bottom: 1rem;
