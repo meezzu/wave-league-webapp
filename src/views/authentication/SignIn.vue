@@ -45,33 +45,54 @@
 
 <script>
 import { useAuthStore } from "@/stores/auth.js";
-import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
-import useAuthentication from "@/composition/useAuthentication.js";
+import useGoogleAuth from "@/composition/useGoogleAuth.js";
+import useApiCall from "@/composition/useApiCall";
 
 export default {
   setup() {
     const store = useAuthStore();
-    const { userGoogleProfile, userSignedIn } = storeToRefs(store);
     const router = useRouter();
-    const { googleAuthentication, googleProfile, isSignedIn, loading } =
-      useAuthentication();
+    const { googleAuthentication, googleProfile, loading } = useGoogleAuth();
+    const { loginPlayer, registerPlayer } = useApiCall();
 
     async function authenticateUser() {
       await googleAuthentication();
 
       if (loading.value === "done" && googleProfile) {
-        userSignedIn.value = isSignedIn;
-        userGoogleProfile.value = googleProfile;
-        storeAccessToken(googleProfile);
-        router.push({ name: "home" });
+        store.userGoogleProfile = googleProfile;
+        checkExistingUser();
       }
     }
 
-    function storeAccessToken(profile) {
-      console.log(profile.value);
-      const { access_token } = profile.value.wc;
-      sessionStorage.setItem("token", access_token);
+    function checkExistingUser() {
+      loginPlayer({ email: store.googleMail })
+        .then((response) => {
+          store.waveProfile = response;
+          store.userSignedIn = true;
+          router.push({ name: "squad" });
+        })
+        .catch((error) => {
+          if (error.response.data.error_code === 302) {
+            return initRegisterNewUser();
+          } else console.error(error);
+        });
+    }
+
+    function initRegisterNewUser() {
+      const payload = {
+        email: store.googleMail,
+        player_name: store.googleName,
+      };
+      registerPlayer(payload)
+        .then((response) => {
+          store.waveProfile = response;
+          store.userSignedIn = true;
+          router.push({ name: "squad" });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
 
     return { authenticateUser };

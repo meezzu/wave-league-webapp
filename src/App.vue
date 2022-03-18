@@ -2,6 +2,7 @@
   <AppNavbar v-if="!isAuthRoute" />
   <RouterView :key="$route.fullPath" />
   <FooterSection v-if="!isAuthRoute" />
+  <notifications />
 </template>
 
 <script>
@@ -9,6 +10,7 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import AppNavbar from "./components/global/AppNavbar.vue";
 import FooterSection from "./components/global/FooterSection.vue";
+// import { notify } from "@kyvg/vue3-notification";
 
 export default {
   setup() {

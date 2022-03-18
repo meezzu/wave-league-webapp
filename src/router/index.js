@@ -11,6 +11,11 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: "/squad",
+      name: "squad",
+      component: () => import("../views/squad/SquadView.vue"),
+    },
+    {
       path: "/auth",
       component: () => import("@/views/authentication/AuthenticationView.vue"),
       children: [
