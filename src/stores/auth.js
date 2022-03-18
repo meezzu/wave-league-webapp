@@ -5,10 +5,18 @@ export const useAuthStore = defineStore({
   state: () => ({
     userGoogleProfile: null,
     userSignedIn: false,
+    waveProfile: null,
   }),
   getters: {
     accessToken: (state) => {
-      return state.userGoogleProfile.wc.access_token;
+      return state.waveProfile.token;
+    },
+    playerDetails: (state) => state.waveProfile.player,
+    googleMail: (state) => {
+      return state.userGoogleProfile.Du.tv;
+    },
+    googleName: (state) => {
+      return `${state.userGoogleProfile.Du.VX} ${state.userGoogleProfile.Du.iW}`;
     },
   },
   actions: {

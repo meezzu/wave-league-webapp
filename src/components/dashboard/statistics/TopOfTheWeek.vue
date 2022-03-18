@@ -133,14 +133,11 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 export default {
   setup() {
     const imgContainer = ref(null);
 
-    onMounted(() => {
-      console.log(imgContainer.value);
-    });
     function slide(direction) {
       let scrollCompleted = 0;
       let slideVar = setInterval(function () {
