@@ -1,6 +1,6 @@
 <template>
   <section class="squads">
-    <article class="header flex pt-24 justify-center flex-col items-center w-5/12 m-auto">
+    <article class="header flex p-32 justify-center flex-col items-center w-5/12 m-auto">
       <div class="card w-full">
         <div class="card-body p-4 rounded-t bg-white text-center">
           <h2 class="text-xl font-semibold">Squad Selection</h2>
@@ -14,28 +14,6 @@
           </p>
         </div>
         <div class="py-1 rounded-b px-4 bg-secondary"></div>
-      </div>
-
-      <div class="w-full flex justify-around items-center mt-8">
-        <div class="flex flex-col items-center">
-          <button
-            @click="autoSelectArtistes"
-            type="button"
-            class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center"
-          >Auto Select</button>
-          <p class="text-grey4 mt-3">Selected Squad</p>
-          <p class="text-secondary font-semibold">{{squadStore.currentSquad.length}}/8</p>
-        </div>
-
-        <div class="flex flex-col items-center">
-          <button
-            @click="resetSquad"
-            type="button"
-            class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center"
-          >Reset</button>
-          <p class="text-grey4 mt-3">Money Remaining</p>
-          <p class="text-secondary font-semibold">₦{{squadStore.totalSquadValue}}m</p>
-        </div>
       </div>
     </article>
 
