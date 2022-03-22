@@ -1,0 +1,186 @@
+<template>
+  <section class="squads">
+    <article class="header flex pt-24 justify-center flex-col items-center w-5/12 m-auto">
+      <div class="card w-full">
+        <div class="card-body p-4 rounded-t bg-white text-center">
+          <h2 class="text-xl font-semibold">Squad Selection</h2>
+          <small class="text-grey3">You can ‘Auto Select’ your squad if you’re short of time</small>
+        </div>
+
+        <div class="card-footer text-center py-2 px-4 bg-primary">
+          <p class="text-white text-sm font-semibold">
+            MusicWeek1 deadline:
+            <span class="text-secondary">Sun 1 Jan 2022</span>
+          </p>
+        </div>
+        <div class="py-1 rounded-b px-4 bg-secondary"></div>
+      </div>
+
+      <div class="w-full flex justify-around items-center mt-8">
+        <div class="flex flex-col items-center">
+          <button
+            @click="autoSelectArtistes"
+            type="button"
+            class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center"
+          >Auto Select</button>
+          <p class="text-grey4 mt-3">Selected Squad</p>
+          <p class="text-secondary font-semibold">{{squadStore.currentSquad.length}}/8</p>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <button
+            @click="resetSquad"
+            type="button"
+            class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center"
+          >Reset</button>
+          <p class="text-grey4 mt-3">Money Remaining</p>
+          <p class="text-secondary font-semibold">₦{{squadStore.totalSquadValue}}m</p>
+        </div>
+      </div>
+    </article>
+
+    <CompleteSquadFormation @delete="deleteSingleArtisteFromSquad" />
+  </section>
+</template>
+
+<script setup>
+import { ref, onMounted, watchEffect } from "vue";
+import CompleteSquadFormation from "../../components/squads/CompleteSquadFormation.vue";
+import { useAuthStore } from "@/stores/auth.js";
+import { useSquadStore } from "../../stores/squad";
+import useApiCall from "@/composition/useApiCall";
+import router from "../../router";
+
+const showCreateSquadModal = ref(false);
+const authStore = useAuthStore();
+const squadStore = useSquadStore();
+
+const {
+  getPlayerSquad,
+
+  addToSquad,
+  removeFromSquad,
+} = useApiCall();
+
+const squadCalled = ref(false);
+const allArtistes = ref({});
+
+squadStore.$onAction(({ after }) => {
+  after((result) => {
+    if (!result) return;
+    saveArtisteToSquad();
+  });
+}, true);
+
+onMounted(() => {
+  getSquad();
+});
+
+watchEffect(async () => {
+  const isComplete = squadStore.squadComplete;
+  if (!isComplete) router.push({ name: "pick-squad" });
+});
+
+const getSquad = () => {
+  const playerId = authStore.waveProfile.player.id;
+
+  getPlayerSquad(playerId)
+    .then((response) => {
+      squadCalled.value = true;
+      if (response === null) return openCreateSquadModal();
+      else {
+        squadStore.squad = response;
+        squadStore.currentSquad = response.artistes;
+        // squadDetails.value = response;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const saveArtisteToSquad = () => {
+  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
+  const payload = {
+    squadId: squadStore.squad._id,
+    artistes: { artistes },
+  };
+  addToSquad(payload)
+    .then((response) => {
+      squadStore.squad.artistes = response.artistes;
+      squadStore.currentSquad = response.artistes;
+    })
+    .catch((error) => console.error(error));
+};
+
+const deleteSingleArtisteFromSquad = (artisteInfo) => {
+  const artistes = [artisteInfo._id];
+  const payload = {
+    squadId: squadStore.squad._id,
+    artistes: { artistes },
+  };
+  removeFromSquad(payload)
+    .then((response) => {
+      squadStore.squad.artistes = response.artistes;
+      squadStore.currentSquad = response.artistes;
+    })
+    .catch((error) => console.error(error));
+};
+
+const resetSquad = () => {
+  removeAllArtistes();
+};
+
+const removeAllArtistes = () => {
+  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
+  const payload = {
+    squadId: squadStore.squad._id,
+    artistes: { artistes },
+  };
+  removeFromSquad(payload)
+    .then((response) => {
+      squadStore.squad.artistes = response.artistes;
+      squadStore.currentSquad = response.artistes;
+    })
+    .catch((error) => console.error(error));
+};
+
+const autoSelectArtistes = () => {
+  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
+  const payload = {
+    squadId: squadStore.squad._id,
+    artistes: { artistes },
+  };
+  removeFromSquad(payload)
+    .then((response) => {
+      squadStore.squad.artistes = response.artistes;
+      squadStore.currentSquad = response.artistes;
+
+      const shuffled = allArtistes.value.result.sort(function () {
+        return 0.5 - Math.random();
+      });
+      const selected = shuffled.slice(0, 8);
+      squadStore.emptyCurrentSquad();
+      squadStore.addToCurrentSquad(selected);
+    })
+    .catch((error) => console.error(error));
+};
+
+const openCreateSquadModal = () => {
+  showCreateSquadModal.value = true;
+};
+</script>
+
+<style lang="scss" scoped>
+.squads {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #000022 0%, #004f86 43.8%, #013e67 100%);
+
+  .table {
+    position: absolute;
+    top: 5%;
+    left: 1%;
+  }
+}
+</style>

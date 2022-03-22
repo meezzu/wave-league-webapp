@@ -45,7 +45,11 @@
 
         <tbody>
           <template v-for="artiste in filteredArtistes" :key="artiste.id">
-            <tr class="text-center cursor-pointer" @click="selectArtiste(artiste)">
+            <tr
+              class="text-center cursor-pointer"
+              :class="{'text-grey3': artisteSelected(artiste) }"
+              @click="selectArtiste(artiste)"
+            >
               <td class="p-4 border-b bg-primary border-[#28254D]">{{ artiste.artiste_name }}</td>
               <td class="p-4 border-b bg-primary border-[#28254D]">{{ artiste.price }}</td>
               <td class="p-4 border-b bg-primary border-[#28254D]">{{ artiste.points }}</td>
@@ -59,7 +63,9 @@
 
 <script setup>
 import { computed, defineProps, defineEmits } from "vue";
+import { useSquadStore } from "../../stores/squad";
 
+const squadStore = useSquadStore();
 const props = defineProps({
   artistes: {
     type: Object,
@@ -73,6 +79,14 @@ const emits = defineEmits(["select-artiste"]);
 const filteredArtistes = computed(() => {
   return props.artistes.result;
 });
+
+const artisteSelected = (artiste) => {
+  const selected = squadStore.currentSquad.filter(function (selection) {
+    return selection._id === artiste._id;
+  });
+  if (selected.length) return true;
+  return false;
+};
 
 const selectArtiste = (artiste) => {
   emits("select-artiste", artiste);

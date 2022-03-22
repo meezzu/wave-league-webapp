@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useAuthStore } from "../stores/auth";
+import { useSquadStore } from "../stores/squad";
 import { useRouter } from "vue-router";
 
 export default function useApiCall() {
@@ -26,7 +27,7 @@ export default function useApiCall() {
         const router = useRouter();
 
         authStore.userSignedIn = false;
-        router.push({ name: "auth-sign-in" });
+        return router.push({ name: "auth-sign-in" });
       }
     }
   );
@@ -104,8 +105,16 @@ export default function useApiCall() {
 
   const addToSquad = async (data) => {
     loading.value = true;
+    const squadStore = useSquadStore();
+    const addedArtistes = data.artistes.artistes;
+    const existingArtistes = squadStore.squad.artistes.map((artistes) => artistes._id);
+
+    const artistes = addedArtistes.filter(function (n) {
+      return existingArtistes.indexOf(n) == -1;
+    });
+
     return await authorisedCall
-      .post(`${baseUrl}squads/${data.squadId}/artiste/${data.artisteId}/add`)
+      .post(`${baseUrl}squads/${data.squadId}/add-artistes`, { artistes })
       .then((response) => {
         loading.value = false;
         return response.data.data;
@@ -116,5 +125,27 @@ export default function useApiCall() {
       });
   };
 
-  return { loginPlayer, registerPlayer, getPlayerSquad, createSquad, getAllArtistes, addToSquad };
+  const removeFromSquad = async (data) => {
+    loading.value = true;
+    return await authorisedCall
+      .post(`${baseUrl}squads/${data.squadId}/remove-artistes`, data.artistes)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
+  return {
+    loginPlayer,
+    registerPlayer,
+    getPlayerSquad,
+    createSquad,
+    getAllArtistes,
+    addToSquad,
+    removeFromSquad,
+  };
 }

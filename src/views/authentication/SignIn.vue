@@ -51,7 +51,7 @@ import useApiCall from "@/composition/useApiCall";
 
 export default {
   setup() {
-    const store = useAuthStore();
+    const authStore = useAuthStore();
     const router = useRouter();
     const { googleAuthentication, googleProfile, loading } = useGoogleAuth();
     const { loginPlayer, registerPlayer } = useApiCall();
@@ -60,17 +60,17 @@ export default {
       await googleAuthentication();
 
       if (loading.value === "done" && googleProfile) {
-        store.userGoogleProfile = googleProfile;
+        authStore.userGoogleProfile = googleProfile;
         checkExistingUser();
       }
     }
 
     function checkExistingUser() {
-      loginPlayer({ email: store.googleMail })
-        .then((response) => {
-          store.waveProfile = response;
-          store.userSignedIn = true;
-          router.push({ name: "squad" });
+      loginPlayer({ email: authStore.googleMail })
+        .then(async (response) => {
+          authStore.waveProfile = response;
+          authStore.userSignedIn = true;
+          return router.push({ name: "pick-squad" });
         })
         .catch((error) => {
           if (error.response.data.error_code === 302) {
@@ -81,14 +81,14 @@ export default {
 
     function initRegisterNewUser() {
       const payload = {
-        email: store.googleMail,
-        player_name: store.googleName,
+        email: authStore.googleMail,
+        player_name: authStore.googleName,
       };
       registerPlayer(payload)
         .then((response) => {
-          store.waveProfile = response;
-          store.userSignedIn = true;
-          router.push({ name: "squad" });
+          authStore.waveProfile = response;
+          authStore.userSignedIn = true;
+          router.push({ name: "pick-squad" });
         })
         .catch((error) => {
           console.error(error);
