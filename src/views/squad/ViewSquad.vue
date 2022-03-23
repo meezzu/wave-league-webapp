@@ -41,7 +41,6 @@ const {
 } = useApiCall();
 
 const squadCalled = ref(false);
-const allArtistes = ref({});
 
 squadStore.$onAction(({ after }) => {
   after((result) => {
@@ -101,45 +100,6 @@ const deleteSingleArtisteFromSquad = (artisteInfo) => {
     .then((response) => {
       squadStore.squad.artistes = response.artistes;
       squadStore.currentSquad = response.artistes;
-    })
-    .catch((error) => console.error(error));
-};
-
-const resetSquad = () => {
-  removeAllArtistes();
-};
-
-const removeAllArtistes = () => {
-  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
-  const payload = {
-    squadId: squadStore.squad._id,
-    artistes: { artistes },
-  };
-  removeFromSquad(payload)
-    .then((response) => {
-      squadStore.squad.artistes = response.artistes;
-      squadStore.currentSquad = response.artistes;
-    })
-    .catch((error) => console.error(error));
-};
-
-const autoSelectArtistes = () => {
-  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
-  const payload = {
-    squadId: squadStore.squad._id,
-    artistes: { artistes },
-  };
-  removeFromSquad(payload)
-    .then((response) => {
-      squadStore.squad.artistes = response.artistes;
-      squadStore.currentSquad = response.artistes;
-
-      const shuffled = allArtistes.value.result.sort(function () {
-        return 0.5 - Math.random();
-      });
-      const selected = shuffled.slice(0, 8);
-      squadStore.emptyCurrentSquad();
-      squadStore.addToCurrentSquad(selected);
     })
     .catch((error) => console.error(error));
 };
