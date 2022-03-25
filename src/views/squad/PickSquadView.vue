@@ -193,19 +193,21 @@ const autoSelectArtistes = () => {
     squadId: squadStore.squad._id,
     artistes: { artistes },
   };
-  removeFromSquad(payload)
-    .then((response) => {
-      squadStore.squad.artistes = response.artistes;
-      squadStore.currentSquad = response.artistes;
+  if (squadStore.squad.artistes.length) {
+    removeFromSquad(payload)
+      .then((response) => {
+        squadStore.squad.artistes = response.artistes;
+        squadStore.currentSquad = response.artistes;
+      })
+      .catch((error) => console.error(error));
+  }
 
-      const shuffled = allArtistes.value.result.sort(function () {
-        return 0.5 - Math.random();
-      });
-      const selected = shuffled.slice(0, 8);
-      squadStore.emptyCurrentSquad();
-      squadStore.addToCurrentSquad(selected);
-    })
-    .catch((error) => console.error(error));
+  const shuffled = allArtistes.value.result.sort(function () {
+    return 0.5 - Math.random();
+  });
+  const selected = shuffled.slice(0, 8);
+  squadStore.emptyCurrentSquad();
+  squadStore.addToCurrentSquad(selected);
 };
 
 const openCreateSquadModal = () => {

@@ -5,7 +5,7 @@ import { useSquadStore } from "../stores/squad";
 import { useRouter } from "vue-router";
 
 export default function useApiCall() {
-  const baseUrl = "https://wave-league.herokuapp.com/api/v1/";
+  const baseUrl = import.meta.env.VITE_BASE_URL || "https://api.waveleague.com/api/v1/";
   const authorisedCall = axios.create();
   const loading = ref(false);
 

@@ -11,14 +11,24 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/pick-squad",
-      name: "pick-squad",
-      component: () => import("../views/squad/PickSquadView.vue"),
-    },
-    {
-      path: "/view-squad",
-      name: "view-squad",
-      component: () => import("../views/squad/ViewSquad.vue"),
+      path: "/squad",
+      component: () => import("../views/squad/SquadView.vue"),
+      children: [
+        {
+          path: "",
+          redirect: { name: "pick-squad" },
+        },
+        {
+          path: "pick-squad",
+          name: "pick-squad",
+          component: () => import("../views/squad/PickSquadView.vue"),
+        },
+        {
+          path: "view-squad",
+          name: "view-squad",
+          component: () => import("../views/squad/ViewSquad.vue"),
+        },
+      ],
     },
     {
       path: "/auth",
