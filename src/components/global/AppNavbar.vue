@@ -22,21 +22,26 @@
         class="menu hidden justify-between items-center text-sm w-full lg:flex md:w-auto md:order-1"
       >
         <ul class="menu-list text-sm flex flex-col mt-4 md:flex-row md:space-x-12 md:mt-0">
-          <li class="menu-list-item">
-            <router-link to="/">Home</router-link>
-          </li>
-          <li class="menu-list-item">
-            <router-link to="/">Squad</router-link>
-          </li>
-          <li class="menu-list-item">
-            <router-link to="/">Points</router-link>
-          </li>
-          <li class="menu-list-item">
-            <router-link to="/">Transfers</router-link>
-          </li>
-          <li class="menu-list-item">
-            <router-link to="/">Ranking</router-link>
-          </li>
+          <router-link class="menu-list-item" to="/">
+            <div class="menu-indicator"></div>
+            <li>Home</li>
+          </router-link>
+          <router-link class="menu-list-item" to="/squad">
+            <div class="menu-indicator"></div>
+            <li>Squad</li>
+          </router-link>
+          <router-link class="menu-list-item" to="/points">
+            <div class="menu-indicator"></div>
+            <li>Points</li>
+          </router-link>
+          <router-link class="menu-list-item" to="/transfers">
+            <div class="menu-indicator"></div>
+            <li>Transfers</li>
+          </router-link>
+          <router-link class="menu-list-item" to="/rankings">
+            <div class="menu-indicator"></div>
+            <li>Ranking</li>
+          </router-link>
         </ul>
       </div>
 
@@ -175,7 +180,15 @@ export default {
     &-list-item {
       list-style-type: none;
       text-decoration: none;
-      background: $secondary;
+      color: $white;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(
+        180deg,
+        #000022 0%,
+        #004f86 33.77%,
+        #013e67 100%
+      );
       font-size: 14px;
       line-height: 18px;
       margin-bottom: -80px;
@@ -186,6 +199,36 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      -webkit-transition: all 0.3s linear;
+      -ms-transition: all 0.3s linear;
+      transition: all 0.3s linear;
+
+      .menu-indicator {
+        background-color: $secondary;
+        height: 20%;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        -webkit-transition: all 0.3s linear;
+        -ms-transition: all 0.3s linear;
+        transition: all 0.3s linear;
+      }
+
+      &:hover {
+        color: $black;
+        .menu-indicator {
+          height: 80%;
+        }
+      }
+    }
+    a.router-link-active {
+      color: $black;
+      background: linear-gradient(
+        180deg,
+        $secondary 80%,
+        #000022 10%,
+        #004f86 10%
+      );
     }
   }
 }
