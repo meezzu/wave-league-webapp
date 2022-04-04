@@ -17,6 +17,14 @@ export const useSquadStore = defineStore({
       return value;
     },
     squadComplete: (state) => state.squad.artistes.length === 8,
+    squadPosition: (state) => {
+      let squad = [];
+      state.squad.artistes.map((artiste, artisteIndex) => {
+        let temp = { ...artiste, ...state.squad.roster[artisteIndex] };
+        squad.push(temp);
+      });
+      return squad;
+    },
   },
   actions: {
     addToCurrentSquad(artiste) {
@@ -30,8 +38,6 @@ export const useSquadStore = defineStore({
         this.currentSquad = [...this.currentSquad, artiste];
         return true;
       }
-
-      // check if squad is complete, then save squad
     },
 
     removeFromCurrentSquad(artiste) {

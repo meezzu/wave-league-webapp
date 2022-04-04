@@ -22,6 +22,7 @@
 
         <div class="card__btn mt-12">
           <button
+            v-if="!googleLoading"
             class="flex items-center space-x-4 bg-white text-primary shadow rounded-lg py-3 px-16"
             @click="authenticateUser"
           >
@@ -33,6 +34,15 @@
             />
             <span>Log in with Google</span>
           </button>
+
+          <div v-if="googleLoading">
+            <img
+              src="../../assets/icons/loader-rolling.svg"
+              alt="loading indicator"
+              height="60"
+              width="60"
+            />
+          </div>
         </div>
       </div>
 
@@ -53,13 +63,17 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();
-    const { googleAuthentication, googleProfile, loading } = useGoogleAuth();
+    const { googleAuthentication, googleProfile, googleLoading } =
+      useGoogleAuth();
     const { loginPlayer, registerPlayer } = useApiCall();
 
     async function authenticateUser() {
       await googleAuthentication();
 
-      if (loading.value === "done" && googleProfile) {
+      if (
+        googleLoading.value === false &&
+        Object.keys(googleProfile.value).length
+      ) {
         authStore.userGoogleProfile = googleProfile;
         checkExistingUser();
       }
@@ -67,7 +81,7 @@ export default {
 
     function checkExistingUser() {
       loginPlayer({ email: authStore.googleMail })
-        .then(async (response) => {
+        .then((response) => {
           authStore.waveProfile = response;
           authStore.userSignedIn = true;
           return router.push({ name: "pick-squad" });
@@ -95,7 +109,7 @@ export default {
         });
     }
 
-    return { authenticateUser };
+    return { authenticateUser, googleLoading };
   },
 };
 </script>

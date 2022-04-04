@@ -39,7 +39,7 @@
       </div>
     </article>
 
-    <SquadsTable class="table z-10" :artistes="allArtistes" @selectArtiste="addPlayerToSquad"></SquadsTable>
+    <SquadsTable class="table z-10" @selectArtiste="addPlayerToSquad"></SquadsTable>
 
     <SquadFormation @delete="deleteSingleArtisteFromSquad" />
 
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, watchEffect } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import SquadsTable from "../../components/squads/SquadsTable.vue";
 import SquadFormation from "../../components/squads/SquadFormation.vue";
 import { useAuthStore } from "@/stores/auth.js";
@@ -60,43 +60,35 @@ import { useSquadStore } from "../../stores/squad";
 import useApiCall from "@/composition/useApiCall";
 import CreateSquadModal from "../../components/squads/CreateSquadModal.vue";
 import { useRouter } from "vue-router";
+import { useArtistesStore } from "../../stores/artistes";
+import { useToastStore } from "../../stores/toast";
+
+const squadStore = useSquadStore();
+const authStore = useAuthStore();
+const router = useRouter();
+const artistesStore = useArtistesStore();
+const toastStore = useToastStore();
 
 const showCreateSquadModal = ref(false);
-const authStore = useAuthStore();
-const squadStore = useSquadStore();
 
-const {
-  getPlayerSquad,
-  createSquad,
-  getAllArtistes,
-  addToSquad,
-  removeFromSquad,
-} = useApiCall();
-
-const squadCalled = ref(false);
-const artistesQuery = reactive({
-  page: 1,
-  per_page: 10,
-});
-const allArtistes = ref({});
-const router = useRouter();
+const { getPlayerSquad, createSquad, addToSquad, removeFromSquad } =
+  useApiCall();
 
 squadStore.$onAction(({ after }) => {
   after((result) => {
     if (!result) return;
-    saveArtisteToSquad();
+    if (squadStore.currentSquad.length === 8) saveArtisteToSquad();
   });
 }, true);
 
-watchEffect(async () => {
-  const isComplete = squadStore.squadComplete;
-  if (isComplete) router.push({ name: "view-squad" });
-});
+// watchEffect(async () => {
+//   const isComplete = squadStore.squadComplete;
+//   if (isComplete) router.push({ name: "view-squad" });
+// });
 
 onMounted(async () => {
   await getSquad();
-  getArtistes();
-  if (squadStore.squadComplete) router.push({ name: "view-squad" });
+  // if (squadStore.squadComplete) router.push({ name: "view-squad" });
 });
 
 const getSquad = () => {
@@ -104,12 +96,10 @@ const getSquad = () => {
 
   getPlayerSquad(playerId)
     .then((response) => {
-      squadCalled.value = true;
       if (response === null) return openCreateSquadModal();
       else {
         squadStore.squad = response;
         squadStore.currentSquad = response.artistes;
-        // squadDetails.value = response;
       }
     })
     .catch((error) => {
@@ -127,6 +117,7 @@ const saveArtisteToSquad = () => {
     .then((response) => {
       squadStore.squad.artistes = response.artistes;
       squadStore.currentSquad = response.artistes;
+      toastStore.displayToast("Squad selection complete");
     })
     .catch((error) => console.error(error));
 };
@@ -153,14 +144,7 @@ const createNewSquad = (squadName) => {
   createSquad(payload)
     .then((response) => {
       squadStore.squad = response;
-    })
-    .catch((error) => console.error(error));
-};
-
-const getArtistes = () => {
-  getAllArtistes(artistesQuery)
-    .then((response) => {
-      allArtistes.value = response;
+      showCreateSquadModal.value = false;
     })
     .catch((error) => console.error(error));
 };
@@ -174,6 +158,7 @@ const resetSquad = () => {
 };
 
 const removeAllArtistes = () => {
+  if (squadStore.currentSquad.length === 0) return;
   const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
   const payload = {
     squadId: squadStore.squad._id,
@@ -202,12 +187,41 @@ const autoSelectArtistes = () => {
       .catch((error) => console.error(error));
   }
 
-  const shuffled = allArtistes.value.result.sort(function () {
-    return 0.5 - Math.random();
-  });
+  // const shuffled = artistesStore.artistes.sort(function () {
+  //   return 0.5 - Math.random();
+  // });
+  const shuffled = shuffleArray(artistesStore.artistes);
   const selected = shuffled.slice(0, 8);
   squadStore.emptyCurrentSquad();
   squadStore.addToCurrentSquad(selected);
+};
+
+// const selectRandomArtistes = (artistes) => {
+//   const selected = [];
+
+//   // const shuffled = artistes.sort(function () {
+//   //   return 0.5 - Math.random();
+//   // });
+//   const shuffled = artistes.sort(function () {
+//     return 0.5 - Math.random();
+//   });
+//   const selected = shuffled.slice(0, 8);
+// };
+
+const shuffleArray = (array) => {
+  var tmp,
+    current,
+    top = array.length;
+
+  if (top)
+    while (--top) {
+      current = Math.floor(Math.random() * (top + 1));
+      tmp = array[current];
+      array[current] = array[top];
+      array[top] = tmp;
+    }
+
+  return array;
 };
 
 const openCreateSquadModal = () => {
@@ -220,7 +234,7 @@ const openCreateSquadModal = () => {
   position: relative;
   min-height: 100vh;
   background: linear-gradient(180deg, #000022 0%, #004f86 43.8%, #013e67 100%);
-
+  position: relative;
   .table {
     position: absolute;
     top: 5%;

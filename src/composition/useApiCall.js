@@ -139,6 +139,34 @@ export default function useApiCall() {
       });
   };
 
+  const substituteArtiste = async (data) => {
+    loading.value = true;
+    return await authorisedCall
+      .post(`${baseUrl}squads/${data.squadId}/substitute`, data.artistes)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
+  const transferArtistes = async (data) => {
+    loading.value = true;
+    return await authorisedCall
+      .post(`${baseUrl}squads/${data.squadId}/replace-artistes`, data.artistes)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
   return {
     loginPlayer,
     registerPlayer,
@@ -147,5 +175,7 @@ export default function useApiCall() {
     getAllArtistes,
     addToSquad,
     removeFromSquad,
+    substituteArtiste,
+    transferArtistes,
   };
 }

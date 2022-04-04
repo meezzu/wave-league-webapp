@@ -1,12 +1,13 @@
 import { ref } from "vue";
 
 export default function useGoogleAuth() {
-  const googleProfile = ref(null);
+  const googleProfile = ref({});
   const errorState = ref(null);
-  const loading = ref("");
+  const googleLoading = ref(false);
 
-  const googleAuthentication = async () => {
+  const googleAuthentication = () => {
     return new Promise((resolve, reject) => {
+      googleLoading.value = true;
       const gapi = window.gapi; // the google script in index.html creates this gapi window object
       const client_id = import.meta.env.VITE_GOOGLE_CLIENT_ID; // client id of our app from google console
       const apiKey = import.meta.env.VITE_GOOGLE_API_KEY; // api key of our app from google console
@@ -26,7 +27,7 @@ export default function useGoogleAuth() {
             // if the user is already signed in to a google account in the browser, get the user profile and route user to homepage
             if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
               googleProfile.value = gapi.auth2.getAuthInstance().currentUser.get();
-              loading.value = "done";
+              googleLoading.value = false;
               resolve();
             } else {
               gapi.auth2
@@ -34,10 +35,11 @@ export default function useGoogleAuth() {
                 .signIn()
                 .then(() => {
                   googleProfile.value = gapi.auth2.getAuthInstance().currentUser.get();
-                  loading.value = "done";
+                  googleLoading.value = false;
                   resolve();
                 })
                 .catch((err) => {
+                  googleLoading.value = false;
                   errorState.value = err;
                   console.error(err);
                   reject(err);
@@ -45,6 +47,7 @@ export default function useGoogleAuth() {
             }
           })
           .catch((err) => {
+            googleLoading.value = false;
             errorState.value = err;
             console.error(err);
             reject(err);
@@ -57,6 +60,6 @@ export default function useGoogleAuth() {
     googleAuthentication,
     googleProfile,
     errorState,
-    loading,
+    googleLoading,
   };
 }

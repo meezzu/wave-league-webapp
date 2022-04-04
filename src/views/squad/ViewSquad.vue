@@ -1,46 +1,52 @@
 <template>
   <section class="squads">
-    <article class="header flex p-32 justify-center flex-col items-center w-5/12 m-auto">
+    <article class="header flex pt-24 justify-center flex-col items-center w-5/12 m-auto">
       <div class="card w-full">
-        <div class="card-body p-4 rounded-t bg-white text-center">
-          <h2 class="text-xl font-semibold">Squad Selection</h2>
-          <small class="text-grey3">You can ‘Auto Select’ your squad if you’re short of time</small>
+        <div class="card-body p-3 rounded-t bg-primary text-center">
+          <h2 class="text-xl font-semibold text-white">{{ squadStore.squad.squad_name }}</h2>
         </div>
 
-        <div class="card-footer text-center py-2 px-4 bg-primary">
-          <p class="text-white text-sm font-semibold">
-            MusicWeek1 deadline:
-            <span class="text-secondary">Sun 1 Jan 2022</span>
-          </p>
+        <div class="card-footer w-full text-center py-2 px-4 bg-white">
+          <table class="table-auto border-collapse w-full">
+            <thead>
+              <tr>
+                <th class="text-grey2 font-normal">Total Points</th>
+                <th class="text-grey2 font-normal">Squad</th>
+                <th class="text-grey2 font-normal">Squad Value</th>
+                <th class="text-grey2 font-normal">In The Bank</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-medium text-lg text-black2">-</td>
+                <td class="font-medium text-lg text-black2">8</td>
+                <td class="font-medium text-lg text-black2">{{ squadStore.totalSquadValue }}</td>
+                <td class="font-medium text-lg text-black2">{{ squadStore.squad.in_the_bank }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="py-1 rounded-b px-4 bg-secondary"></div>
       </div>
     </article>
 
-    <CompleteSquadFormation @delete="deleteSingleArtisteFromSquad" />
+    <CompleteSquadFormation @subArtiste="changeArtistes" />
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { onMounted, watchEffect } from "vue";
 import CompleteSquadFormation from "../../components/squads/CompleteSquadFormation.vue";
 import { useAuthStore } from "@/stores/auth.js";
 import { useSquadStore } from "../../stores/squad";
 import useApiCall from "@/composition/useApiCall";
 import router from "../../router";
+import { useToastStore } from "../../stores/toast";
 
-const showCreateSquadModal = ref(false);
 const authStore = useAuthStore();
 const squadStore = useSquadStore();
+const toastStore = useToastStore();
 
-const {
-  getPlayerSquad,
-
-  addToSquad,
-  removeFromSquad,
-} = useApiCall();
-
-const squadCalled = ref(false);
+const { getPlayerSquad, addToSquad, substituteArtiste } = useApiCall();
 
 squadStore.$onAction(({ after }) => {
   after((result) => {
@@ -50,7 +56,7 @@ squadStore.$onAction(({ after }) => {
 }, true);
 
 onMounted(() => {
-  getSquad();
+  if (typeof squadStore.squad.roster === "undefined") getSquad();
 });
 
 watchEffect(async () => {
@@ -63,13 +69,8 @@ const getSquad = () => {
 
   getPlayerSquad(playerId)
     .then((response) => {
-      squadCalled.value = true;
-      if (response === null) return openCreateSquadModal();
-      else {
-        squadStore.squad = response;
-        squadStore.currentSquad = response.artistes;
-        // squadDetails.value = response;
-      }
+      squadStore.squad = response;
+      squadStore.currentSquad = response.artistes;
     })
     .catch((error) => {
       console.error(error);
@@ -90,22 +91,15 @@ const saveArtisteToSquad = () => {
     .catch((error) => console.error(error));
 };
 
-const deleteSingleArtisteFromSquad = (artisteInfo) => {
-  const artistes = [artisteInfo._id];
-  const payload = {
-    squadId: squadStore.squad._id,
-    artistes: { artistes },
-  };
-  removeFromSquad(payload)
-    .then((response) => {
-      squadStore.squad.artistes = response.artistes;
-      squadStore.currentSquad = response.artistes;
+const changeArtistes = async (payload) => {
+  substituteArtiste(payload)
+    .then(() => {
+      toastStore.displayToast("Substitution complete!");
+      getSquad();
     })
-    .catch((error) => console.error(error));
-};
-
-const openCreateSquadModal = () => {
-  showCreateSquadModal.value = true;
+    .catch((error) => {
+      console.error(error);
+    });
 };
 </script>
 

@@ -8,14 +8,14 @@ import router from "./router";
 const pinia = createPinia();
 const app = createApp(App);
 
-if (sessionStorage.getItem("state")) {
-  pinia.state.value = JSON.parse(sessionStorage.getItem("state"));
+if (localStorage.getItem("state")) {
+  pinia.state.value = JSON.parse(localStorage.getItem("state"));
 }
 
 watch(
   pinia.state,
   (state) => {
-    sessionStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem("state", JSON.stringify(state));
   },
   { deep: true }
 );
