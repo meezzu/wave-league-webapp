@@ -81,14 +81,14 @@ squadStore.$onAction(({ after }) => {
   });
 }, true);
 
-// watchEffect(async () => {
-//   const isComplete = squadStore.squadComplete;
-//   if (isComplete) router.push({ name: "view-squad" });
-// });
+watchEffect(async () => {
+  const isComplete = squadStore.squadComplete;
+  if (isComplete) router.push({ name: "view-squad" });
+});
 
 onMounted(async () => {
   await getSquad();
-  // if (squadStore.squadComplete) router.push({ name: "view-squad" });
+  if (squadStore.squadComplete) router.push({ name: "view-squad" });
 });
 
 const getSquad = () => {
