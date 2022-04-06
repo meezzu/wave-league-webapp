@@ -133,19 +133,19 @@ const removeArtisteFromSquad = (artiste) => {
   padding: 1rem;
 
   .artistes {
-    padding: 1rem 0 2rem 0;
+    padding: 1rem 0;
     margin-top: 1rem;
-    margin-bottom: 8rem;
+    margin-bottom: 6rem;
   }
 }
 
 .fans {
   background-image: url("../../assets/imgs/fans-left.png"),
     url("../../assets/imgs/fans-right.png");
-  background-position: left bottom, right bottom;
+  background-position: left center, right center;
   background-size: 51vw, 51vw;
   background-repeat: no-repeat, no-repeat;
-  height: 100%;
+  height: 200px;
   width: 100vw;
 }
 </style>

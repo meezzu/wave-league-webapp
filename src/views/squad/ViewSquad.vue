@@ -1,6 +1,6 @@
 <template>
   <section class="squads">
-    <article class="header flex pt-24 justify-center flex-col items-center w-5/12 m-auto">
+    <article class="header flex pt-20 justify-center flex-col items-center w-5/12 m-auto">
       <div class="card w-full">
         <div class="card-body p-3 rounded-t bg-primary text-center">
           <h2 class="text-xl font-semibold text-white">{{ squadStore.squad.squad_name }}</h2>

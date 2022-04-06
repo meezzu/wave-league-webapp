@@ -62,13 +62,13 @@
               :key="selection.id"
               class="selection w-[80px] place-items-center cursor-pointer"
               :class="{'inactive': Object.keys(selected).length && selected.id !== selection.id}"
-              @click.stop="selectArtiste(selection)"
+              @click="selectArtiste(selection)"
             >
               <div class="flex justify-between items-center">
                 <img
                   class="cursor-pointer"
                   src="../../assets/icons/substitute.svg"
-                  alt="remove artiste"
+                  alt="substitute artiste"
                   width="20"
                   height="20"
                 />
@@ -107,13 +107,13 @@
               :key="selection.id"
               @click="selectArtiste(selection)"
               :class="{'inactive': Object.keys(selected).length && selected.id !== selection.id}"
-              class="selection w-[80px] place-items-center"
+              class="selection w-[80px] place-items-center cursor-pointer"
             >
               <div class="flex justify-between items-center">
                 <img
                   class="cursor-pointer"
                   src="../../assets/icons/substitute.svg"
-                  alt="remove artiste"
+                  alt="substitute artiste"
                   width="20"
                   height="20"
                 />
@@ -243,9 +243,9 @@ const stageArtistes = computed(() => {
   padding: 1rem;
 
   .artistes {
-    padding: 1rem 0 2rem 0;
+    padding: 1rem  0;
     margin-top: 1rem;
-    margin-bottom: 8rem;
+    margin-bottom: 6rem;
 
     .artiste-img {
       &::after {
@@ -267,16 +267,16 @@ const stageArtistes = computed(() => {
 .fans {
   background-image: url("../../assets/imgs/fans-left.png"),
     url("../../assets/imgs/fans-right.png");
-  background-position: left bottom, right bottom;
+  background-position: left center, right center;
   background-size: 51vw, 51vw;
   background-repeat: no-repeat, no-repeat;
-  height: 100%;
+  height: 200px;
   width: 100vw;
 }
 
 .squad-substitute {
-  margin-top: 4rem;
-  margin-bottom: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 0rem;
 
   .subs {
     position: relative;

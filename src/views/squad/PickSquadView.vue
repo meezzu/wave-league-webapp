@@ -1,6 +1,8 @@
 <template>
   <section class="squads">
-    <article class="header flex pt-20 pb-12 justify-center flex-col items-center w-full md:w-5/12 m-auto">
+    <article
+      class="header flex pt-20 pb-12 justify-center flex-col items-center w-full md:w-5/12 m-auto"
+    >
       <div class="card w-full">
         <div class="card-body p-4 rounded-t bg-white text-center">
           <h2 class="text-xl font-semibold">Squad Selection</h2>
@@ -16,10 +18,10 @@
         <div class="py-1 rounded-b px-4 bg-secondary"></div>
       </div>
 
-      <div class="w-full flex justify-around items-center mt-8">
+      <div class="w-full flex justify-around items-start mt-8">
         <div class="flex flex-col items-center">
           <button
-            @click="autoSelectArtistes"
+            @click.prevent="autoSelectArtistes"
             type="button"
             class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center"
           >Auto Select</button>
@@ -29,9 +31,19 @@
 
         <div class="flex flex-col items-center">
           <button
-            @click="resetSquad"
             type="button"
-            class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center"
+            class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center cursor-pointer disabled:bg-grey3 disabled:cursor-not-allowed"
+            :disabled="squadStore.currentSquadLength !== 8"
+            @click.prevent="saveSquad"
+          >Save Squad</button>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <button
+            @click.prevent="resetSquad"
+            type="button"
+            class="text-white bg-secondary font-medium rounded-lg text-sm px-8 py-2 text-center cursor-pointer disabled:bg-grey3 disabled:cursor-not-allowed"
+            :disabled="squadStore.squadComplete || !squadStore.currentSquad.length"
           >Reset</button>
           <p class="text-grey4 mt-3">Money Remaining</p>
           <p class="text-secondary font-semibold">₦{{squadStore.totalSquadValue}}m</p>
@@ -41,12 +53,12 @@
 
     <SquadsTable class="table z-10" @selectArtiste="addPlayerToSquad"></SquadsTable>
 
-    <SquadFormation @delete="deleteSingleArtisteFromSquad" />
+    <SquadFormation @delete="deleteArtisteFromSquad" />
 
     <CreateSquadModal
       v-show="showCreateSquadModal"
       @close="showCreateSquadModal = false"
-      @submitted="createNewSquad"
+      @submitted="createNewSquadName"
     ></CreateSquadModal>
   </section>
 </template>
@@ -71,15 +83,7 @@ const toastStore = useToastStore();
 
 const showCreateSquadModal = ref(false);
 
-const { getPlayerSquad, createSquad, addToSquad, removeFromSquad } =
-  useApiCall();
-
-squadStore.$onAction(({ after }) => {
-  after((result) => {
-    if (!result) return;
-    if (squadStore.currentSquad.length === 8) saveArtisteToSquad();
-  });
-}, true);
+const { getPlayerSquad, createSquad, addToSquad } = useApiCall();
 
 watchEffect(async () => {
   const isComplete = squadStore.squadComplete;
@@ -107,36 +111,27 @@ const getSquad = () => {
     });
 };
 
-const saveArtisteToSquad = () => {
-  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
+const saveSquad = () => {
+  const currentSquad = squadStore.currentSquad;
   const payload = {
     squadId: squadStore.squad._id,
-    artistes: { artistes },
+    artistes: { currentSquad },
   };
   addToSquad(payload)
     .then((response) => {
       squadStore.squad.artistes = response.artistes;
       squadStore.currentSquad = response.artistes;
-      toastStore.displayToast("Squad selection complete");
+      toastStore.displayToast("Squad saved successfully!");
     })
     .catch((error) => console.error(error));
 };
 
-const deleteSingleArtisteFromSquad = (artisteInfo) => {
-  const artistes = [artisteInfo._id];
-  const payload = {
-    squadId: squadStore.squad._id,
-    artistes: { artistes },
-  };
-  removeFromSquad(payload)
-    .then((response) => {
-      squadStore.squad.artistes = response.artistes;
-      squadStore.currentSquad = response.artistes;
-    })
-    .catch((error) => console.error(error));
+const deleteArtisteFromSquad = (artiste) => {
+  squadStore.removeFromCurrentSquad(artiste);
 };
 
-const createNewSquad = (squadName) => {
+// creates new squad name
+const createNewSquadName = (squadName) => {
   const payload = {
     player: authStore.waveProfile.player.id,
     squad_name: squadName,
@@ -145,48 +140,22 @@ const createNewSquad = (squadName) => {
     .then((response) => {
       squadStore.squad = response;
       showCreateSquadModal.value = false;
+      toastStore.displayToast("Squad selection complete!");
     })
     .catch((error) => console.error(error));
 };
 
+// update current selection in store
 const addPlayerToSquad = (artiste) => {
   squadStore.addToCurrentSquad(artiste);
 };
 
 const resetSquad = () => {
-  removeAllArtistes();
-};
-
-const removeAllArtistes = () => {
-  if (squadStore.currentSquad.length === 0) return;
-  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
-  const payload = {
-    squadId: squadStore.squad._id,
-    artistes: { artistes },
-  };
-  removeFromSquad(payload)
-    .then((response) => {
-      squadStore.squad.artistes = response.artistes;
-      squadStore.currentSquad = response.artistes;
-    })
-    .catch((error) => console.error(error));
+  squadStore.emptyCurrentSquad();
 };
 
 const autoSelectArtistes = () => {
-  const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
-  const payload = {
-    squadId: squadStore.squad._id,
-    artistes: { artistes },
-  };
-  if (squadStore.squad.artistes.length) {
-    removeFromSquad(payload)
-      .then((response) => {
-        squadStore.squad.artistes = response.artistes;
-        squadStore.currentSquad = response.artistes;
-      })
-      .catch((error) => console.error(error));
-  }
-
+  resetSquad();
   // const shuffled = artistesStore.artistes.sort(function () {
   //   return 0.5 - Math.random();
   // });
@@ -195,18 +164,6 @@ const autoSelectArtistes = () => {
   squadStore.emptyCurrentSquad();
   squadStore.addToCurrentSquad(selected);
 };
-
-// const selectRandomArtistes = (artistes) => {
-//   const selected = [];
-
-//   // const shuffled = artistes.sort(function () {
-//   //   return 0.5 - Math.random();
-//   // });
-//   const shuffled = artistes.sort(function () {
-//     return 0.5 - Math.random();
-//   });
-//   const selected = shuffled.slice(0, 8);
-// };
 
 const shuffleArray = (array) => {
   var tmp,
