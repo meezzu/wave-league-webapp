@@ -7,6 +7,4 @@ export const useTransfersStore = defineStore({
     currentTransfersOut: [],
     currentTransfersIn: [],
   }),
-  getters: {},
-  actions: {},
 });

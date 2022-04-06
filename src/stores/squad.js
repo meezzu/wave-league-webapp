@@ -4,12 +4,12 @@ import { useToastStore } from "./toast";
 export const useSquadStore = defineStore({
   id: "squad",
   state: () => ({
-    squad: null,
+    squad: {},
     currentSquad: [],
   }),
   getters: {
-    squadId: (state) => state.squad.id,
-    currentSquadLength: (state) => state.currentSquad.length,
+    squadId: (state) => state.squad?.id,
+    currentSquadLength: (state) => state.currentSquad?.length,
     totalSquadValue: (state) => {
       const value = state.currentSquad.reduce((a, b) => {
         return a + b.price;
@@ -17,7 +17,7 @@ export const useSquadStore = defineStore({
       if (!value) return 0;
       return value;
     },
-    squadComplete: (state) => state.squad.artistes.length === 8,
+    squadComplete: (state) => state.squad?.artistes.length === 8,
     squadPosition: (state) => {
       let squad = [];
       state.squad.artistes.map((artiste, artisteIndex) => {
