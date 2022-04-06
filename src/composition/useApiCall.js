@@ -1,7 +1,6 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useAuthStore } from "../stores/auth";
-import { useSquadStore } from "../stores/squad";
 import { useRouter } from "vue-router";
 
 export default function useApiCall() {
@@ -26,6 +25,7 @@ export default function useApiCall() {
         const authStore = useAuthStore();
         const router = useRouter();
 
+        localStorage.removeItem("state");
         authStore.userSignedIn = false;
         return router.push({ name: "auth-sign-in" });
       }

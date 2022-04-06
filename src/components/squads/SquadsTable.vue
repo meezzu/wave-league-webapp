@@ -134,7 +134,7 @@ watch(
 );
 
 const filteredArtistes = computed(() => {
-  if (artistesStore.artistes.length) return artistesStore.artistes;
+  if (artistesStore.artistes?.length) return artistesStore.artistes;
   return {};
 });
 

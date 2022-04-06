@@ -90,8 +90,8 @@ watchEffect(async () => {
   if (isComplete) router.push({ name: "view-squad" });
 });
 
-onMounted(async () => {
-  await getSquad();
+onMounted(() => {
+  getSquad();
   if (squadStore.squadComplete) router.push({ name: "view-squad" });
 });
 

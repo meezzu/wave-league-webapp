@@ -60,15 +60,14 @@ const transfersStore = useTransfersStore();
 
 const { getPlayerSquad, getAllArtistes, transferArtistes } = useApiCall();
 
-const squadCalled = ref(false);
 const artistesQuery = reactive({
   page: 1,
   per_page: 10,
 });
 const allArtistes = ref({});
 
-onMounted(async () => {
-  await getSquad();
+onMounted(() => {
+  getSquad();
   getArtistes();
 });
 
@@ -81,13 +80,8 @@ const getSquad = () => {
 
   getPlayerSquad(playerId)
     .then((response) => {
-      squadCalled.value = true;
-      if (response === null) return openCreateSquadModal();
-      else {
-        squadStore.squad = response;
-        squadStore.currentSquad = response.artistes;
-        // squadDetails.value = response;
-      }
+      squadStore.squad = response;
+      squadStore.currentSquad = response.artistes;
     })
     .catch((error) => {
       console.error(error);
@@ -120,7 +114,6 @@ const getArtistes = () => {
     })
     .catch((error) => console.error(error));
 };
-
 </script>
 
 <style lang="scss" scoped>

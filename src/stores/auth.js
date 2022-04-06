@@ -9,14 +9,14 @@ export const useAuthStore = defineStore({
   }),
   getters: {
     accessToken: (state) => {
-      return state.waveProfile.token;
+      return state.waveProfile?.token;
     },
-    playerDetails: (state) => state.waveProfile.player,
+    playerDetails: (state) => state.waveProfile?.player,
     googleMail: (state) => {
-      return state.userGoogleProfile.Du.tv;
+      return state.userGoogleProfile?.Du.tv;
     },
     googleName: (state) => {
-      return `${state.userGoogleProfile.Du.VX} ${state.userGoogleProfile.Du.iW}`;
+      return `${state.userGoogleProfile?.Du.VX} ${state.userGoogleProfile.Du.iW}`;
     },
   },
   actions: {
