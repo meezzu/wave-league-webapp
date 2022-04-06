@@ -105,13 +105,7 @@ export default function useApiCall() {
 
   const addToSquad = async (data) => {
     loading.value = true;
-    const squadStore = useSquadStore();
-    const addedArtistes = data.artistes.artistes;
-    const existingArtistes = squadStore.squad.artistes.map((artistes) => artistes._id);
-
-    const artistes = addedArtistes.filter(function (n) {
-      return existingArtistes.indexOf(n) == -1;
-    });
+    const artistes = data.artistes.currentSquad.map((artiste) => artiste._id);
 
     return await authorisedCall
       .post(`${baseUrl}squads/${data.squadId}/add-artistes`, { artistes })

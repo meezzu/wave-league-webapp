@@ -43,7 +43,6 @@
     </section>
 
     <div class="fans absolute bottom-0 left-0 right-0"></div>
-
   </div>
 </template>
 
@@ -110,9 +109,9 @@ const currentSelection = computed(() => {
   );
   padding: 1rem;
   .artistes {
-    padding: 1rem 0 2rem 0;
-    margin-top: 1rem;
-    margin-bottom: 8rem;
+    padding: 1rem 0;
+    margin-top: 0rem;
+    margin-bottom: 6rem;
   }
 
   .inactive {
@@ -123,10 +122,10 @@ const currentSelection = computed(() => {
 .fans {
   background-image: url("../../assets/imgs/fans-left.png"),
     url("../../assets/imgs/fans-right.png");
-  background-position: left bottom, right bottom;
+  background-position: left center, right center;
   background-size: 51vw, 51vw;
   background-repeat: no-repeat, no-repeat;
-  height: 100%;
+  height: 180px;
   width: 100vw;
 }
 </style>

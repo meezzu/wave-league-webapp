@@ -31,7 +31,8 @@
             class="w-full px-4 py-2 outline-none rounded border"
           >
             <option value="record_label">Record Label</option>
-            <option value="price">Price</option>
+            <option value="-price">Price (High to Low)</option>
+            <option value="price">Price (Low to High)</option>
             <option value="artiste_name">Artiste Name</option>
           </select>
         </div>
@@ -43,6 +44,8 @@
             class="w-full px-4 py-2 outline-none rounded border"
           >
             <option value disabled selected>Price (Range)</option>
+            <option value="14">Up to 25</option>
+            <option value="14">Up to 15</option>
             <option value="13">Up to 13</option>
             <option value="12">Up to 12</option>
             <option value="11">Up to 11</option>
@@ -53,7 +56,10 @@
       </form>
     </div>
 
-    <div class="bg-primary max-h-[350px] overflow-y-scroll rounded-b">
+    <div
+      v-if="filteredArtistes.length"
+      class="bg-primary max-h-[350px] overflow-y-scroll rounded-b"
+    >
       <table class="relative w-full bg-primary block text-white table-auto border-collapse">
         <thead class="sticky top-0 z-10">
           <tr class="text-center">
@@ -80,12 +86,16 @@
         </tbody>
       </table>
 
-      <div class="w-full bg-primary py-8 text-center">
+      <div v-if="filteredArtistes.length" class="w-full bg-primary py-8 text-center">
         <button
           class="text-white bg-secondary rounded-lg text-sm px-6 py-2 text-center"
           @click="fetchMoreArtistes"
         >Load More</button>
       </div>
+    </div>
+
+    <div v-else class="h-[200px] bg-primary flex justify-center items-center">
+      <img src="../../assets/icons/loader-rolling.svg" alt="loading" height="40" width="40" />
     </div>
   </section>
 </template>
@@ -124,7 +134,8 @@ watch(
 );
 
 const filteredArtistes = computed(() => {
-  return artistesStore.allArtistes.result;
+  if (artistesStore.artistes.length) return artistesStore.artistes;
+  return {};
 });
 
 const getArtistes = () => {

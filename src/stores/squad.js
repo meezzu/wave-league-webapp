@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useToastStore } from "./toast";
 
 export const useSquadStore = defineStore({
   id: "squad",
@@ -28,9 +29,14 @@ export const useSquadStore = defineStore({
   },
   actions: {
     addToCurrentSquad(artiste) {
+      const toastStore = useToastStore();
       if (this.currentSquad.length >= 8) return false;
       const duplicate = this.currentSquad.filter((current) => current._id === artiste._id);
       if (duplicate.length) return false;
+      if (this.totalSquadValue + artiste.price > 100) {
+        toastStore.displayToast("Squad value cannot be more than 100m");
+        return false;
+      }
       if (Array.isArray(artiste)) {
         this.currentSquad = [...this.currentSquad, ...artiste];
         return true;

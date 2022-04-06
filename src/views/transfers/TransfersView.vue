@@ -1,6 +1,6 @@
 <template>
   <section class="transfers">
-    <article class="header flex pt-24 justify-center flex-col items-center w-5/12 m-auto">
+    <article class="header flex pt-20 justify-center flex-col items-center w-full md:w-5/12 m-auto">
       <div class="card rounded w-full">
         <div class="card-body rounded p-4 rounded-t text-center">
           <table class="border-collapse w-full">
@@ -54,7 +54,6 @@ import TransfersFormation from "@/components/transfers/TransfersFormation.vue";
 // import { useRouter } from "vue-router";
 import { useTransfersStore } from "../../stores/transfers";
 
-const showCreateSquadModal = ref(false);
 const authStore = useAuthStore();
 const squadStore = useSquadStore();
 const transfersStore = useTransfersStore();
@@ -96,7 +95,6 @@ const getSquad = () => {
 };
 
 const swapArtistes = (artisteIn) => {
-  console.log(artisteIn);
   if (!Object.keys(transfersStore.selected).length) return;
   const payload = {
     squadId: squadStore.squad.id,
@@ -114,19 +112,6 @@ const swapArtistes = (artisteIn) => {
       console.error(error);
     });
 };
-// const saveArtisteToSquad = () => {
-//   const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
-//   const payload = {
-//     squadId: squadStore.squad._id,
-//     artistes: { artistes },
-//   };
-//   addToSquad(payload)
-//     .then((response) => {
-//       squadStore.squad.artistes = response.artistes;
-//       squadStore.currentSquad = response.artistes;
-//     })
-//     .catch((error) => console.error(error));
-// };
 
 const getArtistes = () => {
   getAllArtistes(artistesQuery)
@@ -136,54 +121,6 @@ const getArtistes = () => {
     .catch((error) => console.error(error));
 };
 
-// const addPlayerToSquad = (artiste) => {
-//   squadStore.addToCurrentSquad(artiste);
-// };
-
-// const resetSquad = () => {
-//   removeAllArtistes();
-// };
-
-// const removeAllArtistes = () => {
-//   const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
-//   const payload = {
-//     squadId: squadStore.squad._id,
-//     artistes: { artistes },
-//   };
-//   removeFromSquad(payload)
-//     .then((response) => {
-//       squadStore.squad.artistes = response.artistes;
-//       squadStore.currentSquad = response.artistes;
-//     })
-//     .catch((error) => console.error(error));
-// };
-
-// const autoSelectArtistes = () => {
-//   const artistes = squadStore.currentSquad.map((artiste) => artiste._id);
-//   const payload = {
-//     squadId: squadStore.squad._id,
-//     artistes: { artistes },
-//   };
-//   if (squadStore.squad.artistes.length) {
-//     removeFromSquad(payload)
-//       .then((response) => {
-//         squadStore.squad.artistes = response.artistes;
-//         squadStore.currentSquad = response.artistes;
-//       })
-//       .catch((error) => console.error(error));
-//   }
-
-//   const shuffled = allArtistes.value.result.sort(function () {
-//     return 0.5 - Math.random();
-//   });
-//   const selected = shuffled.slice(0, 8);
-//   squadStore.emptyCurrentSquad();
-//   squadStore.addToCurrentSquad(selected);
-// };
-
-const openCreateSquadModal = () => {
-  showCreateSquadModal.value = true;
-};
 </script>
 
 <style lang="scss" scoped>
