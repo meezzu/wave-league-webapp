@@ -5,16 +5,14 @@ import HomeView from "../views/HomeView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // home view
     {
       path: "",
       name: "home",
       component: HomeView,
     },
-    {
-      path: "/squad",
-      name: "squad",
-      component: () => import("../views/squad/SquadView.vue"),
-    },
+
+    // authentication views
     {
       path: "/auth",
       component: () => import("@/views/authentication/AuthenticationView.vue"),
@@ -34,6 +32,54 @@ const router = createRouter({
           component: () => import("@/views/authentication/SignUp.vue"),
         },
       ],
+    },
+
+    // squad views
+    {
+      path: "/squad",
+      component: () => import("../views/squad/SquadView.vue"),
+      children: [
+        {
+          path: "",
+          redirect: { name: "pick-squad" },
+        },
+        {
+          path: "pick-squad",
+          name: "pick-squad",
+          component: () => import("../views/squad/PickSquadView.vue"),
+        },
+        {
+          path: "view-squad",
+          name: "view-squad",
+          component: () => import("../views/squad/ViewSquad.vue"),
+        },
+      ],
+    },
+
+    // user account views
+    {
+      path: "/account",
+      name: "account",
+      component: () => import("@/views/account/AccountView.vue"),
+      children: [
+        {
+          path: "/update-profile",
+          name: "account-update-profile",
+          component: () => import("@/views/account/UpdateProfile.vue"),
+        },
+        {
+          path: "/send-feedback",
+          name: "account-send-feedback",
+          component: () => import("@/views/account/SendFeedback.vue"),
+        },
+      ],
+    },
+
+    // transfers views
+    {
+      path: "/transfers",
+      name: "transfers",
+      component: () => import("../views/transfers/TransfersView.vue"),
     },
   ],
 });
