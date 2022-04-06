@@ -106,7 +106,7 @@ const changeArtistes = async (payload) => {
 <style lang="scss" scoped>
 .squads {
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - (#{$nav-height} + #{$footer-height}));
   background: linear-gradient(180deg, #000022 0%, #004f86 43.8%, #013e67 100%);
 
   .table {

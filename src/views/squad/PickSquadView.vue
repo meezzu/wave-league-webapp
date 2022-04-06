@@ -1,6 +1,6 @@
 <template>
   <section class="squads">
-    <article class="header flex pt-24 justify-center flex-col items-center w-5/12 m-auto">
+    <article class="header flex pt-20 pb-12 justify-center flex-col items-center w-full md:w-5/12 m-auto">
       <div class="card w-full">
         <div class="card-body p-4 rounded-t bg-white text-center">
           <h2 class="text-xl font-semibold">Squad Selection</h2>
@@ -232,7 +232,7 @@ const openCreateSquadModal = () => {
 <style lang="scss" scoped>
 .squads {
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - (#{$nav-height} + #{$footer-height}));
   background: linear-gradient(180deg, #000022 0%, #004f86 43.8%, #013e67 100%);
   position: relative;
   .table {
