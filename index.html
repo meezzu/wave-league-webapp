@@ -7,10 +7,16 @@
     <title>Wave League App</title>
 
     <!-- google -->
-    <script async defer src="https://apis.google.com/js/api.js"></script>
+    <!-- <script async defer src="https://apis.google.com/js/api.js"></script> -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      function onLogin(response) {
+        console.log("Response " + response.data);
+      }
+    </script>
   </body>
 </html>

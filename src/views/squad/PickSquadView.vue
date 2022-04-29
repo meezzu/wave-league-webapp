@@ -90,8 +90,8 @@ watchEffect(async () => {
   if (isComplete) router.push({ name: "view-squad" });
 });
 
-onMounted(() => {
-  getSquad();
+onMounted(async () => {
+  await getSquad();
   if (squadStore.squadComplete) router.push({ name: "view-squad" });
 });
 
@@ -140,7 +140,7 @@ const createNewSquadName = (squadName) => {
     .then((response) => {
       squadStore.squad = response;
       showCreateSquadModal.value = false;
-      toastStore.displayToast("Squad selection complete!");
+      toastStore.displayToast("Squad name updated!");
     })
     .catch((error) => console.error(error));
 };

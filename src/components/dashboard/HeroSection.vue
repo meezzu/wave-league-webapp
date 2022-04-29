@@ -1,20 +1,15 @@
 <template>
   <section>
-    <CountdownTimer />
+    <DeadlineCard />
+    <!-- <CountdownTimer /> -->
     <DetailsCard></DetailsCard>
   </section>
 </template>
 
-<script>
-import CountdownTimer from "./timer/CountdownTimer.vue";
+<script setup>
+// import CountdownTimer from "./timer/CountdownTimer.vue";
 import DetailsCard from "./DetailsCard.vue";
-export default {
-  components: {
-    CountdownTimer,
-    DetailsCard,
-  },
-  setup() {},
-};
+import DeadlineCard from "./DeadlineCard.vue";
 </script>
 
 <style lang="scss" scoped>

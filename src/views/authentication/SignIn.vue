@@ -20,7 +20,7 @@
           <a href="#" class="text-secondary">Wave League</a>
         </div>
 
-        <div class="card__btn mt-12">
+        <!-- <div class="card__btn mt-12">
           <button
             v-if="!googleLoading"
             class="flex items-center space-x-4 bg-white text-primary shadow rounded-lg py-3 px-16"
@@ -43,7 +43,9 @@
               width="60"
             />
           </div>
-        </div>
+        </div>-->
+
+        <div class="mt-12" id="google__btn"></div>
       </div>
 
       <div class="card__footer mt-16">
@@ -56,31 +58,65 @@
 <script>
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
-import useGoogleAuth from "@/composition/useGoogleAuth.js";
 import useApiCall from "@/composition/useApiCall";
+import { onMounted, onBeforeMount } from "vue";
 
 export default {
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();
-    const { googleAuthentication, googleProfile, googleLoading } =
-      useGoogleAuth();
     const { loginPlayer, registerPlayer } = useApiCall();
 
-    async function authenticateUser() {
-      await googleAuthentication();
+    onBeforeMount(() => {
+      let googleIdentityScript = document.createElement("script");
+      googleIdentityScript.setAttribute(
+        "src",
+        "https://accounts.google.com/gsi/client"
+      );
+      googleIdentityScript.setAttribute("async", "");
+      googleIdentityScript.setAttribute("defer", "");
+      document.head.appendChild(googleIdentityScript);
+    });
 
-      if (
-        googleLoading.value === false &&
-        Object.keys(googleProfile.value).length
-      ) {
-        authStore.userGoogleProfile = googleProfile;
-        checkExistingUser();
-      }
+    onMounted(() => {
+      window.addEventListener("load", () => {
+        const google = window.google;
+        google.accounts.id.initialize({
+          client_id:
+            "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
+          callback: handleCredentialResponse,
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("google__btn"),
+          { theme: "outline", size: "large" } // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+      });
+    });
+
+    function parseJwt(token) {
+      var base64Url = token.split(".")[1];
+      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      var jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+      return JSON.parse(jsonPayload);
+    }
+
+    function handleCredentialResponse(response) {
+      const googleUser = parseJwt(response.credential);
+      authStore.googleUser = googleUser;
+
+      checkExistingUser();
     }
 
     function checkExistingUser() {
-      loginPlayer({ email: authStore.googleMail })
+      loginPlayer({ email: authStore.googleUser.email })
         .then((response) => {
           authStore.waveProfile = response;
           authStore.userSignedIn = true;
@@ -95,8 +131,8 @@ export default {
 
     function initRegisterNewUser() {
       const payload = {
-        email: authStore.googleMail,
-        player_name: authStore.googleName,
+        email: authStore.googleUser.email,
+        player_name: `${authStore.googleUser?.name}`,
       };
       registerPlayer(payload)
         .then((response) => {
@@ -109,7 +145,7 @@ export default {
         });
     }
 
-    return { authenticateUser, googleLoading };
+    return {};
   },
 };
 </script>

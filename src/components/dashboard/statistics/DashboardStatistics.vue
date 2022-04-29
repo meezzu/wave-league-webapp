@@ -1,11 +1,13 @@
 <template>
   <section class="my-32">
-    <div class="grid grid-cols-3 grid-row-2 gap-8">
-      <TopOfTheWeek class="col-span-2 row-span-1" />
-      <ThisWeekChart class="row-span-2" />
-      <MusicWeekDiff class="col-span-2 row-span-1" />
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-row-3 md:grid-row-2 gap-y-8 sm:gap-8"
+    >
+      <TopOfTheWeek class="row-span-1 col-span-1 md:col-span-2" />
+      <ThisWeekChart class="row-span-3 col-span-1 md:col-span-2 lg:col-span-1" />
+      <MusicWeekDiff class="col-span-1 md:col-span-2 lg:col-span-2" />
     </div>
-    <div class="grid grid-cols-2 gap-16 mt-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mt-16">
       <TopTransfersIn />
       <TopTransferOut />
     </div>
