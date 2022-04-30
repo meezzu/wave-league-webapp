@@ -94,8 +94,8 @@ nextTick(() => {
 });
 
 function initGoogleIdentity() {
-  window.addEventListener("load", () => {
-    const google = window.google;
+  window.addEventListener("load", async () => {
+    const google = await window.google;
     google.accounts.id.initialize({
       client_id:
         "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
