@@ -8,6 +8,7 @@ export const useSquadStore = defineStore({
     currentSquad: [],
   }),
   getters: {
+    squadName: (state) => state.squad.squad_name,
     squadId: (state) => state.squad?.id,
     currentSquadLength: (state) => state.currentSquad?.length,
     totalSquadValue: (state) => {
@@ -25,6 +26,18 @@ export const useSquadStore = defineStore({
         squad.push(temp);
       });
       return squad;
+    },
+
+    benchArtistes() {
+      return this.squadPosition.filter((artiste) => {
+        return artiste.location === "bench";
+      });
+    },
+
+    stageArtistes() {
+      return this.squadPosition.filter((artiste) => {
+        return artiste.location === "stage";
+      });
     },
   },
   actions: {

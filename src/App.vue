@@ -23,5 +23,6 @@ const isAuthRoute = computed(() => {
 
 #app {
   font-weight: normal;
+  background-color: #f5f5f5;
 }
 </style>

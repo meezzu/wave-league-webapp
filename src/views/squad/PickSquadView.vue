@@ -87,12 +87,12 @@ const { getPlayerSquad, createSquad, addToSquad } = useApiCall();
 
 watchEffect(async () => {
   const isComplete = squadStore.squadComplete;
-  if (isComplete) router.push({ name: "view-squad" });
+  if (isComplete) router.push({ name: "manage-squad" });
 });
 
 onMounted(async () => {
   await getSquad();
-  if (squadStore.squadComplete) router.push({ name: "view-squad" });
+  if (squadStore.squadComplete) router.push({ name: "manage-squad" });
 });
 
 const getSquad = () => {

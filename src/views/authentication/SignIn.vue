@@ -45,7 +45,18 @@
           </div>
         </div>-->
 
-        <div class="mt-12" id="google__btn"></div>
+        <div class="mt-12 flex items-center justify-center">
+          <div v-if="!loading" id="google__btn"></div>
+
+          <div v-if="loading">
+            <img
+              src="../../assets/icons/loader-rolling.svg"
+              alt="loading indicator"
+              height="60"
+              width="60"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="card__footer mt-16">
@@ -55,99 +66,101 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
 import useApiCall from "@/composition/useApiCall";
-import { onMounted, onBeforeMount } from "vue";
+import { onMounted, onBeforeMount, nextTick } from "vue";
 
-export default {
-  setup() {
-    const authStore = useAuthStore();
-    const router = useRouter();
-    const { loginPlayer, registerPlayer } = useApiCall();
+const authStore = useAuthStore();
+const router = useRouter();
+const { loginPlayer, registerPlayer, loading } = useApiCall();
 
-    onBeforeMount(() => {
-      let googleIdentityScript = document.createElement("script");
-      googleIdentityScript.setAttribute(
-        "src",
-        "https://accounts.google.com/gsi/client"
-      );
-      googleIdentityScript.setAttribute("async", "");
-      googleIdentityScript.setAttribute("defer", "");
-      document.head.appendChild(googleIdentityScript);
+onBeforeMount(() => {
+  let googleIdentityScript = document.createElement("script");
+  googleIdentityScript.setAttribute(
+    "src",
+    "https://accounts.google.com/gsi/client"
+  );
+  googleIdentityScript.setAttribute("async", "");
+  googleIdentityScript.setAttribute("defer", "");
+  document.head.appendChild(googleIdentityScript);
+});
+
+onMounted(() => {
+  initGoogleIdentity();
+});
+
+nextTick(() => {
+  initGoogleIdentity();
+});
+
+function initGoogleIdentity() {
+  window.addEventListener("load", () => {
+    const google = window.google;
+    google.accounts.id.initialize({
+      client_id:
+        "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
+      callback: handleCredentialResponse,
     });
+    google.accounts.id.renderButton(
+      document.getElementById("google__btn"),
+      { theme: "outline", size: "large" } // customization attributes
+    );
+    google.accounts.id.prompt(); // also display the One Tap dialog
+  });
+}
 
-    onMounted(() => {
-      window.addEventListener("load", () => {
-        const google = window.google;
-        google.accounts.id.initialize({
-          client_id:
-            "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
-          callback: handleCredentialResponse,
-        });
-        google.accounts.id.renderButton(
-          document.getElementById("google__btn"),
-          { theme: "outline", size: "large" } // customization attributes
-        );
-        google.accounts.id.prompt(); // also display the One Tap dialog
-      });
+function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+}
+
+function handleCredentialResponse(response) {
+  const googleUser = parseJwt(response.credential);
+  authStore.googleUser = googleUser;
+
+  checkExistingUser();
+}
+
+function checkExistingUser() {
+  loginPlayer({ email: authStore.googleUser.email })
+    .then((response) => {
+      authStore.waveProfile = response;
+      authStore.userSignedIn = true;
+      return router.push({ name: "pick-squad" });
+    })
+    .catch((error) => {
+      if (error.response.data.error_code === 302) {
+        return initRegisterNewUser();
+      } else console.error(error);
     });
+}
 
-    function parseJwt(token) {
-      var base64Url = token.split(".")[1];
-      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      var jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split("")
-          .map(function (c) {
-            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-          })
-          .join("")
-      );
-      return JSON.parse(jsonPayload);
-    }
-
-    function handleCredentialResponse(response) {
-      const googleUser = parseJwt(response.credential);
-      authStore.googleUser = googleUser;
-
-      checkExistingUser();
-    }
-
-    function checkExistingUser() {
-      loginPlayer({ email: authStore.googleUser.email })
-        .then((response) => {
-          authStore.waveProfile = response;
-          authStore.userSignedIn = true;
-          return router.push({ name: "pick-squad" });
-        })
-        .catch((error) => {
-          if (error.response.data.error_code === 302) {
-            return initRegisterNewUser();
-          } else console.error(error);
-        });
-    }
-
-    function initRegisterNewUser() {
-      const payload = {
-        email: authStore.googleUser.email,
-        player_name: `${authStore.googleUser?.name}`,
-      };
-      registerPlayer(payload)
-        .then((response) => {
-          authStore.waveProfile = response;
-          authStore.userSignedIn = true;
-          router.push({ name: "pick-squad" });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-
-    return {};
-  },
-};
+function initRegisterNewUser() {
+  const payload = {
+    email: authStore.googleUser.email,
+    player_name: `${authStore.googleUser?.name}`,
+  };
+  registerPlayer(payload)
+    .then((response) => {
+      authStore.waveProfile = response;
+      authStore.userSignedIn = true;
+      router.push({ name: "pick-squad" });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 </script>
 
 <style lang="scss" scoped>

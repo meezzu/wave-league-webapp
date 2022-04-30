@@ -53,6 +53,11 @@ const router = createRouter({
           name: "view-squad",
           component: () => import("../views/squad/ViewSquad.vue"),
         },
+        {
+          path: "manage-squad",
+          name: "manage-squad",
+          component: () => import("../views/squad/manage-squad/ManageSquad.vue"),
+        },
       ],
     },
 

@@ -1,0 +1,55 @@
+<template>
+  <div class="artiste w-[80px] cursor-pointer">
+    <div class="flex items-center flex-col justify-center">
+      <div class="relative flex items-start">
+        <div>
+          <img
+            class="rounded-full h-16 w-16 border-2 border-grey4 drop-shadow-sm"
+            :src="artiste.avatar"
+            alt="artiste"
+            width="50"
+            height="50"
+          />
+          <img src="@/assets/icons/unknown-artiste-shadow.svg" alt="artiste" width="50" />
+        </div>
+
+        <img
+          v-show="!Object.keys(selected).length || selected.id !== artiste.id"
+          class="absolute top-0 right-[-20px] cursor-pointer"
+          src="@/assets/icons/substitute.svg"
+          alt="remove artiste"
+          width="20"
+          height="20"
+        />
+
+        <img
+          v-show="Object.keys(selected).length && selected.id === artiste.id"
+          class="absolute top-0 right-[-20px] cursor-pointer"
+          src="@/assets/icons/caret-down-red.svg"
+          alt="remove artiste"
+          width="20"
+          height="20"
+        />
+      </div>
+
+      <div class="mt-2 text-center m-auto">
+        <p
+          class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"
+        >{{ artiste.artiste_name.split(" ")[1] }}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+defineProps({
+  artiste: {
+    type: Object,
+    required: true,
+  },
+  selected: {
+    type: Object,
+    required: false,
+  },
+});
+</script>
