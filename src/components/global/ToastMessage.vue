@@ -18,6 +18,7 @@ const toastStore = useToastStore();
   border-radius: 8px;
   color: white;
   display: flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   padding: 1rem 2rem;

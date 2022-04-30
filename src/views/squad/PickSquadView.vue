@@ -87,12 +87,12 @@ const { getPlayerSquad, createSquad, addToSquad } = useApiCall();
 
 watchEffect(async () => {
   const isComplete = squadStore.squadComplete;
-  if (isComplete) router.push({ name: "view-squad" });
+  if (isComplete) router.push({ name: "manage-squad" });
 });
 
-onMounted(() => {
-  getSquad();
-  if (squadStore.squadComplete) router.push({ name: "view-squad" });
+onMounted(async () => {
+  await getSquad();
+  if (squadStore.squadComplete) router.push({ name: "manage-squad" });
 });
 
 const getSquad = () => {
@@ -140,7 +140,7 @@ const createNewSquadName = (squadName) => {
     .then((response) => {
       squadStore.squad = response;
       showCreateSquadModal.value = false;
-      toastStore.displayToast("Squad selection complete!");
+      toastStore.displayToast("Squad name updated!");
     })
     .catch((error) => console.error(error));
 };

@@ -154,7 +154,6 @@ const fetchMoreArtistes = async () => {
       const newArtistesList = response.result;
       const oldArtistesList = artistesStore.allArtistes.result;
       const allArtistesFetched = [...oldArtistesList, ...newArtistesList];
-      console.log(allArtistesFetched);
       artistesStore.$patch((state) => {
         state.allArtistes.result = allArtistesFetched;
       });

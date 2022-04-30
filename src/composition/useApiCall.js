@@ -7,6 +7,7 @@ export default function useApiCall() {
   const baseUrl = import.meta.env.VITE_BASE_URL || "https://api.waveleague.com/api/v1/";
   const authorisedCall = axios.create();
   const loading = ref(false);
+  const router = useRouter();
 
   // request interceptors to add bearer token to every requst on this instance
   authorisedCall.interceptors.request.use((request) => {
@@ -23,11 +24,10 @@ export default function useApiCall() {
     function (error) {
       if (error.response.status === 401) {
         const authStore = useAuthStore();
-        const router = useRouter();
 
-        localStorage.removeItem("state");
         authStore.userSignedIn = false;
-        return router.push({ name: "auth-sign-in" });
+        router.push({ name: "auth-sign-in" });
+        localStorage.removeItem("state");
       }
     }
   );
@@ -171,5 +171,6 @@ export default function useApiCall() {
     removeFromSquad,
     substituteArtiste,
     transferArtistes,
+    loading
   };
 }

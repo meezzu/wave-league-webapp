@@ -5,11 +5,8 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import AuthNavbarSection from "@/components/global/AuthNavbarSection.vue";
-export default {
-  components: { AuthNavbarSection },
-};
 </script>
 
 <style lang="scss" scoped>

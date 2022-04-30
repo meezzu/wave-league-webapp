@@ -1,38 +1,24 @@
 <template>
   <div class="card">
     <div class="card-body grid grid-cols-3 gap-4">
-      <div class="p-8 self-center">
+      <div class="p-8 self-center col-span-3 lg:col-span-1">
         <h2 class="text-2xl text-primary font-semibold">Music Week 1</h2>
-        <button
-          class="text-white bg-primary mt-6 font-medium rounded-lg text-base px-12 py-3 text-center"
-        >My Squad</button>
+        <router-link to="/squad">
+          <button
+            class="text-white bg-primary mt-6 font-medium rounded-lg text-base px-12 py-3 text-center"
+          >My Squad</button>
+        </router-link>
       </div>
 
-      <div class="card-images relative col-span-2">
-        <img
-          class="absolute right-80 bottom-0"
-          src="@/assets/imgs/dija-single.png"
-          alt="joeboy"
-        />
-        <img
-          class="absolute right-56 bottom-0"
-          src="@/assets/imgs/joeboy-single.png"
-          alt="joeboy"
-        />
-        <img
-          class="absolute right-24 bottom-0"
-          src="@/assets/imgs/yemi-single.png"
-          alt="joeboy"
-        />
-        <img
-          class="absolute right-0 bottom-0"
-          src="@/assets/imgs/omah-lay-single.png"
-          alt="joeboy"
-        />
+      <div class="card-images relative hidden lg:block col-span-2">
+        <img class="absolute right-80 bottom-0" src="@/assets/imgs/dija-single.png" alt="joeboy" />
+        <img class="absolute right-56 bottom-0" src="@/assets/imgs/joeboy-single.png" alt="joeboy" />
+        <img class="absolute right-24 bottom-0" src="@/assets/imgs/yemi-single.png" alt="joeboy" />
+        <img class="absolute right-0 bottom-0" src="@/assets/imgs/omah-lay-single.png" alt="joeboy" />
       </div>
     </div>
 
-    <div class="card-footer flex justify-evenly items-center bg-primary">
+    <div class="card-footer flex flex-wrap justify-evenly items-center bg-primary">
       <div class="text-center p-6 my-2">
         <p class="text-secondary font-medium text-sm">Highest Point</p>
         <p class="text-white">99</p>
