@@ -87,17 +87,17 @@ onBeforeMount(() => {
   document.head.appendChild(googleIdentityScript);
 });
 
-onMounted(() => {
-  initGoogleIdentity();
+onMounted(async () => {
+  await initGoogleIdentity();
 });
 
 nextTick(() => {
   initGoogleIdentity();
 });
 
-function initGoogleIdentity() {
-  window.addEventListener("load", () => {
-    const google = window.google;
+async function initGoogleIdentity() {
+  window.addEventListener("load", async () => {
+    const google = await window.google;
     google.accounts.id.initialize({
       client_id:
         "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
