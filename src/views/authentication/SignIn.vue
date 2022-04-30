@@ -82,8 +82,6 @@ onBeforeMount(() => {
     "src",
     "https://accounts.google.com/gsi/client"
   );
-  googleIdentityScript.setAttribute("async", "");
-  googleIdentityScript.setAttribute("defer", "");
   document.head.appendChild(googleIdentityScript);
 });
 
