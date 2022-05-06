@@ -70,7 +70,7 @@
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
 import useApiCall from "@/composition/useApiCall";
-import { onBeforeMount } from "vue";
+import { onBeforeMount, onMounted } from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -80,7 +80,7 @@ onBeforeMount(() => {
   // initGoogleIdentity();
 });
 
-window.onload = () => {
+onMounted(() => {
   const { google } = window;
   google.accounts.id.initialize({
     client_id:
@@ -92,7 +92,7 @@ window.onload = () => {
     { theme: "outline", size: "large" } // customization attributes
   );
   google.accounts.id.prompt(); // also display the One Tap dialog
-};
+});
 
 function initGoogleIdentity() {
   window.addEventListener("load", () => {
