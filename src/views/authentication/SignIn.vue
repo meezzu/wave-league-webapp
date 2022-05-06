@@ -77,13 +77,6 @@ const router = useRouter();
 const { loginPlayer, registerPlayer, loading } = useApiCall();
 
 onBeforeMount(() => {
-  let googleIdentityScript = document.createElement("script");
-  googleIdentityScript.setAttribute(
-    "src",
-    "https://accounts.google.com/gsi/client"
-  );
-  document.head.appendChild(googleIdentityScript);
-
   initGoogleIdentity();
 });
 
