@@ -77,8 +77,22 @@ const router = useRouter();
 const { loginPlayer, registerPlayer, loading } = useApiCall();
 
 onBeforeMount(() => {
-  initGoogleIdentity();
+  // initGoogleIdentity();
 });
+
+window.onload = () => {
+  const { google } = window;
+  google.accounts.id.initialize({
+    client_id:
+      "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
+    callback: handleCredentialResponse,
+  });
+  google.accounts.id.renderButton(
+    document.getElementById("google__btn"),
+    { theme: "outline", size: "large" } // customization attributes
+  );
+  google.accounts.id.prompt(); // also display the One Tap dialog
+};
 
 function initGoogleIdentity() {
   window.addEventListener("load", () => {
@@ -88,10 +102,10 @@ function initGoogleIdentity() {
         "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
       callback: handleCredentialResponse,
     });
-    google.accounts.id.renderButton(
-      document.getElementById("google__btn"),
-      { theme: "outline", size: "large" } // customization attributes
-    );
+    // google.accounts.id.renderButton(
+    //   document.getElementById("google__btn"),
+    //   { theme: "outline", size: "large" } // customization attributes
+    // );
     google.accounts.id.prompt(); // also display the One Tap dialog
   });
 }
