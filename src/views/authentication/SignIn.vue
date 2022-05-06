@@ -70,7 +70,7 @@
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
 import useApiCall from "@/composition/useApiCall";
-import { onMounted, onBeforeMount, nextTick } from "vue";
+import { onMounted, onBeforeMount } from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -86,28 +86,22 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  initGoogleIdentity();
+  // initGoogleIdentity();
 });
 
-nextTick(() => {
-  initGoogleIdentity();
-});
-
-function initGoogleIdentity() {
-  window.addEventListener("load", async () => {
-    const google = await window.google;
-    google.accounts.id.initialize({
-      client_id:
-        "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
-      callback: handleCredentialResponse,
-    });
-    google.accounts.id.renderButton(
-      document.getElementById("google__btn"),
-      { theme: "outline", size: "large" } // customization attributes
-    );
-    google.accounts.id.prompt(); // also display the One Tap dialog
+window.addEventListener("load", () => {
+  const google = window.google;
+  google.accounts.id.initialize({
+    client_id:
+      "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
+    callback: handleCredentialResponse,
   });
-}
+  google.accounts.id.renderButton(
+    document.getElementById("google__btn"),
+    { theme: "outline", size: "large" } // customization attributes
+  );
+  google.accounts.id.prompt(); // also display the One Tap dialog
+});
 
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
