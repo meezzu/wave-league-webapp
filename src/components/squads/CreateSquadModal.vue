@@ -29,8 +29,8 @@
           </div>
 
           <div class="modal-footer"></div>
-
-          <!-- <img
+<!-- 
+          <img
             class="absolute top-[-12px] right-[-12px]"
             src="../../assets/icons/delete-primary.svg"
             @click="$emit('close')"

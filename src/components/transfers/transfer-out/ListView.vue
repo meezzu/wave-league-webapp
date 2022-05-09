@@ -11,38 +11,10 @@
 
         <tbody class="table__body">
           <tr
-            v-for="artiste in squadStore.stageArtistes"
+            v-for="artiste in squadStore.currentSquad"
             :key="artiste._id"
             class="table__row"
             @click="selectArtiste(artiste)"
-            :class="{'inactive': Object.keys(selected).length && selected.id !== artiste.id}"
-          >
-            <td class="table__data">
-              <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
-            </td>
-            <td class="table__data">{{ artiste.artiste_name }}</td>
-            <td class="table__data">{{ artiste.price }}m</td>
-            <td class="table__data">{{ artiste.price }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="sub">
-      <table class="table table__sub">
-        <thead class="table__head">
-          <th class="table__heading"></th>
-          <th class="table__heading">Substitutes</th>
-          <th class="table__heading">Price</th>
-          <th class="table__heading">Points</th>
-        </thead>
-
-        <tbody class="table__body">
-          <tr
-            v-for="artiste in squadStore.benchArtistes"
-            :key="artiste._id"
-            class="table__row"
-            @click="changeArtiste(artiste)"
           >
             <td class="table__data">
               <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
@@ -58,30 +30,17 @@
 </template>
 
 <script setup>
-import { useSquadStore } from "@/stores/squad";
-import { ref, nextTick } from "vue";
+import { useSquadStore } from "../../../stores/squad";
+import { useTransfersStore } from "../../../stores/transfers";
+
+const emits = defineEmits(["artiste-selected"]);
 
 const squadStore = useSquadStore();
-const selected = ref({});
-const emits = defineEmits(["sub-artiste"]);
-
-const changeArtiste = async (artisteIn) => {
-  if (!Object.keys(selected.value).length) return;
-  const payload = {
-    squadId: squadStore.squad.id,
-    artistes: {
-      out: selected.value.id,
-      in: artisteIn.id,
-    },
-  };
-
-  emits("sub-artiste", payload);
-  await nextTick();
-  selected.value = {};
-};
+const transfersStore = useTransfersStore();
 
 const selectArtiste = (artiste) => {
-  selected.value = artiste;
+  transfersStore.selected = artiste;
+  emits("artiste-selected", artiste);
 };
 </script>
 

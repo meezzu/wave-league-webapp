@@ -23,6 +23,7 @@ const toastStore = useToastStore();
   align-items: center;
   padding: 1rem 2rem;
   font-weight: 500;
+  z-index: 15;
 }
 </style>
     

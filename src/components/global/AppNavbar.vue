@@ -38,10 +38,10 @@
             <div class="menu-indicator"></div>
             <li>Transfers</li>
           </router-link>
-          <router-link class="menu-list-item" to="/rankings">
+          <!-- <router-link class="menu-list-item" to="/rankings">
             <div class="menu-indicator"></div>
             <li>Ranking</li>
-          </router-link>
+          </router-link> -->
         </ul>
       </div>
 
@@ -51,10 +51,10 @@
           <img src="@/assets/icons/bell.svg" alt="notifications" />
         </a>
 
-        <div class="profile flex items-center gap-x-4">
+        <!-- <div class="profile flex items-center gap-x-4">
           <p class="font-semibold text-sm">Raymond</p>
           <img src="@/assets/imgs/raymond.png" alt="profile picture" />
-        </div>
+        </div> -->
 
         <label class="hamburger flex lg:hidden" for="check">
           <input id="check" v-model="showMobileMenu" type="checkbox" />

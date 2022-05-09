@@ -9,6 +9,7 @@ export const useToastStore = defineStore({
   actions: {
     async displayToast(value) {
       this.message = value;
+      this.show = false;
       this.show = true;
 
       setTimeout(() => {

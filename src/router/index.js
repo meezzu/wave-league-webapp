@@ -84,7 +84,7 @@ const router = createRouter({
     {
       path: "/transfers",
       name: "transfers",
-      component: () => import("../views/transfers/TransfersView.vue"),
+      component: () => import("../views/transfers/TransferOut.vue"),
     },
   ],
 });

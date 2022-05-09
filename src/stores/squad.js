@@ -27,18 +27,16 @@ export const useSquadStore = defineStore({
       });
       return squad;
     },
-
     benchArtistes() {
       return this.squadPosition.filter((artiste) => {
         return artiste.location === "bench";
       });
     },
-
     stageArtistes() {
       return this.squadPosition.filter((artiste) => {
         return artiste.location === "stage";
       });
-    },
+    }
   },
   actions: {
     addToCurrentSquad(artiste) {
