@@ -41,20 +41,26 @@
           <!-- <router-link class="menu-list-item" to="/rankings">
             <div class="menu-indicator"></div>
             <li>Ranking</li>
-          </router-link> -->
+          </router-link>-->
         </ul>
       </div>
 
       <!-- cta section  -->
       <div class="flex items-center text-sm md:order-2 space-x-8 md:space-x-4">
-        <a class="hidden lg:flex py-2 pr-4 pl-3 text-white" href="#">
+        <!-- <a class="hidden lg:flex py-2 pr-4 pl-3 text-white" href="#">
           <img src="@/assets/icons/bell.svg" alt="notifications" />
-        </a>
+        </a>-->
 
-        <!-- <div class="profile flex items-center gap-x-4">
-          <p class="font-semibold text-sm">Raymond</p>
-          <img src="@/assets/imgs/raymond.png" alt="profile picture" />
-        </div> -->
+        <div class="profile flex items-center gap-x-4">
+          <p class="font-semibold text-sm hidden sm:block">{{ authStore.googleUser.given_name }}</p>
+          <img
+            class="rounded-full"
+            :src="authStore.googleUser.picture"
+            alt="profile picture"
+            width="40"
+            height="40"
+          />
+        </div>
 
         <label class="hamburger flex lg:hidden" for="check">
           <input id="check" v-model="showMobileMenu" type="checkbox" />
@@ -71,15 +77,21 @@
       class="z-21 pt-16 bg-primary text-sm transition duration-300"
       :class="{'h-screen': showMobileMenu}"
     >
-      <ul class="flex flex-col items-center">
+      <ul class="flex flex-col items-center text-base">
         <li>
-          <a href="#" class="block py-8 text-white" aria-current="page">Home</a>
+          <router-link to="/" class="block py-8 text-white" aria-current="page">Home</router-link>
         </li>
         <li>
-          <a href="#" class="block py-8 text-white">How to Play</a>
+          <router-link to="/squad" class="block py-8 text-white">Squad</router-link>
         </li>
         <li>
-          <a href="#" class="block py-8 text-white">Sign In</a>
+          <router-link to="/" class="block py-8 text-white">Points</router-link>
+        </li>
+        <li>
+          <router-link to="/transfers" class="block py-8 text-white">Transfers</router-link>
+        </li>
+        <li>
+          <router-link to="/" class="block py-8 text-white">Rankings</router-link>
         </li>
 
         <li class="block py-8" @click="showMobileMenu = false">
@@ -90,33 +102,31 @@
   </nav>
 </template>
 
-<script>
-export default {
-  name: "AuthNavbarSection",
-  data() {
-    return {
-      showMobileMenu: false,
-      scrollPosition: null,
-    };
-  },
-  mounted() {
-    window.addEventListener("scroll", this.updateScroll);
-  },
-  methods: {
-    toggleMenu() {
-      this.showMobileMenu = !this.showMobileMenu;
-    },
+<script setup>
+import { onMounted, ref, onBeforeMount } from "vue";
+import { useAuthStore } from "@/stores/auth";
 
-    updateScroll() {
-      this.scrollPosition = window.scrollY;
-    },
-  },
+const showMobileMenu = ref(false);
+const scrollPosition = ref(null);
 
-  beforeUnmount() {
-    this.scrollPosition = null;
-    window.removeEventListener("scroll", this.updateScroll);
-  },
-};
+const authStore = useAuthStore();
+
+onBeforeMount(() => {
+  scrollPosition.value = null;
+  window.removeEventListener("scroll", updateScroll);
+});
+
+onMounted(() => {
+  window.addEventListener("scroll", updateScroll);
+});
+
+function toggleMenu() {
+  showMobileMenu.value = !showMobileMenu.value;
+}
+
+function updateScroll() {
+  scrollPosition.value = window.scrollY;
+}
 </script>
 
 <style lang="scss" scoped>
