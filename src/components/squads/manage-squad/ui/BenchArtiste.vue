@@ -35,7 +35,7 @@
       <div class="mt-2 text-center m-auto">
         <p
           class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"
-        >{{ artiste.artiste_name.split(" ")[1] }}</p>
+        >{{ artiste.artiste_name.split(" ")[0] }}</p>
       </div>
     </div>
   </div>

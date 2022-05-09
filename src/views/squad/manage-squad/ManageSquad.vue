@@ -7,7 +7,7 @@
 
       <div class="views mt-8">
         <StageView v-show="view === 'stage'" @subArtiste="changeArtistes" />
-        <ListView v-show="view === 'list'" />
+        <ListView v-show="view === 'list'" @subArtiste="changeArtistes" />
       </div>
 
       <div class="squad-card-wrapper mt-12 px-3 sm:px-0">

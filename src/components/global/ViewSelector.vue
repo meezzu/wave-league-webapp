@@ -1,12 +1,12 @@
 <template>
   <div class="selector flex items-center justify-center">
     <div
-      class="px-8 py-3 rounded-l text-sm font-medium transition-all ease-in duration-300"
+      class="px-8 py-3 rounded-l text-sm font-medium transition-all ease-in duration-300 cursor-pointer"
       :class="view === 'stage' ? 'bg-primary text-white' : 'bg-white shadow-lg text-black'"
       @click="toggleView('stage')"
     >Stage View</div>
     <div
-      class="px-8 py-3 rounded-r text-sm font-medium transition-all ease-in duration-300"
+      class="px-8 py-3 rounded-r text-sm font-medium transition-all ease-in duration-300 cursor-pointer"
       :class="view === 'list' ? 'bg-primary text-white' : 'bg-white shadow-lg text-black'"
       @click="toggleView('list')"
     >List View</div>

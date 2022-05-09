@@ -94,22 +94,6 @@ onMounted(() => {
   google.accounts.id.prompt(); // also display the One Tap dialog
 });
 
-function initGoogleIdentity() {
-  window.addEventListener("load", () => {
-    const { google } = window;
-    google.accounts.id.initialize({
-      client_id:
-        "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
-      callback: handleCredentialResponse,
-    });
-    // google.accounts.id.renderButton(
-    //   document.getElementById("google__btn"),
-    //   { theme: "outline", size: "large" } // customization attributes
-    // );
-    google.accounts.id.prompt(); // also display the One Tap dialog
-  });
-}
-
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
