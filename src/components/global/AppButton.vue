@@ -36,7 +36,7 @@ defineProps({
 .btn {
   border: none;
   color: white;
-  padding: 11px 37px;
+  padding: 10px 30px;
   text-align: center;
   text-decoration: none;
   display: inline-block;

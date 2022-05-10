@@ -120,7 +120,7 @@ function checkExistingUser() {
     .then((response) => {
       authStore.waveProfile = response;
       authStore.userSignedIn = true;
-      return router.push({ name: "pick-squad" });
+      return router.push({ name: "home" });
     })
     .catch((error) => {
       if (error.response.data.error_code === 302) {
@@ -138,7 +138,7 @@ function initRegisterNewUser() {
     .then((response) => {
       authStore.waveProfile = response;
       authStore.userSignedIn = true;
-      router.push({ name: "pick-squad" });
+      router.push({ name: "home" });
     })
     .catch((error) => {
       console.error(error);

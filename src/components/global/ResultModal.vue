@@ -67,6 +67,10 @@ defineProps({
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
+
+    @media only screen and (max-width: 600px) {
+    width: 80%;
+  }
 }
 
 .modal-header {

@@ -74,23 +74,23 @@
     <!-- mobile menu  -->
     <div
       v-show="showMobileMenu"
-      class="z-21 pt-16 bg-primary text-sm transition duration-300"
+      class="z-21 pt-8 bg-primary text-sm transition duration-300"
       :class="{'h-screen': showMobileMenu}"
     >
       <ul class="flex flex-col items-center text-base">
-        <li>
+        <li :ref="setLinkRefs">
           <router-link to="/" class="block py-8 text-white" aria-current="page">Home</router-link>
         </li>
-        <li>
+        <li :ref="setLinkRefs">
           <router-link to="/squad" class="block py-8 text-white">Squad</router-link>
         </li>
-        <li>
+        <li :ref="setLinkRefs">
           <router-link to="/" class="block py-8 text-white">Points</router-link>
         </li>
-        <li>
+        <li :ref="setLinkRefs">
           <router-link to="/transfers" class="block py-8 text-white">Transfers</router-link>
         </li>
-        <li>
+        <li :ref="setLinkRefs">
           <router-link to="/" class="block py-8 text-white">Rankings</router-link>
         </li>
 
@@ -103,22 +103,42 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onBeforeMount } from "vue";
+import {
+  onMounted,
+  ref,
+  onBeforeUnmount,
+  onBeforeUpdate,
+  onUpdated,
+} from "vue";
 import { useAuthStore } from "@/stores/auth";
 
 const showMobileMenu = ref(false);
 const scrollPosition = ref(null);
+const linkRefs = ref([]);
 
 const authStore = useAuthStore();
 
-onBeforeMount(() => {
-  scrollPosition.value = null;
+onBeforeUnmount(() => {
   window.removeEventListener("scroll", updateScroll);
+  linkRefs.value.forEach((element) => {
+    element.removeEventListener("click", closeMenu);
+  });
 });
 
 onMounted(() => {
   window.addEventListener("scroll", updateScroll);
+  linkRefs.value.forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
 });
+
+function setLinkRefs(el) {
+  if (el) linkRefs.value.push(el);
+}
+
+function closeMenu() {
+  showMobileMenu.value = false;
+}
 
 function toggleMenu() {
   showMobileMenu.value = !showMobileMenu.value;

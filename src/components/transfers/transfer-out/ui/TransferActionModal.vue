@@ -7,7 +7,7 @@
 
           <div class="modal-body flex flex-col justify-center items-center gap-y-6">
             <AppButton text="Transfer Out" @clicked="$emit('startTransfer')" />
-            <AppButton text="View Information" @clicked="$emit('viewInfo')" />
+            <AppButton text="View Information" @clicked="$emit('viewInfo')" :disabled="true" />
           </div>
 
           <div class="modal-footer"></div>
@@ -54,6 +54,10 @@ import AppButton from "../../../global/AppButton.vue";
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
+
+  @media only screen and (max-width: 600px) {
+    width: 80%;
+  }
 }
 
 .modal-header {

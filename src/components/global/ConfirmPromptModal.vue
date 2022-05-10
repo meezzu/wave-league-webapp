@@ -11,8 +11,12 @@
               <p class="text-lg text-center">{{ msg }}</p>
             </div>
 
-            <div class="flex justify-around items-center w-full">
-              <AppButton text="Cancel" @clicked="$emit('close')" />
+            <div class="flex justify-between sm:justify-around items-center w-full">
+              <button
+                class="border-2 border-primary px-4 py-2 rounded-lg text-primary font-medium text-base cursor-pointer outline-0"
+                @click.prevent="$emit('close')"
+              >Cancel</button>
+              <!-- <AppButton text="Cancel" @clicked="$emit('close')" /> -->
               <AppButton text="Continue" @clicked="$emit('continue')" />
             </div>
           </div>
@@ -68,6 +72,10 @@ defineProps({
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
+
+  @media only screen and (max-width: 600px) {
+    width: 80%;
+  }
 }
 
 .modal-header {
