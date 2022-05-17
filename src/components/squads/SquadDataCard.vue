@@ -32,7 +32,10 @@
 
       <div class="flex items-center justify-between p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">In the Bank</h4>
-        <p class="text-[#bdbdbd]">₦{{ squadStore.squad.in_the_bank }}m</p>
+        <p
+          v-if="squadStore.squad !== null"
+          class="text-[#bdbdbd]"
+        >₦{{ squadStore.squad.in_the_bank }}m</p>
       </div>
     </div>
   </div>

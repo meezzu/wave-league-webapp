@@ -161,6 +161,13 @@ export default function useApiCall() {
       });
   };
 
+  const signUserOut = () => {
+    const authStore = useAuthStore();
+    authStore.userSignedIn = false;
+    router.push({ name: "auth-sign-in" });
+    localStorage.removeItem("state");
+  };
+
   return {
     loginPlayer,
     registerPlayer,
@@ -171,6 +178,7 @@ export default function useApiCall() {
     removeFromSquad,
     substituteArtiste,
     transferArtistes,
-    loading
+    signUserOut,
+    loading,
   };
 }

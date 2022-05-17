@@ -18,12 +18,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, onMounted } from "vue";
 import useApiCall from "@/composition/useApiCall";
 import { useSquadStore } from "@/stores/squad";
 import { useToastStore } from "@/stores/toast";
 import { useAuthStore } from "@/stores/auth.js";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import ViewSelector from "@/components/global/ViewSelector.vue";
 import SquadDataCard from "@/components/squads/SquadDataCard.vue";
 import StageView from "@/components/squads/manage-squad/StageView.vue";
@@ -34,18 +34,18 @@ const { getPlayerSquad, substituteArtiste } = useApiCall();
 const squadStore = useSquadStore();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
-const router = useRouter();
+// const router = useRouter();
 
 const view = ref("stage");
 
 onMounted(() => {
-  if (typeof squadStore.squad.roster === "undefined") getSquad();
+  getSquad();
 });
 
-watchEffect(async () => {
-  const isComplete = squadStore.squadComplete;
-  if (!isComplete) router.push({ name: "pick-squad" });
-});
+// watchEffect(async () => {
+//   const isComplete = squadStore.squadComplete;
+//   if (!isComplete) router.push({ name: "pick-squad" });
+// });
 
 function toggleView(viewType) {
   view.value = viewType;

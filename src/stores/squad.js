@@ -7,8 +7,9 @@ export const useSquadStore = defineStore({
     squad: {},
     currentSquad: [],
   }),
+
   getters: {
-    squadName: (state) => state.squad.squad_name,
+    squadName: (state) => state.squad?.squad_name,
     squadId: (state) => state.squad?.id,
     currentSquadLength: (state) => state.currentSquad?.length,
     totalSquadValue: (state) => {
@@ -18,7 +19,10 @@ export const useSquadStore = defineStore({
       if (!value) return 0;
       return value;
     },
-    squadComplete: (state) => state.squad?.artistes.length === 8,
+    squadComplete: (state) => {
+      if (state.squad.artistes && state.squad?.artistes.length === 8) return true;
+      else return false;
+    },
     squadPosition: (state) => {
       let squad = [];
       state.squad.artistes.map((artiste, artisteIndex) => {
@@ -36,16 +40,30 @@ export const useSquadStore = defineStore({
       return this.squadPosition.filter((artiste) => {
         return artiste.location === "stage";
       });
-    }
+    },
+    currentSquadValue: (state) => {
+      return state.currentSquad.reduce((prev, curr) => {
+        return prev + curr.price;
+      }, 0);
+    },
   },
+
   actions: {
     addToCurrentSquad(artiste) {
       const toastStore = useToastStore();
-      if (this.currentSquad.length >= 8) return false;
+      if (this.currentSquad.length >= 8) {
+        console.log("complete");
+        toastStore.displayToast("Squad is complete!");
+        return false;
+      }
       const duplicate = this.currentSquad.filter((current) => current._id === artiste._id);
-      if (duplicate.length) return false;
+      if (duplicate.length) {
+        console.log("duplicate");
+        return false;
+      }
       if (this.totalSquadValue + artiste.price > 100) {
-        toastStore.displayToast("Squad value cannot be more than 100m");
+        console.log("expensive");
+        toastStore.displayToast("Squad value cannot be more than 100m!");
         return false;
       }
       if (Array.isArray(artiste)) {

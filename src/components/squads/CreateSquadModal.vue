@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container relative p-2 rounded">
+        <div class="modal-container relative rounded">
           <div class="modal-header text-center font-semibold text-base">Enter Squad</div>
 
           <div class="modal-body">
@@ -29,13 +29,13 @@
           </div>
 
           <div class="modal-footer"></div>
-<!-- 
+
           <img
             class="absolute top-[-12px] right-[-12px]"
             src="../../assets/icons/delete-primary.svg"
             @click="$emit('close')"
             alt="cancel"
-          /> -->
+          />
         </div>
       </div>
     </div>
@@ -91,6 +91,10 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
+
+  @media only screen and (max-width: 600px) {
+    max-width: 80%;
+  }
 }
 
 .modal-header {

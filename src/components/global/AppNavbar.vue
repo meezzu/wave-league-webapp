@@ -47,19 +47,70 @@
 
       <!-- cta section  -->
       <div class="flex items-center text-sm md:order-2 space-x-8 md:space-x-4">
-        <!-- <a class="hidden lg:flex py-2 pr-4 pl-3 text-white" href="#">
-          <img src="@/assets/icons/bell.svg" alt="notifications" />
-        </a>-->
-
-        <div class="profile flex items-center gap-x-4">
-          <p class="font-semibold text-sm hidden sm:block">{{ authStore.googleUser.given_name }}</p>
+        <div class="profile flex items-center mr-4 lg:mr-0 relative">
           <img
             class="rounded-full"
             :src="authStore.googleUser.picture"
             alt="profile picture"
             width="40"
             height="40"
+            @click="showDropdown = !showDropdown"
           />
+
+          <div
+            class="dropdown absolute top-12 right-0 bg-white rounded-lg"
+            :class="showDropdown ? 'block' : 'hidden'"
+            ref="clickOutsideTarget"
+          >
+            <ul>
+              <li class="border-b py-4 px-4 flex items-center justify-between gap-x-8">
+                <div class="flex items-center">
+                  <img
+                    class="rounded-full"
+                    :src="authStore.googleUser.given_name"
+                    alt="profile picture"
+                    width="40"
+                    height="40"
+                  />
+                  <div>
+                    <p class="text-sm text-black2">{{ authStore.googleUser.given_name }}</p>
+                    <p class="text-sm text-[#419078]">{{ authStore.googleUser.email }}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <router-link to="/edit-profile">
+                    <img
+                      class="cursor-pointer"
+                      src="../../assets/icons/edit-profile.svg"
+                      alt="edit profile"
+                      width="25"
+                      height="25"
+                    />
+                  </router-link>
+                </div>
+              </li>
+              <router-link to="/ranking">
+                <li class="py-4 px-4 border-b flex items-center justify-between gap-x-8">
+                  <p class="text-sm text-base text-black2">Ranking</p>
+                  <img
+                    src="../../assets/icons/ranking.svg"
+                    alt="profile picture"
+                    width="25"
+                    height="25"
+                  />
+                </li>
+              </router-link>
+
+              <li
+                class="py-4 px-4 flex items-center justify-between gap-x-8 cursor-pointer"
+                @click="signOut"
+              >
+                <p class="text-sm text-base text-[#F96060]">Sign Out</p>
+                <img src="../../assets/icons/sign-out.svg" alt="sign out" width="25" height="25" />
+              </li>
+            </ul>
+          </div>
         </div>
 
         <label class="hamburger flex lg:hidden" for="check">
@@ -78,24 +129,35 @@
       :class="{'h-screen': showMobileMenu}"
     >
       <ul class="flex flex-col items-center text-base">
-        <li :ref="setLinkRefs">
-          <router-link to="/" class="block py-8 text-white" aria-current="page">Home</router-link>
-        </li>
-        <li :ref="setLinkRefs">
-          <router-link to="/squad" class="block py-8 text-white">Squad</router-link>
-        </li>
-        <li :ref="setLinkRefs">
-          <router-link to="/" class="block py-8 text-white">Points</router-link>
-        </li>
-        <li :ref="setLinkRefs">
-          <router-link to="/transfers" class="block py-8 text-white">Transfers</router-link>
-        </li>
-        <li :ref="setLinkRefs">
-          <router-link to="/" class="block py-8 text-white">Rankings</router-link>
-        </li>
+        <router-link to="/" class="block py-6 text-white w-full text-center" aria-current="page">
+          <li :ref="setLinkRefs">Home</li>
+        </router-link>
+        <router-link to="/squad" class="block py-6 text-white w-full text-center">
+          <li :ref="setLinkRefs">Squad</li>
+        </router-link>
+        <router-link to="/" class="block py-6 text-white w-full text-center">
+          <li :ref="setLinkRefs">Points</li>
+        </router-link>
+        <router-link to="/transfers" class="block py-6 text-white w-full text-center">
+          <li :ref="setLinkRefs">Transfers</li>
+        </router-link>
+        <router-link to="/" class="block py-6 text-white w-full text-center">
+          <li :ref="setLinkRefs">Rankings</li>
+        </router-link>
 
-        <li class="block py-8" @click="showMobileMenu = false">
-          <img src="@/assets/icons/close-icon-white.svg" alt="close menu" height="40" width="40" />
+        <li class="block py-8 w-full flex items-center justify-center" @click="signOut">Sign Out</li>
+
+        <li
+          class="block py-8 w-full flex items-center justify-center"
+          @click="showMobileMenu = false"
+        >
+          <img
+            src="@/assets/icons/close-icon-white.svg"
+            class="text-center"
+            alt="close menu"
+            height="40"
+            width="40"
+          />
         </li>
       </ul>
     </div>
@@ -103,20 +165,21 @@
 </template>
 
 <script setup>
-import {
-  onMounted,
-  ref,
-  onBeforeUnmount,
-  onBeforeUpdate,
-  onUpdated,
-} from "vue";
+import { onMounted, ref, onBeforeUnmount } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import useApiCall from "@/composition/useApiCall";
+import { onClickOutside } from "@vueuse/core";
 
 const showMobileMenu = ref(false);
 const scrollPosition = ref(null);
 const linkRefs = ref([]);
+const showDropdown = ref(false);
+const clickOutsideTarget = ref(null);
 
 const authStore = useAuthStore();
+const { signUserOut } = useApiCall();
+
+onClickOutside(clickOutsideTarget, () => (showDropdown.value = false));
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", updateScroll);
@@ -131,6 +194,10 @@ onMounted(() => {
     link.addEventListener("click", closeMenu);
   });
 });
+
+function signOut() {
+  signUserOut();
+}
 
 function setLinkRefs(el) {
   if (el) linkRefs.value.push(el);
@@ -208,6 +275,8 @@ function updateScroll() {
     }
 
     &-list-item {
+      width: 100%;
+      text-align: center;
       list-style-type: none;
       text-decoration: none;
       color: $white;

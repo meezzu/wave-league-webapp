@@ -10,9 +10,9 @@
             <p v-if="!allLoading" class="text-grey3">
               Money Left:
               <span
-                v-if="squadStore.squad !== null"
+                v-if="squadStore.squad"
                 class="font-semibold text-primary"
-              >{{ squadStore.squad.in_the_bank }}m</span>
+              >{{ squadStore.squad.in_the_bank - squadStore.currentSquadValue }}m</span>
             </p>
           </div>
 
@@ -119,7 +119,7 @@
 </template>
 
 <script setup>
-import AppButton from "../../../global/AppButton.vue";
+import AppButton from "@/components/global/AppButton.vue";
 import { onMounted, computed, watch, reactive, ref } from "vue";
 import { useSquadStore } from "@/stores/squad";
 import { useArtistesStore } from "@/stores/artistes";
@@ -130,7 +130,7 @@ const squadStore = useSquadStore();
 const artistesStore = useArtistesStore();
 const toastStore = useToastStore();
 const { getAllArtistes } = useApiCall();
-const emits = defineEmits(["select-artiste"]);
+const emits = defineEmits(["select-artiste", "close"]);
 
 const artistesQuery = reactive({
   page: 1,

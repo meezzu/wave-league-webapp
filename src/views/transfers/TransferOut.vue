@@ -4,7 +4,10 @@
     :class="showTransferTableModal ? 'overflow-hidden' : 'overflow-auto' "
   >
     <div class="flex justify-between">
-      <p class="font-medium px-4 text-lg">{{ squadStore.squadName }}</p>
+      <!-- <p
+        v-if="squadStore && squadStore.squad !== null"
+        class="font-medium px-4 text-lg"
+      >{{ squadStore.squadName }}</p>-->
       <div
         class="text-secondary flex items-center justify-between space-x-2 cursor-pointer p-2 sm:p-0"
       >
@@ -38,21 +41,32 @@
         </div>
       </div>
 
-      <ViewSelector class="mt-6" @viewStage="toggleView('stage')" @viewList="toggleView('list')" />
+      <template v-if="squadStore.currentSquad.length">
+        <ViewSelector class="mt-6" @viewStage="toggleView('stage')" @viewList="toggleView('list')" />
 
-      <div class="views mt-8">
-        <StageView v-show="view === 'stage'" @artiste-selected="openTransferActionModal" />
-        <ListView v-show="view === 'list'" @artiste-selected="openTransferActionModal" />
-      </div>
+        <div class="views mt-8">
+          <StageView v-show="view === 'stage'" @artiste-selected="openTransferActionModal" />
+          <ListView v-show="view === 'list'" @artiste-selected="openTransferActionModal" />
+        </div>
 
-      <div class="confirm-btn my-8 flex items-center justify-center">
-        <AppButton
-          text="Make Transfer"
-          width="full"
-          @clicked="openConfirmPromptModal"
-          :disabled="!Object.keys(transferStore.currentTransfersOut).length"
-        />
-      </div>
+        <div class="confirm-btn my-8 flex items-center justify-center">
+          <AppButton
+            text="Make Transfer"
+            width="full"
+            @clicked="openConfirmPromptModal"
+            :disabled="!Object.keys(transferStore.currentTransfersOut).length"
+          />
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="my-16 text-lg text-center font-medium">
+          <p>You cannot make transfers at the moment. Please go to Squad Page to select your Squad.</p>
+          <router-link to="/squad">
+            <app-button text="Go to Squad" type="secondary" class="mt-8"></app-button>
+          </router-link>
+        </div>
+      </template>
 
       <div class="squad-card-wrapper mt-12 px-3 sm:px-0">
         <SquadDataCard class="squad-card" />
@@ -78,11 +92,7 @@
       @continue="confirmTransfer"
     />
 
-    <ResultModal
-      v-show="showResultModal"
-      msg="Transfer Successful"
-      @close="closeResultModal"
-    />
+    <ResultModal v-show="showResultModal" msg="Transfer Successful" @close="closeResultModal" />
   </section>
 </template>
 
@@ -116,10 +126,10 @@ const showConfirmPromptModal = ref(false);
 const showResultModal = ref(false);
 
 onMounted(() => {
+  getSquad();
   transferStore.selected = {};
   transferStore.currentTransfersIn = {};
   transferStore.currentTransfersOut = {};
-  if (typeof squadStore.squad.roster === "undefined") getSquad();
 });
 
 function toggleView(viewType) {

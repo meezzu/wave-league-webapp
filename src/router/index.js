@@ -41,17 +41,12 @@ const router = createRouter({
       children: [
         {
           path: "",
-          redirect: { name: "pick-squad" },
+          redirect: { name: "create-squad" },
         },
         {
-          path: "pick-squad",
-          name: "pick-squad",
-          component: () => import("../views/squad/PickSquadView.vue"),
-        },
-        {
-          path: "view-squad",
-          name: "view-squad",
-          component: () => import("../views/squad/ViewSquad.vue"),
+          path: "create-squad",
+          name: "create-squad",
+          component: () => import("../views/squad/create-squad/CreateSquad.vue"),
         },
         {
           path: "manage-squad",
