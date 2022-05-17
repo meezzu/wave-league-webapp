@@ -61,7 +61,7 @@
 
         <div v-if="loading">
           <img
-            src="../../assets/icons/loader-rolling.svg"
+            src="../../../assets/icons/loader-rolling.svg"
             alt="loading indicator"
             height="60"
             width="60"
