@@ -1,7 +1,7 @@
 <template>
-  <section class="sign-in flex justify-center items-center p-2">
+  <section class="sign-in flex justify-center items-center h-full w-full">
     <div
-      class="card flex flex-col justify-center text-center items-center bg-grey5 p-8 text-black rounded-lg w-full sm:w-10/12 md:w-9/12 lg:w-7/12"
+      class="card min-h-screen min-w-full flex flex-col justify-center text-center items-center bg-grey5 p-8 text-black rounded-lg w-full sm:w-10/12 md:w-9/12 lg:w-7/12"
     >
       <div class="card__logo mt-12">
         <img

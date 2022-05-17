@@ -1,6 +1,6 @@
 <template>
   <main class="auth">
-    <AuthNavbarSection class="nav" />
+    <!-- <AuthNavbarSection class="nav" /> -->
     <router-view :key="$route.fullPath" />
   </main>
 </template>
