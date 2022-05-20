@@ -11,7 +11,8 @@ import AuthNavbarSection from "@/components/global/AuthNavbarSection.vue";
 
 <style lang="scss" scoped>
 .auth {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   color: white;
   position: relative;
   background: hsla(0, 76%, 47%, 1);

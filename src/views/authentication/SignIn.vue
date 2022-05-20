@@ -1,9 +1,9 @@
 <template>
-  <section class="sign-in flex justify-center items-center h-full w-full">
+  <section class="sign-in flex flex-col justify-center items-center h-full w-full">
     <div
       class="card min-h-screen min-w-full flex flex-col justify-center text-center items-center bg-grey5 p-8 text-black w-full sm:w-10/12 md:w-9/12 lg:w-7/12"
     >
-      <div class="card__logo mt-12">
+      <div class="card__logo">
         <img
           src="@/assets/icons/wave-league-logo-orange.svg"
           alt="wave league logo"

@@ -1,6 +1,6 @@
 <template>
   <section class="stage">
-    <div class="field md:rounded-t py-8 px-4 sm:py-16 sm:px-8">
+    <div class="field flex flex-col gap-y-4 md:rounded-t py-8 px-4 sm:py-16 sm:px-8">
       <div class="flex justify-between p-6 items-center">
         <StageArtiste
           v-for="artiste in squadStore.currentSquad.slice(0,3)"

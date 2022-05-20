@@ -1,5 +1,5 @@
 <template>
-  <section class="app-content">
+  <section v-if="!pageLoading" class="app-content">
     <div class="flex justify-between">
       <p
         v-if="squadStore.squad !== null"
@@ -76,6 +76,10 @@
       @submitted="createNewSquadName"
     ></CreateSquadModal>
   </section>
+
+  <template v-if="pageLoading">
+    <FullLoadingScreen />
+  </template>
 </template>
 
 <script setup>
@@ -91,6 +95,7 @@ import AppButton from "@/components/global/AppButton.vue";
 import ViewSelector from "@/components/global/ViewSelector.vue";
 import StageView from "../../../components/squads/create-squad/StageView.vue";
 import ListView from "../../../components/squads/create-squad/ListView.vue";
+import FullLoadingScreen from "../../../components/global/FullLoadingScreen.vue";
 
 const squadStore = useSquadStore();
 const authStore = useAuthStore();
@@ -101,6 +106,7 @@ const toastStore = useToastStore();
 const showCreateSquadModal = ref(false);
 const loading = ref(false);
 const view = ref("stage");
+const pageLoading = ref(true);
 
 const { getPlayerSquad, createSquad, addToSquad } = useApiCall();
 
@@ -109,9 +115,11 @@ watchEffect(async () => {
   if (isComplete) router.push({ name: "manage-squad" });
 });
 
-onMounted(() => {
-  getSquad();
+onMounted(async () => {
+  pageLoading.value = true;
+  await getSquad();
   if (squadStore.squadComplete) router.push({ name: "manage-squad" });
+  pageLoading.value = false;
 });
 
 function toggleView(viewType) {

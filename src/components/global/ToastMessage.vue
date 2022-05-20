@@ -11,8 +11,8 @@ const toastStore = useToastStore();
 <style lang="scss" scoped>
 .toast {
   position: absolute;
-  top: 25%; /* position the top  edge of the element at the middle of the parent */
-  left: 50%; /* position the left edge of the element at the middle of the parent */
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   background: #333333;
   border-radius: 8px;
@@ -21,9 +21,12 @@ const toastStore = useToastStore();
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   font-weight: 500;
+  font-size: 14px;
   z-index: 15;
+  width: fit-content;
+  max-width: 75%;
 }
 </style>
     

@@ -81,6 +81,13 @@ const router = createRouter({
       name: "transfers",
       component: () => import("../views/transfers/TransferOut.vue"),
     },
+
+    // utility
+    {
+      path: "/loading",
+      name: "loading",
+      component: () => import("../components/global/FullLoadingScreen.vue"),
+    },
   ],
 });
 
