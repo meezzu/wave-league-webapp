@@ -38,10 +38,10 @@
             <div class="menu-indicator"></div>
             <li>Transfers</li>
           </router-link>
-          <!-- <router-link class="menu-list-item" to="/rankings">
+          <router-link class="menu-list-item" to="/rankings">
             <div class="menu-indicator"></div>
             <li>Ranking</li>
-          </router-link>-->
+          </router-link>
         </ul>
       </div>
 
@@ -141,7 +141,7 @@
         <router-link to="/transfers" class="block py-6 text-white w-full text-center">
           <li :ref="setLinkRefs">Transfers</li>
         </router-link>
-        <router-link to="/" class="block py-6 text-white w-full text-center">
+        <router-link to="/rankings" class="block py-6 text-white w-full text-center">
           <li :ref="setLinkRefs">Rankings</li>
         </router-link>
 

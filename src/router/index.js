@@ -82,6 +82,13 @@ const router = createRouter({
       component: () => import("../views/transfers/TransferOut.vue"),
     },
 
+    // rankings views
+    {
+      path: "/rankings",
+      name: "rankings",
+      component: () => import("../views/ranking/WeeklyRankings.vue"),
+    },
+
     // utility
     {
       path: "/loading",

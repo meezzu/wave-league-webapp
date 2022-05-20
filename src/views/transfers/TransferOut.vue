@@ -3,11 +3,11 @@
     class="app-content"
     :class="showTransferTableModal ? 'overflow-hidden' : 'overflow-auto' "
   >
-    <div class="flex justify-between">
-      <!-- <p
+    <div class="flex justify-between items-center">
+      <p
         v-if="squadStore && squadStore.squad !== null"
         class="font-medium px-4 text-lg"
-      >{{ squadStore.squadName }}</p>-->
+      >{{ squadStore.squadName }}</p>
       <div
         class="text-secondary flex items-center justify-between space-x-2 cursor-pointer p-2 sm:p-0"
       >
