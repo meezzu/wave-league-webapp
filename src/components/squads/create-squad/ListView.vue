@@ -53,7 +53,7 @@
     </div>
 
     <AllArtistesModal
-      v-show="showAllArtistesModal"
+      v-if="showAllArtistesModal"
       @close="closeAllArtistesModal"
       @select-artiste="tempAddToCurrentSquad"
     ></AllArtistesModal>

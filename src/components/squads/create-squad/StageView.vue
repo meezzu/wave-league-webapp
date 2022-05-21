@@ -25,16 +25,10 @@
         <UnknownArtiste
           v-for="item, index in emptySlots"
           :key="index"
-          @click="openAllArtistesModal"
+          @click="$emit('startSelection')"
         />
       </div>
     </div>
-
-    <AllArtistesModal
-      v-show="showAllArtistesModal"
-      @close="closeAllArtistesModal"
-      @select-artiste="tempAddToCurrentSquad"
-    ></AllArtistesModal>
   </section>
 </template>
 
@@ -43,11 +37,9 @@ import StageArtiste from "./ui/StageArtiste.vue";
 import UnknownArtiste from "./ui/UnknownArtiste.vue";
 import { useSquadStore } from "@/stores/squad";
 import { useTransfersStore } from "@/stores/transfers";
-import { computed, ref } from "vue";
-import AllArtistesModal from "../../global/AllArtistesModal.vue";
+import { computed } from "vue";
 
-const emits = defineEmits(["artiste-selected"]);
-const showAllArtistesModal = ref(false);
+defineEmits(["artiste-selected", "startSelection"]);
 
 const squadStore = useSquadStore();
 const transfersStore = useTransfersStore();
@@ -65,16 +57,6 @@ const emptySlots = computed(() => {
   const empty = 8 - squadStore.currentSquad.length;
   return Array.from(Array(empty).keys());
 });
-
-const openAllArtistesModal = () => {
-  document.body.classList.add("modal-open");
-  showAllArtistesModal.value = true;
-};
-
-const closeAllArtistesModal = () => {
-  document.body.classList.remove("modal-open");
-  showAllArtistesModal.value = false;
-};
 </script>
 
 <style lang="scss" scoped>

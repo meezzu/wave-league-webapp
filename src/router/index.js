@@ -89,6 +89,13 @@ const router = createRouter({
       component: () => import("../views/ranking/WeeklyRankings.vue"),
     },
 
+    // points views
+    {
+      path: "/points",
+      name: "points",
+      component: () => import("../views/points/PointsView.vue"),
+    },
+
     // utility
     {
       path: "/loading",

@@ -80,7 +80,7 @@
     ></TransferActionModal>
 
     <TransferTableModal
-      v-show="showTransferTableModal"
+      v-if="showTransferTableModal"
       @close="closeTransferTableModal"
       @select-artiste="startTransfer"
     ></TransferTableModal>

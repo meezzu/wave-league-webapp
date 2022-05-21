@@ -9,11 +9,11 @@ const pinia = createPinia();
 const app = createApp(App);
 
 if (localStorage.getItem("state")) {
-  pinia.state.value = JSON.parse(localStorage.getItem("state"));
+  pinia.state.value.auth = JSON.parse(localStorage.getItem("state"));
 }
 
 watch(
-  pinia.state,
+  () => pinia.state.value.auth,
   (state) => {
     localStorage.setItem("state", JSON.stringify(state));
   },

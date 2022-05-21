@@ -70,21 +70,16 @@
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
 import useApiCall from "@/composition/useApiCall";
-import { onBeforeMount, onMounted } from "vue";
+import { onMounted } from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
 const { loginPlayer, registerPlayer, loading } = useApiCall();
 
-onBeforeMount(() => {
-  // initGoogleIdentity();
-});
-
-onMounted(() => {
+onMounted(async () => {
   const { google } = window;
   google.accounts.id.initialize({
-    client_id:
-      "133086316885-9dm96sme28aos140tsvco7ogflpinoi6.apps.googleusercontent.com",
+    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
     callback: handleCredentialResponse,
   });
   google.accounts.id.renderButton(

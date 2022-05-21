@@ -35,7 +35,7 @@
           </div>
           <div class="card text-center py-4 px-2 rounded-r-lg border-l sm:rounded-lg sm:border-l-0">
             <p
-              v-if="level"
+              v-if="squadStore.squad !== null && Object.keys(squadStore.squad).length"
               class="text-base mb-2"
             >{{ squadStore.squad.in_the_bank - squadStore.currentSquadValue }}m</p>
             <p v-else class="text-base mb-2">-- m</p>
@@ -46,7 +46,11 @@
       <ViewSelector class="mt-6" @viewStage="toggleView('stage')" @viewList="toggleView('list')" />
 
       <div class="views mt-8">
-        <StageView v-show="view === 'stage'" @subArtiste="changeArtistes" />
+        <StageView
+          v-show="view === 'stage'"
+          @subArtiste="changeArtistes"
+          @start-selection="startSelection"
+        />
         <ListView v-show="view === 'list'" @subArtiste="changeArtistes" />
       </div>
 
@@ -71,10 +75,16 @@
     </div>
 
     <CreateSquadModal
-      v-show="showCreateSquadModal"
+      v-if="showCreateSquadModal"
       @close="showCreateSquadModal = false"
       @submitted="createNewSquadName"
     ></CreateSquadModal>
+
+    <AllArtistesModal
+      v-if="showAllArtistesModal"
+      @close="closeAllArtistesModal"
+      @select-artiste="tempAddToCurrentSquad"
+    ></AllArtistesModal>
   </section>
 
   <template v-if="pageLoading">
@@ -96,6 +106,7 @@ import ViewSelector from "@/components/global/ViewSelector.vue";
 import StageView from "../../../components/squads/create-squad/StageView.vue";
 import ListView from "../../../components/squads/create-squad/ListView.vue";
 import FullLoadingScreen from "../../../components/global/FullLoadingScreen.vue";
+import AllArtistesModal from "@/components/global/AllArtistesModal.vue";
 
 const squadStore = useSquadStore();
 const authStore = useAuthStore();
@@ -107,6 +118,7 @@ const showCreateSquadModal = ref(false);
 const loading = ref(false);
 const view = ref("stage");
 const pageLoading = ref(true);
+const showAllArtistesModal = ref(false);
 
 const { getPlayerSquad, createSquad, addToSquad } = useApiCall();
 
@@ -189,6 +201,13 @@ const addPlayerToSquad = (artiste) => {
   squadStore.addToCurrentSquad(artiste);
 };
 
+const startSelection = () => {
+  if (squadStore.squadName === undefined || squadStore.squad === null) {
+    return openCreateSquadModal();
+  }
+  openAllArtistesModal();
+};
+
 const resetSquad = () => {
   squadStore.emptyCurrentSquad();
 };
@@ -222,6 +241,16 @@ const shuffleArray = (array) => {
 
 const openCreateSquadModal = () => {
   showCreateSquadModal.value = true;
+};
+
+const openAllArtistesModal = () => {
+  document.body.classList.add("modal-open");
+  showAllArtistesModal.value = true;
+};
+
+const closeAllArtistesModal = () => {
+  document.body.classList.remove("modal-open");
+  showAllArtistesModal.value = false;
 };
 </script>
 

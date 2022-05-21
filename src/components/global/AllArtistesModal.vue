@@ -18,80 +18,82 @@
 
           <div class="modal-body flex flex-col justify-center items-center gap-y-6">
             <template v-if="!allLoading">
-              <!-- form area  -->
-              <form class="form">
-                <div class="form__field">
-                  <input class="form__input" type="text" placeholder="All Artistes" disabled />
-                </div>
-                <div class="form__field">
-                  <input
-                    class="form__input"
-                    type="text"
-                    name="artiste"
-                    v-model.lazy.trim="artistesQuery.name"
-                    placeholder="Artiste name"
-                  />
-                </div>
-                <div class="form__field">
-                  <select v-model="artistesQuery.sort" class="form__select">
-                    <option value="record_label">Record Label</option>
-                    <option value="-price">Price (High to Low)</option>
-                    <option value="price">Price (Low to High)</option>
-                    <option value="artiste_name">Artiste Name</option>
-                  </select>
-                </div>
-                <div class="form__field">
-                  <select v-model.number="artistesQuery.max_price" class="form__select">
-                    <option value selected disabled>Price Range</option>
-                    <option value="25">Up to 25</option>
-                    <option value="20">Up to 20</option>
-                    <option value="15">Up to 15</option>
-                    <option value="10">Up to 10</option>
-                    <option value="5">Up to 5</option>
-                  </select>
-                </div>
-              </form>
-
-              <!-- table area - all artistes  -->
-              <div class="table-area">
-                <table class="table">
-                  <thead class="table__head">
-                    <tr>
-                      <th class="table__heading">Artiste</th>
-                      <th class="table__heading">Price</th>
-                      <th class="table__heading">Points</th>
-                    </tr>
-                  </thead>
-
-                  <tbody class="table__body">
-                    <tr
-                      v-for="artiste in filteredArtistes"
-                      :key="artiste._id"
-                      class="table__row"
-                      :class="{'opacity-25 cursor-not-allowed pointer-events-none': currentArtiste(artiste) }"
-                      @click="selectArtiste(artiste)"
-                    >
-                      <td class="table__data">{{ artiste.artiste_name }}</td>
-                      <td class="table__data">{{ artiste.price }}</td>
-                      <td class="table__data">{{ artiste.points }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <div class="more my-8 flex justify-center items-center">
-                  <app-button
-                    v-if="!moreLoading && artistesQuery.page < artistesStore.allArtistes.total_pages"
-                    text="More"
-                    type="secondary"
-                    @clicked="fetchMoreArtistes"
-                  />
-                  <div v-if="moreLoading">
-                    <img
-                      src="@/assets/icons/loader-rolling.svg"
-                      alt="loading"
-                      height="40"
-                      width="40"
+              <div class="modal-content">
+                <!-- form area  -->
+                <form class="form">
+                  <div class="form__field">
+                    <input class="form__input" type="text" placeholder="All Artistes" disabled />
+                  </div>
+                  <div class="form__field">
+                    <input
+                      class="form__input"
+                      type="text"
+                      name="artiste"
+                      v-model.lazy.trim="artistesQuery.name"
+                      placeholder="Artiste name"
                     />
+                  </div>
+                  <div class="form__field">
+                    <select v-model="artistesQuery.sort" class="form__select">
+                      <option value="record_label">Record Label</option>
+                      <option value="-price">Price (High to Low)</option>
+                      <option value="price">Price (Low to High)</option>
+                      <option value="artiste_name">Artiste Name</option>
+                    </select>
+                  </div>
+                  <div class="form__field">
+                    <select v-model.number="artistesQuery.max_price" class="form__select">
+                      <option value selected disabled>Price Range</option>
+                      <option value="25">Up to 25</option>
+                      <option value="20">Up to 20</option>
+                      <option value="15">Up to 15</option>
+                      <option value="10">Up to 10</option>
+                      <option value="5">Up to 5</option>
+                    </select>
+                  </div>
+                </form>
+
+                <!-- table area - all artistes  -->
+                <div class="table-area">
+                  <table class="table">
+                    <thead class="table__head">
+                      <tr>
+                        <th class="table__heading">Artiste</th>
+                        <th class="table__heading">Price</th>
+                        <th class="table__heading">Points</th>
+                      </tr>
+                    </thead>
+
+                    <tbody class="table__body">
+                      <tr
+                        v-for="artiste in filteredArtistes"
+                        :key="artiste._id"
+                        class="table__row"
+                        :class="{'opacity-25 cursor-not-allowed pointer-events-none': currentArtiste(artiste) }"
+                        @click="selectArtiste(artiste)"
+                      >
+                        <td class="table__data">{{ artiste.artiste_name }}</td>
+                        <td class="table__data">{{ artiste.price }}</td>
+                        <td class="table__data">{{ artiste.points }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="more my-8 flex justify-center items-center">
+                    <app-button
+                      v-if="!moreLoading && artistesQuery.page < artistesStore.allArtistes.total_pages"
+                      text="More"
+                      type="secondary"
+                      @clicked="fetchMoreArtistes"
+                    />
+                    <div v-if="moreLoading">
+                      <img
+                        src="@/assets/icons/loader-rolling.svg"
+                        alt="loading"
+                        height="40"
+                        width="40"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -249,6 +251,13 @@ const selectArtiste = (artiste) => {
 
 .modal-body {
   margin: 20px 0;
+
+  .modal-content {
+    height: 500px;
+    max-height: 500px;
+    width: 100%;
+    overflow-y: scroll;
+  }
 
   .loader {
     min-height: 300px;
