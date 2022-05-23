@@ -36,21 +36,14 @@
 import StageArtiste from "./ui/StageArtiste.vue";
 import UnknownArtiste from "./ui/UnknownArtiste.vue";
 import { useSquadStore } from "@/stores/squad";
-import { useTransfersStore } from "@/stores/transfers";
 import { computed } from "vue";
 
 defineEmits(["artiste-selected", "startSelection"]);
 
 const squadStore = useSquadStore();
-const transfersStore = useTransfersStore();
-
-const tempAddToCurrentSquad = (artiste) => {
-  squadStore.addToCurrentSquad(artiste);
-};
 
 const removeArtiste = (artiste) => {
   squadStore.removeFromCurrentSquad(artiste);
-  openAllArtistesModal();
 };
 
 const emptySlots = computed(() => {

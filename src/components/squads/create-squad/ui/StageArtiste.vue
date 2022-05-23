@@ -46,14 +46,16 @@
 </template>
 
 <script setup>
-import { useTransfersStore } from "../../../../stores/transfers";
-
-const transferStore = useTransfersStore();
-
 defineProps({
   artiste: {
     type: Object,
     required: true,
   },
 });
+
+const emits = defineEmits(["remove-artiste"]);
+
+function removeArtiste(artiste) {
+  emits("remove-artiste", artiste);
+}
 </script>

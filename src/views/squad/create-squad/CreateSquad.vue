@@ -181,6 +181,10 @@ const deleteArtisteFromSquad = (artiste) => {
   squadStore.removeFromCurrentSquad(artiste);
 };
 
+const tempAddToCurrentSquad = (artiste) => {
+  squadStore.addToCurrentSquad(artiste);
+};
+
 // creates new squad name
 const createNewSquadName = (squadName) => {
   const payload = {

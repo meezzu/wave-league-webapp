@@ -51,32 +51,16 @@
         </tbody>
       </table>
     </div>
-
-    <AllArtistesModal
-      v-if="showAllArtistesModal"
-      @close="closeAllArtistesModal"
-      @select-artiste="tempAddToCurrentSquad"
-    ></AllArtistesModal>
   </section>
 </template>
 
 <script setup>
-import StageArtiste from "./ui/StageArtiste.vue";
-import UnknownArtiste from "./ui/UnknownArtiste.vue";
 import { useSquadStore } from "@/stores/squad";
-import { useTransfersStore } from "@/stores/transfers";
 import { computed, ref } from "vue";
-import AllArtistesModal from "../../global/AllArtistesModal.vue";
 
-const emits = defineEmits(["artiste-selected"]);
 const showAllArtistesModal = ref(false);
 
 const squadStore = useSquadStore();
-const transfersStore = useTransfersStore();
-
-const tempAddToCurrentSquad = (artiste) => {
-  squadStore.addToCurrentSquad(artiste);
-};
 
 const removeArtiste = (artiste) => {
   squadStore.removeFromCurrentSquad(artiste);
@@ -91,11 +75,6 @@ const emptySlots = computed(() => {
 const openAllArtistesModal = () => {
   document.body.classList.add("modal-open");
   showAllArtistesModal.value = true;
-};
-
-const closeAllArtistesModal = () => {
-  document.body.classList.remove("modal-open");
-  showAllArtistesModal.value = false;
 };
 </script>
 
