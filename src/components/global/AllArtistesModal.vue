@@ -72,7 +72,18 @@
                         :class="{'opacity-25 cursor-not-allowed pointer-events-none': currentArtiste(artiste) }"
                         @click="selectArtiste(artiste)"
                       >
-                        <td class="table__data">{{ artiste.artiste_name }}</td>
+                        <td class="table__data text-secondary">
+                          <div class="w-full flex items-center gap-x-4">
+                            <img
+                              class="rounded-full border-2 border-[#f8f8f8] drop-shadow"
+                              :src="artiste.avatar"
+                              alt=" artiste.artiste_name"
+                              width="35"
+                              height="35"
+                            />
+                            <p>{{ artiste.artiste_name }}</p>
+                          </div>
+                        </td>
                         <td class="table__data">{{ artiste.price }}</td>
                         <td class="table__data">{{ artiste.points }}</td>
                       </tr>
@@ -345,7 +356,7 @@ const selectArtiste = (artiste) => {
     font-weight: 500;
     font-size: 16px;
     padding: 12px;
-    text-align: center;
+    text-align: left;
     border: none;
     color: $primary;
     background-color: $grey5;
@@ -354,7 +365,7 @@ const selectArtiste = (artiste) => {
   &__data {
     padding: 20px;
     border-bottom: 1px solid #d9d9d9;
-    text-align: center;
+    text-align: left;
   }
 }
 </style>
