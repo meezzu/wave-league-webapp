@@ -241,7 +241,7 @@ const selectArtiste = (artiste) => {
 
   @media only screen and (max-width: 600px) {
     width: 90%;
-    margin-top: 4rem;
+    margin-top: 6rem;
   }
 }
 
