@@ -3,18 +3,18 @@
     class="nav relative z-20 text-white border-gray-200 overflow-y-visible transition duration-700 ease-in-out drop-shadow-md"
   >
     <div
-      class="px-4 sm:px-8 md:px-12 lg:px-24 py-4 flex flex-wrap justify-between items-center mx-auto"
+      class="screen-container px-4 sm:px-8 md:px-12 lg:px-24 py-4 flex flex-wrap justify-between items-center mx-auto"
     >
       <!-- website logo section  -->
       <div class="flex w-1/12">
-        <a href="#">
+        <router-link to="/">
           <img
             src="../../assets/icons/wave-league-logo.svg"
             alt="wave league logo"
             height="60"
             width="60"
           />
-        </a>
+        </router-link>
       </div>
 
       <!-- menu items  -->

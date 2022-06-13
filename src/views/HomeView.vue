@@ -1,8 +1,8 @@
 <template>
-  <main class="px-4 sm:px-8 md:px-12 lg:px-24">
+  <section class="px-4 sm:px-8 md:px-12 lg:px-24">
     <HeroSection />
     <DashboardStatistics />
-  </main>
+  </section>
 </template>
 
 <script setup>

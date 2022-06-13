@@ -1,7 +1,7 @@
 <template>
   <section class="footer">
     <div
-      class="flex flex-col sm:flex-row justify-center sm:justify-between items-center py-8 border-t border-[#1E2E47]"
+      class="screen-container flex flex-col sm:flex-row justify-center sm:justify-between items-center py-8 border-t border-[#1E2E47]"
     >
       <div
         class="flex order-last sm:order-first w-full text-sm justify-center sm:w-1/5 py-4 sm:py-0"

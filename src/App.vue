@@ -1,8 +1,16 @@
 <template>
-  <AppNavbar v-if="!isAuthRoute" />
-  <RouterView :key="$route.fullPath" />
-  <FooterSection v-if="!isAuthRoute" />
-  <ToastMessage />
+  <main v-if="!isAuthRoute">
+    <AppNavbar />
+    <RouterView :key="$route.fullPath" class="screen-container" />
+    <FooterSection />
+    <ToastMessage />
+  </main>
+
+  <main v-else>
+    <section>
+      <RouterView :key="$route.fullPath" />
+    </section>
+  </main>
 </template>
 
 <script setup>
