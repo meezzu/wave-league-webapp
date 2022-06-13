@@ -52,17 +52,14 @@ export const useSquadStore = defineStore({
     addToCurrentSquad(artiste) {
       const toastStore = useToastStore();
       if (this.currentSquad.length >= 8) {
-        console.log("complete");
         toastStore.displayToast("Squad is complete!");
         return false;
       }
       const duplicate = this.currentSquad.filter((current) => current._id === artiste._id);
       if (duplicate.length) {
-        console.log("duplicate");
         return false;
       }
       if (this.totalSquadValue + artiste.price > 100) {
-        console.log("expensive");
         toastStore.displayToast("Squad value cannot be more than 100m!");
         return false;
       }
