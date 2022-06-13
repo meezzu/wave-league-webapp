@@ -1,5 +1,5 @@
 <template>
-  <section class="px-4 sm:px-8 md:px-12 lg:px-24">
+  <section class="p-2 sm:px-8 md:px-12 lg:px-24">
     <HeroSection />
     <DashboardStatistics />
   </section>

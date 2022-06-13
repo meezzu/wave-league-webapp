@@ -30,13 +30,17 @@ body.modal-open {
   max-width: 1440px;
   padding: 0 20px;
   width: 85%;
+}
 
-  @media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1024px) {
+  .screen-container {
     width: 95%;
   }
+}
 
-  @media only screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) {
+  .screen-container {
     width: 100%;
-    padding: 0 20px;
+    padding: 0 0;
   }
 }

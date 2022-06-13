@@ -135,7 +135,7 @@
         <router-link to="/squad" class="block py-6 text-white w-full text-center">
           <li :ref="setLinkRefs">Squad</li>
         </router-link>
-        <router-link to="/" class="block py-6 text-white w-full text-center">
+        <router-link to="/points" class="block py-6 text-white w-full text-center">
           <li :ref="setLinkRefs">Points</li>
         </router-link>
         <router-link to="/transfers" class="block py-6 text-white w-full text-center">
