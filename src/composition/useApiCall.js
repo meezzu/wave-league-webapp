@@ -168,6 +168,48 @@ export default function useApiCall() {
     localStorage.removeItem("state");
   };
 
+  const getPlayerPoints = async (data) => {
+    loading.value = true;
+    return await authorisedCall
+      .get(`${baseUrl}artistes/${data.artisteId}/weeks/${data.weekId}/points`)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
+  const topTransfersIn = async () => {
+    loading.value = true;
+    return await authorisedCall
+      .get(`${baseUrl}transfers/top/in`)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
+  const topTransfersOut = async () => {
+    loading.value = true;
+    return await authorisedCall
+      .get(`${baseUrl}transfers/top/out`)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
   return {
     loginPlayer,
     registerPlayer,
@@ -179,6 +221,9 @@ export default function useApiCall() {
     substituteArtiste,
     transferArtistes,
     signUserOut,
+    getPlayerPoints,
+    topTransfersIn,
+    topTransfersOut,
     loading,
   };
 }

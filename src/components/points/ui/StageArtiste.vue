@@ -10,49 +10,58 @@
             width="50"
             height="50"
           />
-          <!-- <img
-            v-if="Object.keys(transferStore.selected).length && transferStore.selected._id === artiste.id"
-            class="rounded-full h-16 w-16 border-2 border-grey4 drop-shadow-sm"
-            src="@/assets/icons/unknown-artiste.svg"
-            alt="artiste"
-            width="50"
-            height="50"
-          />-->
-          <!-- <img src="@/assets/icons/unknown-artiste-shadow.svg" alt="artiste" width="50" /> -->
         </div>
-
-        <img
-          class="absolute top-0 right-[-20px] cursor-pointer"
-          src="@/assets/icons/delete-red.svg"
-          alt="remove artiste"
-          width="20"
-          height="20"
-        />
       </div>
 
-      <div class="mt-2 text-center m-auto">
+      <div class="mt-2 text-center w-full">
         <p
           class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"
         >{{ artiste.artiste_name.split(" ")[0] }}</p>
 
-        <!-- <p
-          v-if="Object.keys(transferStore.selected).length && transferStore.selected._id === artiste.id"
-          class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"
-        >--</p>-->
+        <p
+          v-if="artisteData"
+          class="bg-white rounded-b py-1 px-2 text-black text-sm font-semibold"
+        >{{ artisteData.points }}pts</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useTransfersStore } from "@/stores/transfers";
+import { ref, onMounted, watch } from "vue";
+import useApiCall from "@/composition/useApiCall";
 
-const transferStore = useTransfersStore();
+const { getPlayerPoints } = useApiCall();
+const artisteData = ref(null);
 
-defineProps({
+const props = defineProps({
   artiste: {
     type: Object,
     required: true,
   },
+  week: {
+    type: Number,
+    required: true,
+  },
 });
+
+watch(
+  () => props.week,
+  async () => {
+    await getPoints();
+  },
+  { deep: true }
+);
+
+onMounted(async () => {
+  await getPoints();
+});
+
+const getPoints = async () => {
+  const response = await getPlayerPoints({
+    weekId: props.week,
+    artisteId: props.artiste.id,
+  });
+  artisteData.value = response;
+};
 </script>

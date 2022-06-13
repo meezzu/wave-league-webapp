@@ -90,7 +90,7 @@
                   </router-link>
                 </div>
               </li>
-              <router-link to="/ranking">
+              <router-link to="/rankings">
                 <li class="py-4 px-4 border-b flex items-center justify-between gap-x-8">
                   <p class="text-sm text-base text-black2">Ranking</p>
                   <img

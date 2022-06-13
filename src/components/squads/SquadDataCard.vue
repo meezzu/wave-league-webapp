@@ -7,22 +7,22 @@
     <div class="card-body py-8">
       <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Points</h4>
-        <p class="text-[#bdbdbd]">--</p>
+        <p class="text-[#bdbdbd]">{{ squadStore.squad.total_points }}</p>
       </div>
 
       <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Rank</h4>
-        <p class="text-[#bdbdbd]">--</p>
+        <p class="text-[#bdbdbd]">{{ squadStore.squad.squad_ranking }}</p>
       </div>
 
-      <div class="flex items-center justify-between border-b p-4">
+      <!-- <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Players</h4>
         <p class="text-[#bdbdbd]">--</p>
-      </div>
+      </div> -->
 
       <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Transfers</h4>
-        <p class="text-[#bdbdbd]">--</p>
+        <p class="text-[#bdbdbd]">{{ squadStore.squad.transfer_count }}</p>
       </div>
 
       <div class="flex items-center justify-between border-b p-4">

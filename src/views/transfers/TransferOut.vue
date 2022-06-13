@@ -156,7 +156,7 @@ function startTransfer(artiste) {
 
   squadStore.removeFromCurrentSquad(transferStore.currentTransfersOut);
   squadStore.addToCurrentSquad(transferStore.currentTransfersIn);
-  openConfirmPromptModal();
+  // openConfirmPromptModal();
 }
 
 function confirmTransfer() {

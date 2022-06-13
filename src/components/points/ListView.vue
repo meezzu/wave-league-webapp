@@ -10,19 +10,34 @@
         </thead>
 
         <tbody class="table__body">
-          <tr
-            v-for="artiste in squadStore.currentSquad"
-            :key="artiste._id"
+          <ArtisteRow
             class="table__row"
-            @click="selectArtiste(artiste)"
-          >
-            <td class="table__data">
-              <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
-            </td>
-            <td class="table__data">{{ artiste.artiste_name }}</td>
-            <td class="table__data">{{ artiste.price }}m</td>
-            <td class="table__data">{{ artiste.price }}</td>
-          </tr>
+            v-for="(artiste, index) in squadStore.stageArtistes"
+            :key="index"
+            :artiste="artiste"
+            :week="week"
+          ></ArtisteRow>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub">
+      <table class="table table__sub">
+        <thead class="table__head">
+          <th class="table__heading"></th>
+          <th class="table__heading">Substitutes</th>
+          <th class="table__heading">Price</th>
+          <th class="table__heading">Points</th>
+        </thead>
+
+        <tbody class="table__body">
+          <ArtisteRow
+            class="table__row"
+            v-for="(artiste, index) in squadStore.benchArtistes"
+            :key="index"
+            :artiste="artiste"
+            :week="week"
+          ></ArtisteRow>
         </tbody>
       </table>
     </div>
@@ -30,16 +45,14 @@
 </template>
 
 <script setup>
+import ArtisteRow from "./ui/ArtisteRow.vue";
 import { useSquadStore } from "@/stores/squad";
-import { useTransfersStore } from "@/stores/transfers";
 
 const squadStore = useSquadStore();
-const transfersStore = useTransfersStore();
-
-
+const props = defineProps(["week"]);
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .stage {
   .squad {
     width: 100%;

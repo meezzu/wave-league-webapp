@@ -20,7 +20,16 @@
             <td class="table__data">
               <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
             </td>
-            <td class="table__data">{{ artiste.artiste_name }}</td>
+            <td class="table__data flex items-center gap-x-4">
+              <img
+                :src="artiste.avatar"
+                :alt="artiste.artiste_name"
+                height="35"
+                width="35"
+                class="rounded-full shadow-lg"
+              />
+              {{ artiste.artiste_name }}
+            </td>
             <td class="table__data">{{ artiste.price }}m</td>
             <td class="table__data">{{ artiste.price }}</td>
           </tr>
@@ -47,7 +56,16 @@
             <td class="table__data">
               <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
             </td>
-            <td class="table__data">{{ artiste.artiste_name }}</td>
+            <td class="table__data flex items-center gap-x-4">
+              <img
+                :src="artiste.avatar"
+                :alt="artiste.artiste_name"
+                height="35"
+                width="35"
+                class="rounded-full shadow-lg drop-shadow-sm"
+              />
+              {{ artiste.artiste_name }}
+            </td>
             <td class="table__data">{{ artiste.price }}m</td>
             <td class="table__data">{{ artiste.price }}</td>
           </tr>
