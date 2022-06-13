@@ -7,34 +7,29 @@
     <div class="card-body py-8">
       <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Points</h4>
-        <p class="text-[#bdbdbd]">{{ squadStore.squad.total_points }}</p>
+        <p class="text-black">{{ squadStore.squad.total_points }}</p>
       </div>
 
       <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Rank</h4>
-        <p class="text-[#bdbdbd]">{{ squadStore.squad.squad_ranking }}</p>
+        <p class="text-black">{{ squadStore.squad.squad_ranking }}</p>
       </div>
-
-      <!-- <div class="flex items-center justify-between border-b p-4">
-        <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Players</h4>
-        <p class="text-[#bdbdbd]">--</p>
-      </div> -->
 
       <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Total Transfers</h4>
-        <p class="text-[#bdbdbd]">{{ squadStore.squad.transfer_count }}</p>
+        <p class="text-black">{{ squadStore.squad.transfer_count }}</p>
       </div>
 
       <div class="flex items-center justify-between border-b p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">Squad Value</h4>
-        <p class="text-[#bdbdbd]">₦{{ squadStore.totalSquadValue }}m</p>
+        <p class="text-black">₦{{ squadStore.totalSquadValue }}m</p>
       </div>
 
       <div class="flex items-center justify-between p-4">
         <h4 class="capitalize text-sm text-[#4f4f4f] font-medium">In the Bank</h4>
         <p
           v-if="squadStore.squad !== null"
-          class="text-[#bdbdbd]"
+          class="text-black"
         >₦{{ squadStore.squad.in_the_bank }}m</p>
       </div>
     </div>

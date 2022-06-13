@@ -100,7 +100,6 @@
 import { ref, onMounted } from "vue";
 import useApiCall from "@/composition/useApiCall";
 import { useSquadStore } from "@/stores/squad";
-import { useToastStore } from "@/stores/toast";
 import { useTransfersStore } from "@/stores/transfers";
 import { useAuthStore } from "@/stores/auth.js";
 import ViewSelector from "@/components/global/ViewSelector.vue";
@@ -117,7 +116,6 @@ const { getPlayerSquad, transferArtistes } = useApiCall();
 
 const squadStore = useSquadStore();
 const authStore = useAuthStore();
-const toastStore = useToastStore();
 const transferStore = useTransfersStore();
 const view = ref("stage");
 const showTransferActionModal = ref(false);
