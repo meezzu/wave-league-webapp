@@ -207,9 +207,9 @@ function closeMenu() {
   showMobileMenu.value = false;
 }
 
-function toggleMenu() {
-  showMobileMenu.value = !showMobileMenu.value;
-}
+// function toggleMenu() {
+//   showMobileMenu.value = !showMobileMenu.value;
+// }
 
 function updateScroll() {
   scrollPosition.value = window.scrollY;

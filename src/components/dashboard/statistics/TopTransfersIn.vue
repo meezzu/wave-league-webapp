@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header bg-primary py-4 px-8 flex justify-between items-center">
-      <h3 class="capitalize text-xl text-white font-semibold">Top Transfers Out</h3>
+      <h3 class="capitalize text-xl text-white font-semibold">Top Transfers In</h3>
       <!-- <div class="flex space-x-4">
         <span class="text-base font-bold text-white">More</span>
 
