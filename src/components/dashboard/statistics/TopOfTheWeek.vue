@@ -2,7 +2,7 @@
   <div class="card">
     <div
       class="card-header capitalize text-xl text-white bg-primary py-4 px-8 font-semibold"
-    >Top of the week</div>
+    >Top Artistes of the Week</div>
 
     <div class="card-body flex items-stretch justify-between relative">
       <div
@@ -25,89 +25,26 @@
 
       <div
         ref="imgContainer"
-        class="images-container py-8 bg-white flex overflow-auto justify-start space-x-8 items-center"
+        class="images-container py-8 mx-2 bg-white flex overflow-auto justify-start space-x-12 items-center"
       >
-        <div class="image">
-          <img
-            class="img z-10"
-            src="@/assets/imgs/artistes-cartoon/olamide-head.png"
-            alt="olamide"
-            width="110"
-            height="110"
-          />
-          <div class="image-detail text-center bg-[#f8f8f8]">
-            <p class="text-secondary">Olamide</p>
-            <p class="font-bold">30pts</p>
+        <template v-if="charts">
+          <div v-for="(artiste, index) in charts.result" :key="index" class="image">
+            <img
+              class="img z-10"
+              :src="artiste.avatar"
+              :alt="artiste.artiste_name"
+              width="110"
+              height="110"
+            />
+            <div class="image-detail text-center bg-[#f8f8f8]">
+              <p class="text-secondary">{{ artiste.artiste_name }}</p>
+              <p class="font-bold">{{ artiste.points }}pts</p>
+            </div>
           </div>
-        </div>
+        </template>
 
-        <div class="image">
-          <img
-            class="img z-10"
-            src="@/assets/imgs/artistes-cartoon/arya-head.png"
-            alt="arya"
-            width="110"
-            height="110"
-          />
-          <div class="image-detail text-center bg-[#f8f8f8]">
-            <p class="text-secondary">Arya</p>
-            <p class="font-bold">50pts</p>
-          </div>
-        </div>
-
-        <div class="image">
-          <img
-            class="img z-10"
-            src="@/assets/imgs/artistes-cartoon/mayorkun-head.png"
-            alt="olamide"
-            width="110"
-            height="110"
-          />
-          <div class="image-detail text-center bg-[#f8f8f8]">
-            <p class="text-secondary">Mayorkun</p>
-            <p class="font-bold">30pts</p>
-          </div>
-        </div>
-
-        <div class="image">
-          <img
-            class="img z-10"
-            src="@/assets/imgs/artistes-cartoon/adekunle-head.png"
-            alt="adekunle"
-            width="110"
-            height="110"
-          />
-          <div class="image-detail text-center bg-[#f8f8f8]">
-            <p class="text-secondary">Adekunle</p>
-            <p class="font-bold">40pts</p>
-          </div>
-        </div>
-
-        <div class="image">
-          <img
-            class="img z-10"
-            src="@/assets/imgs/artistes-cartoon/olamide-head.png"
-            alt="olamide"
-            width="110"
-            height="110"
-          />
-          <div class="image-detail text-center bg-[#f8f8f8]">
-            <p class="text-secondary">Olamide</p>
-            <p class="font-bold">30pts</p>
-          </div>
-        </div>
-        <div class="image">
-          <img
-            class="img z-10"
-            src="@/assets/imgs/artistes-cartoon/falz-head.png"
-            alt="falz"
-            width="110"
-            height="110"
-          />
-          <div class="image-detail text-center bg-[#f8f8f8]">
-            <p class="text-secondary">Falz</p>
-            <p class="font-bold">32pts</p>
-          </div>
+        <div v-if="!charts" class="min-h-[150px] flex items-center justify-center min-w-full">
+          <img src="@/assets/icons/loader-rolling.svg" alt="loading" height="40" width="40" />
         </div>
       </div>
 
@@ -132,29 +69,45 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
-export default {
-  setup() {
-    const imgContainer = ref(null);
+<script setup>
+import { ref, onMounted } from "vue";
+import useApiCall from "../../../composition/useApiCall";
 
-    function slide(direction) {
-      let scrollCompleted = 0;
-      let slideVar = setInterval(function () {
-        if (direction == "left") {
-          imgContainer.value.scrollLeft -= 10;
-        } else {
-          imgContainer.value.scrollLeft += 10;
-        }
-        scrollCompleted += 10;
-        if (scrollCompleted >= 100) {
-          window.clearInterval(slideVar);
-        }
-      }, 50);
+const imgContainer = ref(null);
+const charts = ref(null);
+const { weekTopArtistes } = useApiCall();
+
+onMounted(() => {
+  getWeekTopArtistes();
+});
+
+async function getWeekTopArtistes() {
+  const params = {
+    page: 1,
+    per_page: 10,
+  };
+
+  try {
+    charts.value = await weekTopArtistes(params);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function slide(direction) {
+  let scrollCompleted = 0;
+  let slideVar = setInterval(function () {
+    if (direction == "left") {
+      imgContainer.value.scrollLeft -= 10;
+    } else {
+      imgContainer.value.scrollLeft += 10;
     }
-    return { imgContainer, slide };
-  },
-};
+    scrollCompleted += 10;
+    if (scrollCompleted >= 100) {
+      window.clearInterval(slideVar);
+    }
+  }, 50);
+}
 </script>
 
 <style lang="scss" scoped>

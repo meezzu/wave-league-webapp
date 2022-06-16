@@ -1,19 +1,18 @@
 <template>
+  <template v-if="loading">
+    <FullLoadingScreen />
+  </template>
+
   <section
+    v-else
     class="app-content"
-    :class="showTransferTableModal ? 'overflow-hidden' : 'overflow-auto' "
+    :class="showTransferTableModal ? 'overflow-hidden' : 'overflow-auto'"
   >
     <div class="flex justify-between items-center">
       <p
         v-if="squadStore && squadStore.squad !== null"
         class="font-medium px-4 text-lg"
       >{{ squadStore.squadName }}</p>
-      <div
-        class="text-secondary flex items-center justify-between space-x-2 cursor-pointer p-2 sm:p-0"
-      >
-        <p class="block">Artiste List</p>
-        <img src="../../assets/icons/arrow-right-secondary.svg" alt="arrow" width="20" height="10" />
-      </div>
     </div>
 
     <div class="content">
@@ -27,21 +26,21 @@
         <!-- small cards  -->
         <div class="flex justify-around mt-12">
           <div class="card text-center py-4 px-2">
-            <p class="text-base">2</p>
+            <p class="text-lg text-secondary mb-2">2</p>
             <p class="text-sm text-grey3">Free Transfers</p>
           </div>
           <div class="card text-center py-4 px-2">
-            <p class="text-base">0 pts</p>
+            <p class="text-lg text-secondary mb-2">{{ squadStore.totalSquadValue }}m</p>
             <p class="text-sm text-grey3">Cost</p>
           </div>
           <div class="card text-center py-4 px-2">
-            <p class="text-base">5m</p>
+            <p class="text-lg text-secondary mb-2">{{ 100 - squadStore.totalSquadValue }}m</p>
             <p class="text-sm text-grey3">Money Left</p>
           </div>
         </div>
       </div>
 
-      <template v-if="squadStore.currentSquad.length">
+      <template v-if="squadStore.currentSquad.length && !loading">
         <ViewSelector class="mt-6" @viewStage="toggleView('stage')" @viewList="toggleView('list')" />
 
         <div class="views mt-8">
@@ -59,7 +58,7 @@
         </div>
       </template>
 
-      <template v-else>
+      <template v-if="!loading && !squadStore.currentSquad.length">
         <div class="my-16 text-lg text-center font-medium">
           <p>You cannot make transfers at the moment. Please go to Squad Page to select your Squad.</p>
           <router-link to="/squad">
@@ -77,6 +76,7 @@
       v-show="showTransferActionModal"
       @close="closeTransferActionModal"
       @start-transfer="openTransferTableModal"
+      @view-info="openArtisteFormModal"
     ></TransferActionModal>
 
     <TransferTableModal
@@ -93,6 +93,12 @@
     />
 
     <ResultModal v-show="showResultModal" msg="Transfer Successful" @close="closeResultModal" />
+
+    <ArtisteFormModal
+      v-if="showFormModal"
+      @close="closeArtisteFormModal"
+      :artiste="currentArtiste"
+    />
   </section>
 </template>
 
@@ -111,9 +117,12 @@ import TransferActionModal from "@/components/transfers/transfer-out/ui/Transfer
 import TransferTableModal from "../../components/transfers/transfer-out/ui/TransferTableModal.vue";
 import ConfirmPromptModal from "@/components/global/ConfirmPromptModal.vue";
 import ResultModal from "../../components/global/ResultModal.vue";
+import ArtisteFormModal from "@/components/global/ArtisteFormModal.vue";
+import FullLoadingScreen from "@/components/global/FullLoadingScreen.vue";
 
 const { getPlayerSquad, transferArtistes } = useApiCall();
 
+const loading = ref(false);
 const squadStore = useSquadStore();
 const authStore = useAuthStore();
 const transferStore = useTransfersStore();
@@ -122,6 +131,8 @@ const showTransferActionModal = ref(false);
 const showTransferTableModal = ref(false);
 const showConfirmPromptModal = ref(false);
 const showResultModal = ref(false);
+const currentArtiste = ref(null);
+const showFormModal = ref(false);
 
 onMounted(() => {
   getSquad();
@@ -135,14 +146,17 @@ function toggleView(viewType) {
 }
 
 function getSquad() {
+  loading.value = true;
   const playerId = authStore.waveProfile.player.id;
 
   getPlayerSquad(playerId)
     .then((response) => {
+      loading.value = false;
       squadStore.squad = response;
       squadStore.currentSquad = response.artistes;
     })
     .catch((error) => {
+      loading.value = false;
       console.error(error);
     });
 }
@@ -189,7 +203,8 @@ function resetTransfer() {
 }
 
 // modal functions
-function openTransferActionModal() {
+function openTransferActionModal(artiste) {
+  currentArtiste.value = artiste;
   document.body.classList.add("modal-open");
   showTransferActionModal.value = true;
 }
@@ -197,6 +212,17 @@ function openTransferActionModal() {
 function closeTransferActionModal() {
   document.body.classList.remove("modal-open");
   showTransferActionModal.value = false;
+}
+
+function openArtisteFormModal() {
+  closeTransferActionModal();
+  document.body.classList.add("modal-open");
+  showFormModal.value = true;
+}
+
+function closeArtisteFormModal() {
+  document.body.classList.remove("modal-open");
+  showFormModal.value = false;
 }
 
 function openTransferTableModal() {

@@ -79,7 +79,7 @@
           <StageView v-show="view === 'stage'" :week="week" />
         </KeepAlive>
         <KeepAlive>
-          <ListView v-show="view === 'list'" :week="week" />
+          <ListView v-show="view === 'list'" :week="week" @view-info="openArtisteFormModal" />
         </KeepAlive>
       </div>
 
@@ -88,6 +88,8 @@
       </div>
     </div>
   </section>
+
+  <ArtisteFormModal v-if="showFormModal" @close="closeArtisteFormModal" :artiste="currentArtiste" />
 </template>
 
 <script setup>
@@ -99,6 +101,7 @@ import ViewSelector from "@/components/global/ViewSelector.vue";
 import SquadDataCard from "@/components/squads/SquadDataCard.vue";
 import StageView from "@/components/points/StageView.vue";
 import ListView from "@/components/points/ListView.vue";
+import ArtisteFormModal from "@/components/global/ArtisteFormModal.vue";
 
 const { getPlayerSquad } = useApiCall();
 
@@ -107,6 +110,8 @@ const authStore = useAuthStore();
 
 const view = ref("stage");
 const week = ref(1);
+const currentArtiste = ref(null);
+const showFormModal = ref(false);
 
 onBeforeMount(async () => {
   await getSquad();
@@ -137,6 +142,17 @@ const getSquad = async () => {
       console.error(error);
     });
 };
+
+function openArtisteFormModal(artiste) {
+  currentArtiste.value = artiste;
+  document.body.classList.add("modal-open");
+  showFormModal.value = true;
+}
+
+function closeArtisteFormModal() {
+  document.body.classList.remove("modal-open");
+  showFormModal.value = false;
+}
 </script>
 
 <style lang="scss" scoped>

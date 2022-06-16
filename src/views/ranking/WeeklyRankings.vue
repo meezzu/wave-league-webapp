@@ -13,11 +13,8 @@
             class="w-full sm:w-4/5 outline-0 px-2 py-4 rounded-lg border-[#e8e8e8] border text-black3 font-medium text-center"
           >
             <option value="all" selected>Overall</option>
-            <option value="1">Music Week 1</option>
-            <option value="2">Music Week 2</option>
-            <option value="3">Music Week 3</option>
-            <option value="4">Music Week 4</option>
-            <option value="5">Music Week 5</option>
+            <!-- <option value="1">Music Week 1</option>
+            <option value="2">Music Week 2</option> -->
           </select>
         </form>
 
@@ -30,34 +27,46 @@
           </thead>
 
           <tbody class="table__body">
-            <tr
-              v-for="artiste, index in squadStore.currentSquad"
-              :key="artiste._id"
-              class="table__row"
-              @click="selectArtiste(artiste)"
-            >
+            <tr v-for="(rank, index) in ranking" :key="index" class="table__row">
               <td class="table__data">{{ index + 1 }}</td>
               <td class="table__data">
-                <p>{{ artiste.artiste_name }}</p>
-                <small class="text-grey3">Manager</small>
+                <p class="capitalize font-semibold">{{ rank.squad_name }}</p>
+                <small class="text-grey3">{{ rank.player_name}}</small>
               </td>
-              <td class="table__data">{{ 90 - (index + 3) }}</td>
-              <td class="table__data">{{ 1700 - (index + 2) }}</td>
+              <td class="table__data font-semibold">{{ rank.week }}</td>
+              <td class="table__data font-semibold">{{ rank.points }}</td>
             </tr>
           </tbody>
         </table>
 
-        <app-button text="Next" width="full"></app-button>
+        <!-- <app-button text="Next" width="full"></app-button> -->
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
 import { useSquadStore } from "@/stores/squad";
-import AppButton from "../../components/global/AppButton.vue";
+import useApiCall from "@/composition/useApiCall";
+import AppButton from "@/components/global/AppButton.vue";
 
 const squadStore = useSquadStore();
+
+const ranking = ref(null);
+const { leagueRanking } = useApiCall();
+
+onMounted(() => {
+  getLeagueRanking();
+});
+
+async function getLeagueRanking() {
+  try {
+    ranking.value = await leagueRanking();
+  } catch (error) {
+    console.error(error);
+  }
+}
 </script>
 
 <style lang="scss" scoped>

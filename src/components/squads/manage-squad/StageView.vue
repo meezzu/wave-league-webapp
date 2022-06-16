@@ -6,9 +6,10 @@
           v-for="artiste in squadStore.stageArtistes.slice(0,2)"
           :key="artiste._id"
           :artiste="artiste"
-          @click="selectArtiste(artiste)"
           :selected="selected"
           :class="{'inactive': Object.keys(selected).length && selected.id !== artiste.id}"
+          @select-artiste="selectArtiste(artiste)"
+          @view-info="$emit('viewInfo', artiste)"
         />
       </div>
       <div class="flex items-center p-6 justify-center">
@@ -17,7 +18,8 @@
           :key="artiste._id"
           :artiste="artiste"
           :selected="selected"
-          @click="selectArtiste(artiste)"
+          @select-artiste="selectArtiste(artiste)"
+          @view-info="$emit('viewInfo', artiste)"
           :class="{'inactive': Object.keys(selected).length && selected.id !== artiste.id}"
         />
       </div>
@@ -27,7 +29,8 @@
           :key="artiste._id"
           :artiste="artiste"
           :selected="selected"
-          @click="selectArtiste(artiste)"
+          @select-artiste="selectArtiste(artiste)"
+          @view-info="$emit('viewInfo', artiste)"
           :class="{'inactive': Object.keys(selected).length && selected.id !== artiste.id}"
         />
       </div>
@@ -40,7 +43,8 @@
           :key="artiste._id"
           :artiste="artiste"
           :selected="selected"
-          @click="changeArtiste(artiste)"
+          @change-artiste="changeArtiste(artiste)"
+          @view-info="$emit('viewInfo', artiste)"
         />
       </div>
     </div>
@@ -55,7 +59,7 @@ import { ref, nextTick } from "vue";
 
 const squadStore = useSquadStore();
 const selected = ref({});
-const emits = defineEmits(["sub-artiste"]);
+const emits = defineEmits(["sub-artiste", "viewInfo"]);
 
 const changeArtiste = async (artisteIn) => {
   if (!Object.keys(selected.value).length) return;

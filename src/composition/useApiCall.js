@@ -210,6 +210,49 @@ export default function useApiCall() {
       });
   };
 
+  const weekTopArtistes = async (data) => {
+    loading.value = true;
+    const params = new URLSearchParams(data).toString();
+    return await authorisedCall
+      .get(`${baseUrl}charts?${params}`)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
+  const leagueRanking = async () => {
+    loading.value = true;
+    return await authorisedCall
+      .get(`${baseUrl}leagues/general/ranking?week=17`)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
+  const getSingleArtiste = async (data) => {
+    loading.value = true;
+    return await authorisedCall
+      .get(`${baseUrl}artistes/${data}`)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
   return {
     loginPlayer,
     registerPlayer,
@@ -224,6 +267,9 @@ export default function useApiCall() {
     getPlayerPoints,
     topTransfersIn,
     topTransfersOut,
+    weekTopArtistes,
+    leagueRanking,
+    getSingleArtiste,
     loading,
   };
 }

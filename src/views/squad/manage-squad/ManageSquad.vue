@@ -6,8 +6,16 @@
       <ViewSelector class="mt-6" @viewStage="toggleView('stage')" @viewList="toggleView('list')" />
 
       <div class="views mt-8">
-        <StageView v-show="view === 'stage'" @subArtiste="changeArtistes" />
-        <ListView v-show="view === 'list'" @subArtiste="changeArtistes" />
+        <StageView
+          v-show="view === 'stage'"
+          @subArtiste="changeArtistes"
+          @view-info="openArtisteFormModal"
+        />
+        <ListView
+          v-show="view === 'list'"
+          @subArtiste="changeArtistes"
+          @view-info="openArtisteFormModal"
+        />
       </div>
 
       <div class="squad-card-wrapper mt-12 px-3 sm:px-0">
@@ -15,6 +23,8 @@
       </div>
     </div>
   </section>
+
+  <ArtisteFormModal v-if="showFormModal" @close="closeArtisteFormModal" :artiste="currentArtiste" />
 </template>
 
 <script setup>
@@ -28,6 +38,7 @@ import ViewSelector from "@/components/global/ViewSelector.vue";
 import SquadDataCard from "@/components/squads/SquadDataCard.vue";
 import StageView from "@/components/squads/manage-squad/StageView.vue";
 import ListView from "@/components/squads/manage-squad/ListView.vue";
+import ArtisteFormModal from "@/components/global/ArtisteFormModal.vue";
 
 const { getPlayerSquad, substituteArtiste } = useApiCall();
 
@@ -35,6 +46,8 @@ const squadStore = useSquadStore();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
 // const router = useRouter();
+const currentArtiste = ref(null);
+const showFormModal = ref(false);
 
 const view = ref("stage");
 
@@ -74,6 +87,17 @@ const changeArtistes = async (payload) => {
       console.error(error);
     });
 };
+
+function openArtisteFormModal(artiste) {
+  currentArtiste.value = artiste;
+  document.body.classList.add("modal-open");
+  showFormModal.value = true;
+}
+
+function closeArtisteFormModal() {
+  document.body.classList.remove("modal-open");
+  showFormModal.value = false;
+}
 </script>
 
 

@@ -7,6 +7,7 @@
           :key="artiste._id"
           :artiste="artiste"
           @click="selectArtiste(artiste)"
+          @view-info="$emit('viewInfo', artiste)"
         />
       </div>
       <div class="flex items-center p-6 justify-around">
@@ -15,6 +16,7 @@
           :key="artiste._id"
           :artiste="artiste"
           @click="selectArtiste(artiste)"
+          @view-info="$emit('viewInfo', artiste)"
         />
         <!-- :class="{'inactive': Object.keys(transfersStore.selected).length && transfersStore.selected.id !== artiste.id}" -->
       </div>
@@ -24,6 +26,7 @@
           :key="artiste._id"
           :artiste="artiste"
           @click="selectArtiste(artiste)"
+          @view-info="$emit('viewInfo', artiste)"
         />
       </div>
     </div>

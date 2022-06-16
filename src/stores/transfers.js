@@ -7,4 +7,7 @@ export const useTransfersStore = defineStore({
     currentTransfersOut: [],
     currentTransfersIn: [],
   }),
+  getters: {
+    playerOutValue: (state) => (Object.keys(state.selected).length ? state.selected.price : 0),
+  },
 });

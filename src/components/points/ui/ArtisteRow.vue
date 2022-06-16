@@ -1,9 +1,13 @@
 <template>
   <tr class="table__row">
     <td class="table__data">
-      <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
+      <img
+        src="@/assets/icons/info-primary.svg"
+        alt="artiste information"
+        @click="$emit('viewInfo', artiste)"
+      />
     </td>
-    <td class="table__data flex items-center gap-x-4">
+    <td class="table__data flex items-center gap-x-4 text-secondary">
       <img
         :src="artiste.avatar"
         :alt="artiste.artiste_name"
@@ -40,6 +44,7 @@ const props = defineProps({
   },
 });
 
+defineEmits(["viewInfo"]);
 watch(
   () => props.week,
   async () => {

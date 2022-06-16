@@ -8,11 +8,11 @@
           >
             <p class="text-black1">Select Artiste</p>
             <p v-if="!allLoading" class="text-grey3">
-              Money Left:
+              Available:
               <span
                 v-if="squadStore.squad !== null"
                 class="font-semibold text-primary"
-              >{{ squadStore.squad.in_the_bank }}m</span>
+              >{{ squadStore.squad.in_the_bank + transfersStore.playerOutValue }}m</span>
             </p>
           </div>
 
@@ -134,9 +134,11 @@ import { useSquadStore } from "@/stores/squad";
 import { useArtistesStore } from "@/stores/artistes";
 import useApiCall from "@/composition/useApiCall";
 import { useToastStore } from "@/stores/toast";
+import { useTransfersStore } from "../../../../stores/transfers";
 
 const squadStore = useSquadStore();
 const artistesStore = useArtistesStore();
+const transfersStore = useTransfersStore();
 const toastStore = useToastStore();
 const { getAllArtistes } = useApiCall();
 const emits = defineEmits(["select-artiste"]);
@@ -211,8 +213,11 @@ const currentArtiste = (artiste) => {
 };
 
 const selectArtiste = (artiste) => {
-  if (Number(artiste.price) + Number(squadStore.totalSquadValue) > 100) {
-    toastStore.displayToast("Ooops, Artiste is too expensive!");
+  if (
+    Number(artiste.price) >
+    squadStore.squad.in_the_bank + transfersStore.playerOutValue
+  ) {
+    toastStore.displayToast("Oops, Artiste is too expensive!");
     return;
   }
   emits("selectArtiste", artiste);

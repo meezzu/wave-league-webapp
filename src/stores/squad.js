@@ -25,10 +25,12 @@ export const useSquadStore = defineStore({
     },
     squadPosition: (state) => {
       let squad = [];
-      state.squad.artistes.map((artiste, artisteIndex) => {
-        let temp = { ...artiste, ...state.squad.roster[artisteIndex] };
-        squad.push(temp);
-      });
+      if (Object.keys(state.squad).length) {
+        state.squad.artistes.map((artiste, artisteIndex) => {
+          let temp = { ...artiste, ...state.squad.roster[artisteIndex] };
+          squad.push(temp);
+        });
+      }
       return squad;
     },
     benchArtistes() {

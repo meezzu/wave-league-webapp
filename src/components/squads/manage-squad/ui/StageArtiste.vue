@@ -14,12 +14,22 @@
         </div>
 
         <img
+          class="absolute top-0 left-[-20px] cursor-pointer"
+          src="../../../../assets/icons/info-primary.svg"
+          alt="view artiste info"
+          width="20"
+          height="20"
+          @click="$emit('viewInfo', artiste)"
+        />
+
+        <img
           v-show="!Object.keys(selected).length || selected.id !== artiste.id"
           class="absolute top-0 right-[-20px] cursor-pointer"
           src="@/assets/icons/substitute.svg"
           alt="remove artiste"
-          width="20"
+          width="15"
           height="20"
+          @click="$emit('selectArtiste', artiste)"
         />
 
         <img
@@ -27,14 +37,15 @@
           class="absolute top-0 right-[-20px] cursor-pointer"
           src="@/assets/icons/caret-down-red.svg"
           alt="remove artiste"
-          width="20"
+          width="15"
           height="20"
         />
       </div>
 
-      <div class="mt-2 text-center m-auto">
+      <div class="mt-2 text-center w-full">
         <p
           class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"
+          @click="$emit('selectArtiste', artiste)"
         >{{ artiste.artiste_name.split(" ")[0] }}</p>
       </div>
     </div>
@@ -52,4 +63,6 @@ defineProps({
     required: false,
   },
 });
+
+defineEmits(["selectArtiste, viewInfo"]);
 </script>

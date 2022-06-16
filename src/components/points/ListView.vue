@@ -16,6 +16,7 @@
             :key="index"
             :artiste="artiste"
             :week="week"
+            @view-info="$emit('viewInfo', artiste)"
           ></ArtisteRow>
         </tbody>
       </table>
@@ -37,6 +38,7 @@
             :key="index"
             :artiste="artiste"
             :week="week"
+            @view-info="$emit('viewInfo', artiste)"
           ></ArtisteRow>
         </tbody>
       </table>
@@ -50,6 +52,7 @@ import { useSquadStore } from "@/stores/squad";
 
 const squadStore = useSquadStore();
 const props = defineProps(["week"]);
+defineEmits(["viewInfo"]);
 </script>
 
 <style lang="scss">

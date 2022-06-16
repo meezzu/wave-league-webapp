@@ -40,6 +40,10 @@
           </tr>
         </tbody>
       </table>
+
+      <div v-if="!topTransfers" class="min-h-[200px] flex items-center justify-center min-w-full">
+        <img src="@/assets/icons/loader-rolling.svg" alt="loading" height="40" width="40" />
+      </div>
     </div>
   </div>
 </template>

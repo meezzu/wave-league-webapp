@@ -22,6 +22,14 @@
         </div>
 
         <img
+          class="absolute top-0 left-[-20px] cursor-pointer"
+          src="@/assets/icons/info-primary.svg"
+          alt="view artiste info"
+          width="20"
+          height="20"
+        />
+
+        <img
           class="absolute top-0 right-[-20px] cursor-pointer"
           src="@/assets/icons/delete-red.svg"
           alt="remove artiste"
@@ -30,10 +38,13 @@
         />
       </div>
 
-      <div class="mt-2 text-center m-auto">
+      <div class="mt-2 text-center m-auto w-full">
         <p
           class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"
         >{{ artiste.artiste_name.split(" ")[0] }}</p>
+        <p
+          class="bg-white rounded-b py-1 px-2 text-black text-sm font-semibold"
+        >{{ artiste.price }}m</p>
 
         <!-- <p
           v-if="Object.keys(transferStore.selected).length && transferStore.selected._id === artiste.id"
@@ -45,10 +56,6 @@
 </template>
 
 <script setup>
-import { useTransfersStore } from "../../../../stores/transfers";
-
-const transferStore = useTransfersStore();
-
 defineProps({
   artiste: {
     type: Object,

@@ -14,13 +14,19 @@
             v-for="artiste in squadStore.stageArtistes"
             :key="artiste._id"
             class="table__row"
-            @click="selectArtiste(artiste)"
             :class="{'inactive': Object.keys(selected).length && selected.id !== artiste.id}"
           >
             <td class="table__data">
-              <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
+              <img
+                src="@/assets/icons/info-primary.svg"
+                alt="artiste information"
+                @click="$emit('viewInfo', artiste)"
+              />
             </td>
-            <td class="table__data flex items-center gap-x-4">
+            <td
+              class="table__data flex items-center gap-x-4 text-secondary"
+              @click="selectArtiste(artiste)"
+            >
               <img
                 :src="artiste.avatar"
                 :alt="artiste.artiste_name"
@@ -54,9 +60,13 @@
             @click="changeArtiste(artiste)"
           >
             <td class="table__data">
-              <img src="@/assets/icons/info-primary.svg" alt="artiste information" />
+              <img
+                src="@/assets/icons/info-primary.svg"
+                alt="artiste information"
+                @click="$emit('viewInfo', artiste)"
+              />
             </td>
-            <td class="table__data flex items-center gap-x-4">
+            <td class="table__data flex items-center gap-x-4 text-secondary">
               <img
                 :src="artiste.avatar"
                 :alt="artiste.artiste_name"
@@ -81,7 +91,7 @@ import { ref, nextTick } from "vue";
 
 const squadStore = useSquadStore();
 const selected = ref({});
-const emits = defineEmits(["sub-artiste"]);
+const emits = defineEmits(["sub-artiste", "viewInfo"]);
 
 const changeArtiste = async (artisteIn) => {
   if (!Object.keys(selected.value).length) return;

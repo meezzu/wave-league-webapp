@@ -7,7 +7,7 @@
 
           <div class="modal-body flex flex-col justify-center items-center gap-y-6">
             <AppButton text="Transfer Out" @clicked="$emit('startTransfer')" />
-            <AppButton text="View Information" @clicked="$emit('viewInfo')" :disabled="true" />
+            <AppButton text="View Information" @clicked="$emit('viewInfo')" />
           </div>
 
           <div class="modal-footer"></div>
