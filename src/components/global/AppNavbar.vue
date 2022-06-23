@@ -3,25 +3,25 @@
     class="nav relative z-20 text-white border-gray-200 overflow-y-visible transition duration-700 ease-in-out drop-shadow-md"
   >
     <div
-      class="screen-container px-4 sm:px-8 md:px-12 lg:px-24 py-4 flex flex-wrap justify-between items-center mx-auto"
+      class="screen-container px-2 sm:px-8 md:px-12 lg:px-24 py-4 flex justify-between items-center mx-auto"
     >
       <!-- website logo section  -->
-      <div class="flex w-1/12">
+      <div class="flex w-1.5/12">
         <router-link to="/">
           <img
             src="../../assets/icons/wave-league-logo.svg"
             alt="wave league logo"
-            height="60"
-            width="60"
+            height="45"
+            width="45"
           />
         </router-link>
       </div>
 
       <!-- menu items  -->
       <div
-        class="menu hidden justify-between items-center text-sm w-full lg:flex md:w-auto md:order-1"
+        class="menu flex justify-between items-center text-sm w-8/12 lg:flex md:w-auto md:order-1"
       >
-        <ul class="menu-list text-sm flex flex-col mt-4 md:flex-row md:space-x-12 md:mt-0">
+        <ul class="menu-list text-sm flex mt-4 md:flex-row gap-x-2 sm:gap-x-4 md:mt-0">
           <router-link class="menu-list-item" to="/">
             <div class="menu-indicator"></div>
             <li>Home</li>
@@ -38,92 +38,77 @@
             <div class="menu-indicator"></div>
             <li>Transfers</li>
           </router-link>
-          <router-link class="menu-list-item" to="/rankings">
-            <div class="menu-indicator"></div>
-            <li>Ranking</li>
-          </router-link>
         </ul>
       </div>
 
       <!-- cta section  -->
-      <div class="flex items-center text-sm md:order-2 space-x-8 md:space-x-4">
-        <div class="profile flex items-center mr-4 lg:mr-0 relative">
-          <img
-            class="rounded-full"
-            :src="authStore.googleUser.picture"
-            alt="profile picture"
-            width="40"
-            height="40"
-            @click="showDropdown = !showDropdown"
-          />
-
-          <div
-            class="dropdown absolute top-12 right-0 bg-white rounded-lg"
-            :class="showDropdown ? 'block' : 'hidden'"
-            ref="clickOutsideTarget"
-          >
-            <ul>
-              <li class="border-b py-4 px-4 flex items-center justify-between gap-x-8">
-                <div class="flex items-center">
-                  <img
-                    class="rounded-full"
-                    :src="authStore.googleUser.given_name"
-                    alt="profile picture"
-                    width="40"
-                    height="40"
-                  />
-                  <div>
-                    <p class="text-sm text-black2">{{ authStore.googleUser.given_name }}</p>
-                    <p class="text-sm text-[#419078]">{{ authStore.googleUser.email }}</p>
-                  </div>
-                </div>
-
-                <div>
-                  <router-link to="/edit-profile">
-                    <img
-                      class="cursor-pointer"
-                      src="../../assets/icons/edit-profile.svg"
-                      alt="edit profile"
-                      width="25"
-                      height="25"
-                    />
-                  </router-link>
-                </div>
-              </li>
-              <router-link to="/rankings">
-                <li class="py-4 px-4 border-b flex items-center justify-between gap-x-8">
-                  <p class="text-sm text-base text-black2">Ranking</p>
-                  <img
-                    src="../../assets/icons/ranking.svg"
-                    alt="profile picture"
-                    width="25"
-                    height="25"
-                  />
-                </li>
-              </router-link>
-
-              <li
-                class="py-4 px-4 flex items-center justify-between gap-x-8 cursor-pointer"
-                @click="signOut"
-              >
-                <p class="text-sm text-base text-[#F96060]">Sign Out</p>
-                <img src="../../assets/icons/sign-out.svg" alt="sign out" width="25" height="25" />
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <label class="hamburger flex lg:hidden" for="check">
-          <input id="check" v-model="showMobileMenu" type="checkbox" />
+      <div class="flex w-1.5/12 items-center text-sm md:order-2 space-x-8 md:space-x-4 relative">
+        <label class="hamburger flex" for="check">
+          <input id="check" name="check" @change="checkMenu($event)" type="checkbox" />
           <span></span>
           <span></span>
           <span></span>
         </label>
+
+        <div
+          class="dropdown absolute top-12 right-0 bg-white rounded-lg"
+          :class="showDropdown ? 'block' : 'hidden'"
+          ref="clickOutsideTarget"
+        >
+          <ul>
+            <li class="border-b py-4 px-4 flex items-center justify-between gap-x-8">
+              <div class="flex items-center">
+                <img
+                  class="rounded-full"
+                  :src="authStore.googleUser.given_name"
+                  alt="profile picture"
+                  width="30"
+                  height="30"
+                />
+                <div>
+                  <p class="text-sm text-black2">{{ authStore.googleUser.given_name }}</p>
+                  <p class="text-sm text-[#419078]">{{ authStore.googleUser.email }}</p>
+                </div>
+              </div>
+
+              <div>
+                <router-link to="/edit-profile">
+                  <img
+                    class="cursor-pointer"
+                    src="../../assets/icons/edit-profile.svg"
+                    alt="edit profile"
+                    width="25"
+                    height="25"
+                  />
+                </router-link>
+              </div>
+            </li>
+            <router-link to="/rankings">
+              <li class="py-4 px-4 border-b flex items-center justify-between gap-x-8">
+                <p class="text-sm text-base text-black2">Ranking</p>
+                <img
+                  src="../../assets/icons/ranking.svg"
+                  alt="profile picture"
+                  width="25"
+                  height="25"
+                />
+              </li>
+            </router-link>
+
+            <li
+              class="py-4 px-4 flex items-center justify-between gap-x-8 cursor-pointer"
+              @click="signOut"
+            >
+              <p class="text-sm text-base text-[#F96060]">Sign Out</p>
+              <img src="../../assets/icons/sign-out.svg" alt="sign out" width="25" height="25" />
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <!-- mobile menu  -->
-    <div
+    <!-- <div
       v-show="showMobileMenu"
       class="z-21 pt-8 bg-primary text-sm transition duration-300"
       :class="{'h-screen': showMobileMenu}"
@@ -160,7 +145,7 @@
           />
         </li>
       </ul>
-    </div>
+    </div>-->
   </nav>
 </template>
 
@@ -170,9 +155,9 @@ import { useAuthStore } from "@/stores/auth";
 import useApiCall from "@/composition/useApiCall";
 import { onClickOutside } from "@vueuse/core";
 
-const showMobileMenu = ref(false);
+// const showMobileMenu = ref(false);
 const scrollPosition = ref(null);
-const linkRefs = ref([]);
+// const linkRefs = ref([]);
 const showDropdown = ref(false);
 const clickOutsideTarget = ref(null);
 
@@ -183,29 +168,34 @@ onClickOutside(clickOutsideTarget, () => (showDropdown.value = false));
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", updateScroll);
-  linkRefs.value.forEach((element) => {
-    element.removeEventListener("click", closeMenu);
-  });
+  // linkRefs.value.forEach((element) => {
+  //   element.removeEventListener("click", closeMenu);
+  // });
 });
 
 onMounted(() => {
   window.addEventListener("scroll", updateScroll);
-  linkRefs.value.forEach((link) => {
-    link.addEventListener("click", closeMenu);
-  });
+  // linkRefs.value.forEach((link) => {
+  //   link.addEventListener("click", closeMenu);
+  // });
 });
+
+function checkMenu(checkBox) {
+  checkBox.preventDefault();
+  showDropdown.value = checkBox.target.checked;
+}
 
 function signOut() {
   signUserOut();
 }
 
-function setLinkRefs(el) {
-  if (el) linkRefs.value.push(el);
-}
+// function setLinkRefs(el) {
+//   if (el) linkRefs.value.push(el);
+// }
 
-function closeMenu() {
-  showMobileMenu.value = false;
-}
+// function closeMenu() {
+//   showMobileMenu.value = false;
+// }
 
 // function toggleMenu() {
 //   showMobileMenu.value = !showMobileMenu.value;
@@ -253,13 +243,13 @@ function updateScroll() {
     input[type="checkbox"]:checked ~ span:nth-of-type(1) {
       transform-origin: center;
       width: 100%;
-      transform: rotatez(45deg) translate(0px, 6px);
+      transform: rotateZ(45deg) translate(0px, 6px);
     }
 
     input[type="checkbox"]:checked ~ span:nth-of-type(2) {
       transform-origin: centre;
       width: 100%;
-      transform: rotatez(-45deg) translate(0px, -8px);
+      transform: rotateZ(-45deg) translate(0px, -8px);
     }
 
     input[type="checkbox"]:checked ~ span:nth-of-type(3) {
@@ -302,6 +292,33 @@ function updateScroll() {
       -ms-transition: all 0.3s linear;
       transition: all 0.3s linear;
 
+      @media only screen and (max-width: 1024px) {
+        height: 80px;
+        width: 80px;
+        font-size: 13px;
+      }
+
+      @media only screen and (max-width: 768px) {
+        height: 70px;
+        width: 70px;
+        font-size: 12px;
+        li {
+          font-weight: 500;
+        }
+      }
+
+      @media only screen and (max-width: 600px) {
+        height: 60px;
+        width: 60px;
+        font-size: 11px;
+      }
+
+      @media only screen and (max-width: 375px) {
+        height: 54px;
+        width: 54px;
+        font-size: 10px;
+      }
+
       .menu-indicator {
         background-color: $secondary;
         height: 20%;
@@ -311,6 +328,7 @@ function updateScroll() {
         -webkit-transition: all 0.3s linear;
         -ms-transition: all 0.3s linear;
         transition: all 0.3s linear;
+        overflow: hidden;
       }
 
       &:hover {

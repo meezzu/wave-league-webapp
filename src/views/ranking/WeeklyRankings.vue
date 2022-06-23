@@ -6,15 +6,15 @@
       </div>
 
       <div class="mt-8 flex flex-col items-center justify-between gap-y-16">
-        <form class="w-full flex justify-center px-4">
+        <form class="form w-full flex justify-center px-4">
           <select
             name="week"
             id="week"
-            class="w-full sm:w-4/5 outline-0 px-2 py-4 rounded-lg border-[#e8e8e8] border text-black3 font-medium text-center"
+            class="form__select text-center w-full sm:w-4/5 outline-0 px-2 py-4 rounded-lg border-[#e8e8e8] border text-black3 font-medium text-center"
           >
-            <option value="all" selected>Overall</option>
+            <option value="all" class="text-center" selected>Overall</option>
             <!-- <option value="1">Music Week 1</option>
-            <option value="2">Music Week 2</option> -->
+            <option value="2">Music Week 2</option>-->
           </select>
         </form>
 
@@ -130,5 +130,19 @@ async function getLeagueRanking() {
     text-align: center;
   }
 }
-</style>
 
+.form {
+  &__select {
+    -webkit-appearance: none;
+    outline: none;
+    text-align-last: center;
+    // text-indent: 20px;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: 15px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+</style>
