@@ -1,7 +1,13 @@
 <template>
   <div class="time-card text-center">
-    <div class="card-block text-center w-20 h-20 sm:w-24 sm:h-24">
-      <h4 class="card-title">{{time}}</h4>
+    <div class="flex gap-x-1 ">
+      <div
+        v-for="item, index in time.split('')"
+        :key="index"
+        class="card-block text-center px-4 py-6 sm:p-6 md:py-8 md:px-6"
+      >
+        <div class="card-time">{{item}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -23,10 +29,10 @@ export default {
   justify-content: center;
   border-radius: 8px;
 
-  .card-title {
+  .card-time {
     font-weight: bold;
-    font-size: 48px;
-    line-height: 55px;
+    font-size: 32px;
+    line-height: 38px;
     color: $secondary;
     text-shadow: 0px 2px 3px rgba(78, 78, 78, 0.25);
   }
