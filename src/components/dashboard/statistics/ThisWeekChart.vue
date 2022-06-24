@@ -1,15 +1,15 @@
 <template>
   <div class="card">
-    <div class="card-header bg-primary py-4">
+    <div class="card-header bg-primary">
       <h3
-        class="card-header capitalize text-xl text-white bg-primary py-4 px-8 font-semibold"
+        class="card-header capitalize text-xl text-white bg-primary py-4 px-4 font-semibold"
       >Top Squads of the Week</h3>
     </div>
 
     <div class="card-body">
       <table class="table-auto w-full border-collapse">
         <thead>
-          <tr class="border-b font-semibold text-grey3">
+          <tr class="border-b font-semibold text-grey3 text-left">
             <th class="p-3">Rank</th>
             <th class="p-3 text-left">Squad</th>
             <th class="p-3">Points</th>
@@ -19,12 +19,12 @@
           <tr
             v-for="team, index in ranking.slice(0, 10)"
             :key="index"
-            class="text-black2"
+            class="text-black2 text-left"
             :class="{'border-b': index !== 10}"
           >
-            <td class="p-4 text-bold">{{ index + 1 }}.</td>
-            <td class="capitalize text-left">{{ team.squad_name }}</td>
-            <td>{{ team.points }}</td>
+            <td class="p-4 text-bold p-3">{{ index + 1 }}.</td>
+            <td class="capitalize text-left p-3">{{ team.squad_name }}</td>
+            <td class="p-3">{{ team.points }}</td>
           </tr>
         </tbody>
       </table>

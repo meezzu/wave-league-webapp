@@ -2,9 +2,14 @@
   <div class="card">
     <div class="card-body grid grid-cols-3 gap-4">
       <div class="p-8 self-center col-span-3 lg:col-span-1">
-        <h2 class="text-2xl text-primary font-semibold">Music Week 1</h2>
-        <router-link to="/squad">
+        <h2 class="text-2xl text-primary font-semibold">Music Week {{ week }}</h2>
+        <router-link v-if="newUser" to="/squad">
           <button
+            v-if="newUser"
+            class="text-white bg-primary mt-6 font-medium rounded-lg text-base px-12 py-3 text-center"
+          >Select Team</button>
+          <button
+            v-else
             class="text-white bg-primary mt-6 font-medium rounded-lg text-base px-12 py-3 text-center"
           >My Squad</button>
         </router-link>
@@ -18,30 +23,29 @@
       </div>
     </div>
 
-    <div class="card-footer flex flex-wrap justify-evenly items-center bg-primary">
-      <div class="text-center p-6 my-2">
+    <div class="card-footer flex justify-around items-center bg-primary">
+      <div class="text-center py-6 px-1 my-1">
         <p class="text-secondary font-medium text-sm">Highest Point</p>
-        <p class="text-white">99</p>
+        <p v-if="!newUser" class="text-white">99</p>
+        <p v-else class="text-white">-</p>
       </div>
-      <div class="text-center p-6 my-2">
+      <div class="text-center py-6 px-1 my-1">
         <p class="text-secondary font-medium text-sm">Average Point</p>
-        <p class="text-white">99</p>
+        <p v-if="!newUser" class="text-white">99</p>
+        <p v-else class="text-white">-</p>
       </div>
-      <div class="text-center p-6 my-2">
+      <div class="text-center py-6 px-1 my-1">
         <p class="text-secondary font-medium text-sm">Transfers Made</p>
-        <p class="text-white">99,000</p>
-      </div>
-      <div class="text-center p-6 my-2">
-        <p class="text-secondary font-medium text-sm">Most Transferred In</p>
-        <p class="text-white">Wizkid</p>
-      </div>
-      <div class="text-center p-6 my-2">
-        <p class="text-secondary font-medium text-sm">Most Transferred Out</p>
-        <p class="text-white">Fireboy</p>
+        <p v-if="!newUser" class="text-white">99,000</p>
+        <p v-else class="text-white">-</p>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+defineProps(["newUser", "week"]);
+</script>
 
 
 <style lang="scss" scoped>

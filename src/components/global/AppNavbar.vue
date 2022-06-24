@@ -21,7 +21,7 @@
       <div
         class="menu flex justify-between items-center text-sm w-8/12 lg:flex md:w-auto md:order-1"
       >
-        <ul class="menu-list text-sm flex mt-4 md:flex-row gap-x-2 sm:gap-x-4 md:mt-0">
+        <ul class="menu-list text-sm flex mt-4 md:flex-row gap-x-2 sm:gap-x-4 md:gap-x-8 lg:gap-x-12 md:mt-0">
           <router-link class="menu-list-item" to="/">
             <div class="menu-indicator"></div>
             <li>Home</li>

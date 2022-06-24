@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div
-      class="card-header capitalize text-xl text-white bg-primary py-4 px-8 font-semibold"
+      class="card-header capitalize text-xl text-white bg-primary py-4 px-4 font-semibold"
     >Top Artistes of the Week</div>
 
     <div class="card-body flex items-stretch justify-between relative">
@@ -25,21 +25,24 @@
 
       <div
         ref="imgContainer"
-        class="images-container py-8 mx-2 bg-white flex overflow-auto justify-start space-x-12 items-center"
+        class="images-container py-8 px-2 bg-white flex overflow-auto justify-start items-start w-full"
       >
         <template v-if="charts">
-          <div v-for="(artiste, index) in charts.result" :key="index" class="image">
+          <div
+            v-for="(artiste, index) in charts.result"
+            :key="index"
+            class="image flex flex-col items-center min-w-[90px] justify-start gap-y-2 mx-8"
+          >
             <img
-              class="img z-10"
+              class="img z-10 rounded-full border-4-white drop-shadow-xl drop-shadow-grey3"
               :src="artiste.avatar"
               :alt="artiste.artiste_name"
-              width="110"
-              height="110"
+              width="70"
+              height="70"
             />
-            <div class="image-detail text-center bg-[#f8f8f8]">
-              <p class="text-secondary">{{ artiste.artiste_name }}</p>
-              <p class="font-bold">{{ artiste.points }}pts</p>
-            </div>
+            <p class="text-secondary text-center">{{ artiste.artiste_name }}</p>
+            <p v-if="newUser" class="font-bold">-</p>
+            <p v-else class="font-bold">{{ artiste.points }}pts</p>
           </div>
         </template>
 
@@ -76,6 +79,7 @@ import useApiCall from "../../../composition/useApiCall";
 const imgContainer = ref(null);
 const charts = ref(null);
 const { weekTopArtistes } = useApiCall();
+defineProps(["newUser"]);
 
 onMounted(() => {
   getWeekTopArtistes();
@@ -120,28 +124,6 @@ function slide(direction) {
   .card-header {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-  }
-
-  .card-body {
-    .images-container {
-      .image {
-        .img {
-        }
-
-        .image-detail {
-          height: 140px;
-          margin-top: -80px;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          align-items: center;
-          border-radius: 57px;
-          padding-bottom: 1rem;
-          margin-right: 8px;
-          margin-left: 8px;
-        }
-      }
-    }
   }
 }
 </style>

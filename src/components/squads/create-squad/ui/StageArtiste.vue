@@ -31,11 +31,13 @@
         />
       </div>
 
-      <div class="mt-2 text-center m-auto">
+      <div class="mt-2 text-center m-auto w-full">
         <p
           class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"
         >{{ artiste.artiste_name.split(" ")[0] }}</p>
-
+    <p
+          class="bg-white rounded-b py-1 px-2 text-black text-sm font-semibold"
+        >{{ artiste.price }}m</p>
         <!-- <p
           v-if="Object.keys(transferStore.selected).length && transferStore.selected._id === artiste.id"
           class="bg-primary rounded py-1.5 px-3 text-secondary text-xs"

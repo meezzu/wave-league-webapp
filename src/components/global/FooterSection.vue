@@ -13,7 +13,7 @@
         <a href="#">Terms and Conditions</a>
         <a href="#">Policies</a>
         <a href="#">Cookie Policy</a>
-        <a class="text-secondary" href="#">Back to Top</a>
+        <!-- <a class="text-secondary" href="#">Back to Top</a> -->
       </div>
     </div>
   </section>

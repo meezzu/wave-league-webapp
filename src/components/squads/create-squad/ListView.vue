@@ -20,13 +20,13 @@
                 class="rounded-full h-12 w-12 border border-grey4 drop-shadow-sm"
                 :src="artiste.avatar"
                 :alt="artiste.artiste_name"
-                width="40"
-                height="40"
+                width="30"
+                height="30"
               />
               <p>{{ artiste.artiste_name }}</p>
             </td>
             <td class="table__data">{{ artiste.price }}m</td>
-            <td class="table__data">{{ artiste.price }}</td>
+            <td class="table__data">--</td>
           </tr>
 
           <!-- empty slots  -->
@@ -40,8 +40,8 @@
               <img
                 src="../../../assets/icons/unknown-artiste.svg"
                 alt="unknown artiste"
-                width="40"
-                height="40"
+                width="30"
+                height="30"
               />
               <p>--</p>
             </td>
@@ -103,15 +103,15 @@ const openAllArtistesModal = () => {
   .table__heading {
     font-weight: 500;
     font-size: 16px;
-    padding: 12px;
-    text-align: center;
+    padding: 20px;
+    text-align: left;
     border: none;
   }
 
   .table__data {
     padding: 20px;
     border-bottom: 1px solid #d9d9d9;
-    text-align: center;
+    text-align: left;
   }
 
   .table__squad {

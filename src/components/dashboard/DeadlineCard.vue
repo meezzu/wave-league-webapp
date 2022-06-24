@@ -1,5 +1,5 @@
 <template>
-  <section class="timer mt-24 mb-16">
+  <section class="timer">
     <div class="card">
       <div class="card-header py-4 px-8 text-primary">
         <h3 class="capitalize text-xl font-semibold">Transfer Deadline</h3>

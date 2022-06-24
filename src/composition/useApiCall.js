@@ -253,6 +253,20 @@ export default function useApiCall() {
       });
   };
 
+  const getCurrentWeek = async () => {
+    loading.value = true;
+    return await authorisedCall
+      .get(`${baseUrl}weeks/current`)
+      .then((response) => {
+        loading.value = false;
+        return response.data.data;
+      })
+      .catch((error) => {
+        loading.value = false;
+        throw error;
+      });
+  };
+
   return {
     loginPlayer,
     registerPlayer,
@@ -270,6 +284,7 @@ export default function useApiCall() {
     weekTopArtistes,
     leagueRanking,
     getSingleArtiste,
+    getCurrentWeek,
     loading,
   };
 }

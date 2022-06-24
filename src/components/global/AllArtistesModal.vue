@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container relative rounded">
+        <div class="modal-container relative rounded" ref="clickOutsideTarget">
           <div
             class="modal-header text-center font-semibold text-base border-b flex justify-between items-center px-4 py-4"
           >
@@ -138,6 +138,7 @@ import { useSquadStore } from "@/stores/squad";
 import { useArtistesStore } from "@/stores/artistes";
 import useApiCall from "@/composition/useApiCall";
 import { useToastStore } from "@/stores/toast";
+import { onClickOutside } from "@vueuse/core";
 
 const squadStore = useSquadStore();
 const artistesStore = useArtistesStore();
@@ -145,9 +146,13 @@ const toastStore = useToastStore();
 const { getAllArtistes } = useApiCall();
 const emits = defineEmits(["select-artiste", "close"]);
 
+const clickOutsideTarget = ref(null);
+
+onClickOutside(clickOutsideTarget, () => emits("close"));
+
 const artistesQuery = reactive({
   page: 1,
-  per_page: 10,
+  per_page: 5,
   name: "",
   min_price: 1,
   max_price: 20,
@@ -239,6 +244,7 @@ const selectArtiste = (artiste) => {
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
+  position: relative;
 }
 
 .modal-container {
@@ -251,8 +257,11 @@ const selectArtiste = (artiste) => {
   transition: all 0.3s ease;
 
   @media only screen and (max-width: 600px) {
-    width: 90%;
+    width: 100%;
     margin-top: 6rem;
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
   }
 }
 
@@ -264,8 +273,8 @@ const selectArtiste = (artiste) => {
   margin: 20px 0;
 
   .modal-content {
-    height: 500px;
-    max-height: 500px;
+    height: 550px;
+    max-height: 550px;
     width: 100%;
     overflow-y: scroll;
   }
@@ -328,7 +337,7 @@ const selectArtiste = (artiste) => {
   min-width: 100%;
   height: 300px;
   max-width: 320px;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   position: relative;
 
   .table__head th {

@@ -13,7 +13,7 @@
       </div>
 
       <div class="card__body mt-12 flex flex-col items-center justify-center">
-        <div class="text-secondary font-medium text-2xl">Welcome Back!</div>
+        <div class="text-secondary font-medium text-2xl">Welcome!</div>
 
         <div class="text-base text-gray-500 text-center mt-8">
           Sign in to your account to continue with
@@ -150,8 +150,9 @@ function initRegisterNewUser() {
       url("@/assets/icons/symphony-top-right.svg"),
       url("@/assets/icons/fluid-shape-top-left.svg"),
       url("@/assets/icons/symphony-top-left.svg");
-    background-position: right top, right top, left top, left top;
+    background-position: right top, right top, left bottom, left bottom;
     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+    background-size: 30%;
   }
 }
 </style>
