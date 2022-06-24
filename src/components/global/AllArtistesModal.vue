@@ -273,8 +273,8 @@ const selectArtiste = (artiste) => {
   margin: 20px 0;
 
   .modal-content {
-    height: 550px;
-    max-height: 550px;
+    height: 500px;
+    max-height: 500px;
     width: 100%;
     overflow-y: scroll;
   }
